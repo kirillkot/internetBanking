@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"internerBanking/controllers"
+	"internetBanking/controllers"
 
 	"github.com/astaxie/beego"
 )

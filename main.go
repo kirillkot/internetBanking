@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "internerBanking/routers"
+	_ "internetBanking/routers"
 
 	"github.com/astaxie/beego"
 )
