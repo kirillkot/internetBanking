@@ -14,5 +14,7 @@
 .glide/
 
 # Custom ignore
+pkg/
+bin/
 vendor/
 internetBanking
