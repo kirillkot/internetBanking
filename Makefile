@@ -1,6 +1,11 @@
-vendor: Gopkg.lock Gopkg.toml
-	rm -rf vendor/
-	dep ensure -v
+PROJECT_PREFIX := $(PWD)/src/banking
+
+vendor: $(PROJECT_PREFIX)/Gopkg.lock $(PROJECT_PREFIX)/Gopkg.toml
+	rm -rf $(PROJECT_PREFIX)/vendor
+	-cd $(PROJECT_PREFIX); \
+		dep ensure -v && \
+		dep prune -v && \
+	cd -;
 
 .PHONE: banking
 banking: vendor
