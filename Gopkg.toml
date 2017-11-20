@@ -20,3 +20,7 @@
 #  name = "github.com/x/y"
 #  version = "2.4.0"
 
+
+[[constraint]]
+  name = "github.com/jinzhu/gorm"
+  revision = "0a51f6cdc55d1650d9ed3b4c13026cfa9133b01e"
