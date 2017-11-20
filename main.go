@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
 	"internetBanking/api/common"
@@ -22,8 +23,21 @@ func init() {
 	flag.IntVar(&port, "p", 8080, "server port")
 }
 
+func migrate(db *gorm.DB) {
+	tables := []interface{}{
+		&users.User{},
+	}
+	for _, table := range tables {
+		if err := db.CreateTable(table).Error; err != nil {
+			logger.Fatalln("migrate: create table: ", err)
+		}
+	}
+}
+
 func main() {
 	db := common.NewDB()
+	migrate(db)
+	defer db.Close()
 
 	router := mux.NewRouter()
 
