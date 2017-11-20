@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// JSONResponse ...
 func JSONResponse(w http.ResponseWriter, model interface{}, code int) {
 	w.Header().Set("Content-Type", "application/json")
 

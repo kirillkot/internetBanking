@@ -10,6 +10,7 @@ const (
 	dbURL = "postgres://postgres:postgres@postgres/db?sslmode=disable"
 )
 
+// NewDB ...
 func NewDB() *gorm.DB {
 	logger := NewLogger("db")
 
