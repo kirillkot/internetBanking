@@ -2,7 +2,7 @@ postgres:
   image: "postgres:9.6.5"
   restart: on-failure
   ports:
-    - "5432:5432"
+    - "65432:5432"
   environment:
     POSTGRES_USER: postgres
     POSTGRES_PASSWORD: postgres

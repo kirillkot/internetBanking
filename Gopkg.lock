@@ -2,8 +2,20 @@
 
 
 [[projects]]
-  name = "github.com/jinzhu/gorm"
+  name = "github.com/gorilla/context"
   packages = ["."]
+  revision = "1ea25387ff6f684839d82767c1733ff4d4d15d0a"
+  version = "v1.1"
+
+[[projects]]
+  name = "github.com/gorilla/mux"
+  packages = ["."]
+  revision = "7f08801859139f86dfafd1c296e2cba9a80d292e"
+  version = "v1.6.0"
+
+[[projects]]
+  name = "github.com/jinzhu/gorm"
+  packages = [".","dialects/postgres"]
   revision = "0a51f6cdc55d1650d9ed3b4c13026cfa9133b01e"
 
 [[projects]]
@@ -11,6 +23,12 @@
   name = "github.com/jinzhu/inflection"
   packages = ["."]
   revision = "1c35d901db3da928c72a72d8458480cc9ade058f"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/lib/pq"
+  packages = [".","hstore","oid"]
+  revision = "8c6ee72f3e6bcb1542298dd5f76cb74af9742cec"
 
 [[projects]]
   name = "github.com/sirupsen/logrus"
@@ -33,6 +51,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "860f3eb6c2e90155dbb66e395908b9015050d21a5a137f4cc62e44ff9846d780"
+  inputs-digest = "368e7354621a77e626f32c2d5f35a437927ab8c7e472612939c6fc18dae93737"
   solver-name = "gps-cdcl"
   solver-version = 1

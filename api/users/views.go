@@ -9,11 +9,18 @@ import (
 	"internetBanking/api/common"
 )
 
-type UserView struct {
+type View struct {
 	db     *gorm.DB
 	logger *logrus.Logger
 }
 
-func (v *UserView) Get(w http.ResponseWriter, r *http.Request) {
+func NewView(db *gorm.DB) *View {
+	return &View{
+		db:     db,
+		logger: common.NewLogger("users"),
+	}
+}
+
+func (v *View) Get(w http.ResponseWriter, r *http.Request) {
 	common.JSONResponse(w, &User{}, http.StatusOK)
 }
