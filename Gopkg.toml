@@ -20,23 +20,3 @@
 #  name = "github.com/x/y"
 #  version = "2.4.0"
 
-
-[[constraint]]
-  name = "github.com/astaxie/beego"
-  version = "1.9.0"
-
-[[constraint]]
-  name = "github.com/smartystreets/goconvey"
-  version = "1.6.3"
-
-[[constraint]]
-  name = "github.com/jtolds/gls"
-  version = "4.2.1"
-
-[[constraint]]
-  name = "github.com/smartystreets/assertions"
-  version = "1.7.0"
-
-[[constraint]]
-  name = "github.com/gopherjs/gopherjs"
-  revision = "b40cd48c38f9a18eb3db20d163bad78de12cf0b7"
