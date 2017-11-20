@@ -1,6 +1,7 @@
 vendor: Gopkg.lock Gopkg.toml
 	rm -rf vendor/
 	dep ensure -v
+	dep prune -v
 
 .PHONE: banking
 banking: vendor
