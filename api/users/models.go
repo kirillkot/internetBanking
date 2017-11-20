@@ -11,5 +11,5 @@ type User struct {
 
 	Password string `valid:"max=128,required" json:"password"`
 
-	Gendor string `gorm:"gendor" valid:"" json:"gendor"`
+	Gendor string `gorm:"gendor" valid:"in(male|female)" json:"gendor"`
 }
