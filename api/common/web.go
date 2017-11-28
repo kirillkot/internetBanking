@@ -47,7 +47,8 @@ func (v *ViewSet) DB() *gorm.DB {
 	return v.db
 }
 
-func (v *ViewSet) failure(w http.ResponseWriter, msg string, code int) {
+// Failure ...
+func (v *ViewSet) Failure(w http.ResponseWriter, msg string, code int) {
 	v.logger.Errorln(msg)
 	http.Error(w, msg, code)
 }
@@ -56,34 +57,34 @@ func (v *ViewSet) failure(w http.ResponseWriter, msg string, code int) {
 func (v *ViewSet) CreateHandler(w http.ResponseWriter, r *http.Request) {
 	object := v.model.New()
 	if err := json.NewDecoder(r.Body).Decode(object); err != nil {
-		v.failure(w, "create: decode: "+err.Error(), http.StatusBadRequest)
+		v.Failure(w, "create: decode: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	if _, err := govalidator.ValidateStruct(object); err != nil {
-		v.failure(w, "create: validate: "+err.Error(), http.StatusBadRequest)
+		v.Failure(w, "create: validate: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	if err := v.db.Create(object).Error; err != nil {
-		v.failure(w, "create: db save "+err.Error(), http.StatusInternalServerError)
+		v.Failure(w, "create: db save "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	JSONResponse(w, object, http.StatusCreated)
+	v.JSONResponse(w, object, http.StatusCreated)
 }
 
 // UpdateHandler ...
 func (v *ViewSet) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseUint(mux.Vars(r)["id"], 10, 32)
 	if err != nil {
-		v.failure(w, "update: parse id: "+err.Error(), http.StatusBadRequest)
+		v.Failure(w, "update: parse id: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	updates := make(map[string]interface{}, 8)
 	if err := json.NewDecoder(r.Body).Decode(updates); err != nil {
-		v.failure(w, "update: parse body: "+err.Error(), http.StatusBadRequest)
+		v.Failure(w, "update: parse body: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -91,14 +92,14 @@ func (v *ViewSet) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 	switch err := v.db.Where("id = ?", id).Find(object).Error; err {
 	case nil:
 		if e := v.db.Model(object).Updates(updates).Error; e != nil {
-			v.failure(w, "update: failed: "+e.Error(), http.StatusInternalServerError)
+			v.Failure(w, "update: failed: "+e.Error(), http.StatusInternalServerError)
 			return
 		}
-		JSONResponse(w, object, http.StatusNoContent)
+		v.JSONResponse(w, object, http.StatusNoContent)
 	case gorm.ErrRecordNotFound:
-		v.failure(w, "update: object not found: "+strconv.FormatUint(id, 10), http.StatusNotFound)
+		v.Failure(w, "update: object not found: "+strconv.FormatUint(id, 10), http.StatusNotFound)
 	default:
-		v.failure(w, "update: find object: "+err.Error(), http.StatusInternalServerError)
+		v.Failure(w, "update: find object: "+err.Error(), http.StatusInternalServerError)
 	}
 }
 
@@ -106,7 +107,7 @@ func (v *ViewSet) UpdateHandler(w http.ResponseWriter, r *http.Request) {
 func (v *ViewSet) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseUint(mux.Vars(r)["id"], 10, 32)
 	if err != nil {
-		v.failure(w, "delete: parse id: "+err.Error(), http.StatusBadRequest)
+		v.Failure(w, "delete: parse id: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
@@ -114,14 +115,14 @@ func (v *ViewSet) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 	switch err := v.db.Where("id = ?", id).Find(object).Error; err {
 	case nil:
 		if e := v.db.Delete(object).Error; e != nil {
-			v.failure(w, "delete: failed: "+e.Error(), http.StatusInternalServerError)
+			v.Failure(w, "delete: failed: "+e.Error(), http.StatusInternalServerError)
 			return
 		}
-		JSONResponse(w, object, http.StatusNoContent)
+		v.JSONResponse(w, object, http.StatusNoContent)
 	case gorm.ErrRecordNotFound:
-		v.failure(w, "delete: object not found: "+strconv.FormatUint(id, 10), http.StatusNotFound)
+		v.Failure(w, "delete: object not found: "+strconv.FormatUint(id, 10), http.StatusNotFound)
 	default:
-		v.failure(w, "delete: find object: "+err.Error(), http.StatusInternalServerError)
+		v.Failure(w, "delete: find object: "+err.Error(), http.StatusInternalServerError)
 	}
 }
 
@@ -129,18 +130,18 @@ func (v *ViewSet) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 func (v *ViewSet) RetrieveHandler(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.ParseUint(mux.Vars(r)["id"], 10, 32)
 	if err != nil {
-		v.failure(w, "parse id: "+err.Error(), http.StatusBadRequest)
+		v.Failure(w, "parse id: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
 	object := v.model.New()
 	switch err := v.db.Where("id = ?", id).Find(object).Error; err {
 	case nil:
-		JSONResponse(w, object, http.StatusOK)
+		v.JSONResponse(w, object, http.StatusOK)
 	case gorm.ErrRecordNotFound:
-		v.failure(w, "get: object not found: "+strconv.FormatUint(id, 10), http.StatusNotFound)
+		v.Failure(w, "get: object not found: "+strconv.FormatUint(id, 10), http.StatusNotFound)
 	default:
-		v.failure(w, "get: "+err.Error(), http.StatusInternalServerError)
+		v.Failure(w, "get: "+err.Error(), http.StatusInternalServerError)
 	}
 }
 
@@ -149,11 +150,11 @@ func (v *ViewSet) ListHandler(w http.ResponseWriter, r *http.Request) {
 	objects := v.model.NewArray(0, 32)
 	switch err := v.db.Find(objects).Error; err {
 	case nil:
-		JSONResponse(w, objects, http.StatusOK)
+		v.JSONResponse(w, objects, http.StatusOK)
 	case gorm.ErrRecordNotFound:
-		JSONResponse(w, []interface{}{}, http.StatusOK)
+		v.JSONResponse(w, []interface{}{}, http.StatusOK)
 	default:
-		v.failure(w, "list: "+err.Error(), http.StatusInternalServerError)
+		v.Failure(w, "list: "+err.Error(), http.StatusInternalServerError)
 	}
 }
 
@@ -168,11 +169,11 @@ func (v *ViewSet) RegisterRoutes(router *mux.Router) {
 }
 
 // JSONResponse ...
-func JSONResponse(w http.ResponseWriter, model interface{}, code int) {
+func (v *ViewSet) JSONResponse(w http.ResponseWriter, model interface{}, code int) {
 	w.Header().Set("Content-Type", "application/json")
 
 	w.WriteHeader(code)
 	if err := json.NewEncoder(w).Encode(model); err != nil {
-		logger.Println("JSONResponse: err:", err)
+		v.logger.Errorln("encode json:", err)
 	}
 }
