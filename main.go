@@ -42,7 +42,7 @@ func main() {
 	router := mux.NewRouter()
 
 	usersview := users.NewView(db)
-	router.HandleFunc("/users/{id:[0-9]+}", usersview.Get).Methods("GET")
+	usersview.RegisterRoutes(router)
 
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
 
