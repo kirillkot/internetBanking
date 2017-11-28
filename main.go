@@ -10,6 +10,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
 	"internetBanking/api/common"
+	"internetBanking/api/payments"
 	"internetBanking/api/users"
 )
 
@@ -26,6 +27,7 @@ func init() {
 func migrate(db *gorm.DB) {
 	tables := []interface{}{
 		&users.User{},
+		&payments.Account{},
 	}
 	for _, table := range tables {
 		if err := db.CreateTable(table).Error; err != nil {
@@ -41,8 +43,8 @@ func main() {
 
 	router := mux.NewRouter()
 
-	usersview := users.NewView(db)
-	usersview.RegisterRoutes(router)
+	users.NewView(db).RegisterRoutes(router)
+	payments.NewView(db).RegisterRoutes(router)
 
 	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
 
