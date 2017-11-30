@@ -3,6 +3,7 @@
 .git/
 
 static/
+conf/
 ui/
 
 docker-compose.yml

@@ -1,9 +1,8 @@
 package main
 
 import (
-	"flag"
+	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -15,30 +14,16 @@ import (
 )
 
 var (
-	port int
-
 	logger = common.NewLogger("global")
 )
 
-func init() {
-	flag.IntVar(&port, "p", 8080, "server port")
-}
-
 func migrate(db *gorm.DB) {
-	tables := []interface{}{
+	if err := db.AutoMigrate(
 		&users.User{},
 		&payments.Account{},
+	).Error; err != nil {
+		log.Fatalln("AutoMigrate: failed: err:", err)
 	}
-	for _, table := range tables {
-		if err := db.CreateTable(table).Error; err != nil {
-			logger.Fatalln("migrate: create table: ", err)
-		}
-	}
-}
-
-// NotFoundHandler - handle not found error in Angular
-func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
-	http.ServeFile(w, r, "static/index.html")
 }
 
 func main() {
@@ -51,11 +36,8 @@ func main() {
 	users.NewView(db).RegisterRoutes(router)
 	payments.NewView(db).RegisterRoutes(router)
 
-	router.PathPrefix("/*.*").Handler(http.FileServer(http.Dir("static/")))
-	router.NotFoundHandler = http.HandlerFunc(NotFoundHandler)
-
-	logger.Infof("Stating on the %v port\n", port)
-	if err := http.ListenAndServe(":"+strconv.Itoa(port), router); err != nil {
+	logger.Infof("Stating server...\n")
+	if err := http.ListenAndServe(":80", router); err != nil {
 		logger.Fatalln("Listen and Serve: err:", err)
 	}
 }

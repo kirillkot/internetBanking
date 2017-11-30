@@ -38,7 +38,8 @@ func (ViewModel) New() interface{} {
 
 // NewArray ...
 func (ViewModel) NewArray(len, cap int) interface{} {
-	return make([]User, len, cap)
+	array := make([]User, len, cap)
+	return &array
 }
 
 // View ...
