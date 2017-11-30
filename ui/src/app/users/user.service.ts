@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 export class UserBase {
   public id: number;
   public username: string;
-  public isAdmin: bool;
+  public isAdmin: boolean;
 
   constructor() {}
 }
