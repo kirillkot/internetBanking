@@ -13,7 +13,9 @@ export class User extends UserBase {
   public secondname: string;
   public gendor: string;
 
-  constructor(){}
+  constructor() {
+    super();
+  }
 }
 
 @Injectable()
