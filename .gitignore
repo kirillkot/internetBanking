@@ -15,4 +15,5 @@
 
 # Custom ignore
 vendor/
+static/
 internetBanking

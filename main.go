@@ -46,7 +46,7 @@ func main() {
 	users.NewView(db).RegisterRoutes(router)
 	payments.NewView(db).RegisterRoutes(router)
 
-	router.PathPrefix("/static/").Handler(http.StripPrefix("/static/", http.FileServer(http.Dir("static/"))))
+	router.PathPrefix("/").Handler(http.FileServer(http.Dir("static/")))
 
 	logger.Infof("Stating on the %v port\n", port)
 	if err := http.ListenAndServe(":"+strconv.Itoa(port), router); err != nil {
