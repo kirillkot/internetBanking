@@ -36,6 +36,11 @@ func migrate(db *gorm.DB) {
 	}
 }
 
+// NotFoundHandler - handle not found error in Angular
+func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
+	http.ServeFile(w, r, "static/index.html")
+}
+
 func main() {
 	db := common.NewDB()
 	migrate(db)
@@ -46,7 +51,8 @@ func main() {
 	users.NewView(db).RegisterRoutes(router)
 	payments.NewView(db).RegisterRoutes(router)
 
-	router.PathPrefix("/").Handler(http.FileServer(http.Dir("static/")))
+	router.PathPrefix("/*.*").Handler(http.FileServer(http.Dir("static/")))
+	router.NotFoundHandler = http.HandlerFunc(NotFoundHandler)
 
 	logger.Infof("Stating on the %v port\n", port)
 	if err := http.ListenAndServe(":"+strconv.Itoa(port), router); err != nil {
