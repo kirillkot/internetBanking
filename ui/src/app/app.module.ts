@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { BankComponent } from './bank/bank.component';
 import { PageNotFoundComponent } from './not-found/not-found.component';
+import { UsersModule } from './users/users.module';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { PageNotFoundComponent } from './not-found/not-found.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    UsersModule
   ],
   providers: [],
   bootstrap: [AppComponent]
