@@ -8,14 +8,17 @@ import (
 
 // User ...
 type User struct {
-	gorm.Model
+	common.Model
 
-	Email    string `gorm:"unique" valid:"email,required" json:"email"`
-	NickName string `gorm:"unique" valid:"ascii,max=128,required" json:"nickname"`
+	UserName string `gorm:"unique" valid:"ascii,max=128,required" json:"username"`
+	IsAdmin  bool   `json:"isAdmin"`
 
-	Password string `valid:"max=128,required" json:"password"`
+	FirstName  string `gorm:"first_name" valid:"ascii,max=128" json:"firstname"`
+	SecondName string `gorm:"second_name" valid:"ascii,max=128" json:"secondname"`
+	Email      string `gorm:"unique" valid:"email,required" json:"email"`
+	Gendor     string `gorm:"gendor" valid:"in(m|f)" json:"gendor"`
 
-	Gendor string `gorm:"gendor" valid:"in(male|female)" json:"gendor"`
+	Password string `valid:"max=128" json:"password"`
 }
 
 // ViewModel ...

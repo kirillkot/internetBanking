@@ -24,6 +24,15 @@ func migrate(db *gorm.DB) {
 	).Error; err != nil {
 		log.Fatalln("AutoMigrate: failed: err:", err)
 	}
+
+	admin := &users.User{
+		UserName: "admin",
+		IsAdmin:  true,
+		Password: "admin",
+	}
+	if err := db.FirstOrCreate(&users.User{}, admin).Error; err != nil {
+		log.Fatalln("Create admin: failed:", err)
+	}
 }
 
 func main() {
