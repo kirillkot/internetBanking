@@ -4,6 +4,13 @@
   width: 100%;
 }
 
+.user-form section {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 .user-form-full-width {
   width: 100%;
 }
