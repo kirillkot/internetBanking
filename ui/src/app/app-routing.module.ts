@@ -2,10 +2,12 @@ import { NgModule }              from '@angular/core';
 import { RouterModule, Routes }  from '@angular/router';
 
 import { BankComponent }         from './bank/bank.component';
+import { AdminComponent }        from './admin/admin.component';
 import { PageNotFoundComponent } from './not-found/not-found.component';
 
 
 const appRoutes: Routes = [
+    { path: 'admin', component: AdminComponent },
     { path: 'bank', component: BankComponent },
     { path: '',   redirectTo: '/bank', pathMatch: 'full' },
     { path: '**', component: PageNotFoundComponent }
