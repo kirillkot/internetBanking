@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 import { MaterialModule } from '../material/material.module';
 
@@ -10,6 +11,7 @@ import { UserFormComponent } from './user-form.component';
 @NgModule({
   imports: [
     CommonModule,
+    HttpClientModule,
     MaterialModule,
     UsersRoutingModule
   ],

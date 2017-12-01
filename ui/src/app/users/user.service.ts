@@ -1,4 +1,8 @@
+import { Observable } from 'rxjs/Observable';
+
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
 
 export class UserBase {
   public id: number = 0;
@@ -23,6 +27,17 @@ export class User extends UserBase {
 @Injectable()
 export class UserService {
 
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+  ) { }
+
+  create(user: User): User {
+    this.http
+      .post<User>('/api/users/', user)
+      .subscribe(
+        data => { user.id = data.id },
+      );
+    return user;
+  }
 
 }
