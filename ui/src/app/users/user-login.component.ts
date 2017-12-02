@@ -30,7 +30,7 @@ export class UserLoginComponent implements OnInit {
   login(): void {
     console.log(`User Login Form: create: ${this.user}`);
     this.service.login(this.user.value);
-    // this.location.back();
+    this.location.back();
   }
 
 }
