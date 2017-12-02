@@ -1,6 +1,7 @@
 package users
 
 import (
+	"encoding/json"
 	"internetBanking/api/common"
 
 	"github.com/jinzhu/gorm"
@@ -10,15 +11,17 @@ import (
 type User struct {
 	common.Model
 
-	UserName string `gorm:"unique" valid:"ascii,max=128,required" json:"username"`
+	UserName string `gorm:"unique" valid:"ascii,length(4|128),required" json:"username"`
 	IsAdmin  bool   `json:"isAdmin"`
 
-	FirstName  string `gorm:"first_name" valid:"ascii,max=128" json:"firstname"`
-	SecondName string `gorm:"second_name" valid:"ascii,max=128" json:"secondname"`
-	Email      string `gorm:"unique" valid:"email,required" json:"email"`
-	Gendor     string `gorm:"gendor" valid:"in(m|f)" json:"gendor"`
+	Password string `valid:"length(4|128)" json:"password,omitempty"`
+}
 
-	Password string `valid:"max=128" json:"password"`
+// MarshalJSON ...
+func (u User) MarshalJSON() ([]byte, error) {
+	u.Password = ""
+	type Alias User
+	return json.Marshal((Alias)(u))
 }
 
 // ViewModel ...

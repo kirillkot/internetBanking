@@ -2,27 +2,21 @@ import { Observable } from 'rxjs/Observable';
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
-export class UserBase {
-  public id: number = 0;
-  public username: string = '';
-  public isAdmin: boolean = false;
-
-  constructor() {}
+export interface UserForm {
+  username: string;
+  isAdmin: boolean;
+  password: string;
 }
 
-export class User extends UserBase {
-  public email: string = '';
-  public firstname: string = '';
-  public secondname: string = '';
-  public gendor: string = '';
-  public birthdate: Date;
-
-  constructor() {
-    super();
-  }
+export interface User {
+  id: number;
+  username: string;
+  isAdmin: boolean;
 }
+
 
 @Injectable()
 export class UserService {
@@ -31,13 +25,37 @@ export class UserService {
     private http: HttpClient,
   ) { }
 
-  create(user: User): User {
+  errorHandler(err: any) {
+    console.log(`User Service: error: ${err}`)
+  }
+
+  create(user: UserForm): User {
+    let newuser: User;
+    console.log(`Create user: init with ${user}`)
     this.http
       .post<User>('/api/users/', user)
       .subscribe(
-        data => { user.id = data.id },
+        data => {
+          console.log(`Create user: success ${data}`)
+          newuser = data;
+        },
+        this.errorHandler,
       );
-    return user;
+    return newuser;
+  }
+
+  getUsers(): User[] {
+    let users: User[] = [];
+    this.http
+      .get<User[]>('/api/users/')
+      .subscribe(
+        data => {
+          users = data;
+          console.log(`Get users: success ${users}`);
+        },
+        this.errorHandler,
+      );
+    return users;
   }
 
 }

@@ -1,42 +1,22 @@
-<form class="user-form">
+<form novalidate class="user-form" [formGroup]="user">
   <mat-form-field class="user-form-full-width">
-    <input matInput placeholder="Your User Name" [(value)]="user.username" required>
-  </mat-form-field>
-
-  <mat-form-field class="user-form-full-width">
-    <input matInput placeholder="example@email.com" [(value)]="user.email" required>
-  </mat-form-field>
-
-  <mat-form-field class="user-form-full-width">
-    <textarea matInput placeholder="Your First Name" [(value)]="user.firstname"></textarea>
-  </mat-form-field>
-
-  <mat-form-field class="user-form-full-width">
-    <textarea matInput placeholder="Your Second Name" [(value)]="user.secondname"></textarea>
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-select placeholder="Gendor" [(value)]="user.gendor">
-      <mat-option value="m">Male</mat-option>
-      <mat-option value="f">Female</mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field class="user-form-full-width">
-    <input matInput [matDatepicker]="birthdate" placeholder="Choose your birthdate" [(value)]="user.birthdate">
-    <mat-datepicker-toggle matSuffix [for]="birthdate"></mat-datepicker-toggle>
-    <mat-datepicker #birthdate></mat-datepicker>
+    <input matInput placeholder="Your User Name" formControlName="username">
   </mat-form-field>
 
   <section class="user-form-full-width">
-    <mat-checkbox
-        [(value)]="user.isAdmin">
+    <mat-checkbox formControlName="isAdmin">
       Super User Access
     </mat-checkbox>
   </section>
 
+  <mat-form-field class="user-form-full-width">
+    <input matInput placeholder="Your Password" formControlName="password">
+  </mat-form-field>
+
   <section class="user-form-full-width">
-    <button mat-raised-button color="primary" (click)="create()" >Create</button>
+    <button mat-raised-button color="primary"
+        (click)="create()"
+        [disabled]="user.invalid">Create</button>
     <button mat-raised-button (click)="back()">Back</button>
   </section>
 
