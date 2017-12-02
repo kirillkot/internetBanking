@@ -2,11 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import {
-  User,
-  UserForm,
-  UserService
-} from './user.service';
+import { UserService } from './user.service';
 
 
 @Component({
@@ -33,8 +29,8 @@ export class UserFormComponent implements OnInit {
   }
 
   create(): void {
-    console.log(`User Form: onSubmit: ${this.user}`)
-    let newuser = this.service.create(this.user.value);
+    console.log(`User Form: create: ${this.user}`)
+    this.service.create(this.user.value);
     this.location.back();
   }
 
