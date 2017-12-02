@@ -9,6 +9,7 @@ import { PageNotFoundComponent } from './not-found/not-found.component';
 import { UsersModule } from './users/users.module';
 import { MaterialModule } from './material/material.module';
 import { AppRoutingModule } from './app-routing.module';
+import { CardsModule } from './cards/cards.module';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { AppRoutingModule } from './app-routing.module';
     UsersModule,
     BrowserModule,
     AppRoutingModule,
-    MaterialModule
+    MaterialModule,
+    CardsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
