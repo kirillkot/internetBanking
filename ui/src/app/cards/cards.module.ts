@@ -6,6 +6,8 @@ import { MaterialModule } from '../material/material.module';
 
 import { CardsRoutingModule } from './cards-routing.module';
 import { CardListComponent } from './card-list.component';
+import { CardService } from './card.service';
+
 
 @NgModule({
   imports: [
@@ -16,6 +18,7 @@ import { CardListComponent } from './card-list.component';
   ],
   declarations: [
     CardListComponent,
-  ]
+  ],
+  providers: [CardService]
 })
 export class CardsModule { }
