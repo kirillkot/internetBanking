@@ -1,10 +1,6 @@
-import { of } from 'rxjs/observable/of';
-import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { DataSource } from '@angular/cdk/collections';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-
-import { MatTableDataSource } from '@angular/material';
 
 import { User } from './user.service';
 import { UserService } from './user.service';

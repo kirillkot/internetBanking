@@ -1,3 +1,40 @@
-<p>
-  card-list works!
-</p>
+<div class="card-list mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Card Name </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="ttl">
+      <mat-header-cell *matHeaderCellDef> Valid Until </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.ttl}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <mat-header-cell *matHeaderCellDef> Card Type </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.type}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.status}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="currency">
+      <mat-header-cell *matHeaderCellDef> Currency </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.currency}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="balance">
+      <mat-header-cell *matHeaderCellDef> Balance </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.balance}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <button mat-raised-button class="create-card-button"
+        routerLink="form"
+        color="primary">Create New Card</button>
+</div>

@@ -19,7 +19,7 @@ import { CardsModule } from './cards/cards.module';
   ],
   imports: [
     UsersModule,
-    CardsModule
+    CardsModule,
     BrowserModule,
     AppRoutingModule,
     MaterialModule
