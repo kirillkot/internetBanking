@@ -18,8 +18,8 @@ export class CardService {
     private http: HttpClient,
   ) { }
 
-  getCards(): Observable<User[]> {
-    return this.http.get<User[]>('/api/cards');
+  getCards(): Observable<Card[]> {
+    return this.http.get<Card[]>('/api/cards');
   }
 
 }
