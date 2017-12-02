@@ -35,6 +35,7 @@ export class UserFormComponent implements OnInit {
   create(): void {
     console.log(`User Form: onSubmit: ${this.user}`)
     let newuser = this.service.create(this.user.value);
+    this.location.back();
   }
 
   back(): void {

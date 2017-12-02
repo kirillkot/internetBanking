@@ -2,7 +2,7 @@ import { of } from 'rxjs/observable/of';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import { DataSource } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 import { MatTableDataSource } from '@angular/material';
 
@@ -21,15 +21,23 @@ export class UserListComponent implements OnInit {
 
   constructor(
     private service: UserService,
+    private detector: ChangeDetectorRef,
   ) {
     this.dataSource = new UsersDataSource(service);
   }
 
   ngOnInit() { }
 
+  refresh(): void {
+    this.dataSource = new UsersDataSource(this.service);
+    this.detector.detectChanges();
+  }
+
   delete(id: number): boolean {
     console.log(`Users List: delete ${id}`)
-    return this.service.delete(id)
+    let ok = this.service.delete(id);
+    this.refresh();
+    return ok;
   }
 }
 
