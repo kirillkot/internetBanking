@@ -44,18 +44,8 @@ export class UserService {
     return newuser;
   }
 
-  getUsers(): User[] {
-    let users: User[] = [];
-    this.http
-      .get<User[]>('/api/users/')
-      .subscribe(
-        data => {
-          users = data;
-          console.log(`Get users: success ${users}`);
-        },
-        this.errorHandler,
-      );
-    return users;
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>('/api/users/');
   }
 
 }

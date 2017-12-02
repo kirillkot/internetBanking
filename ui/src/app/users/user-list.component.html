@@ -1,5 +1,25 @@
-<mat-list>
-  <mat-list-item *ngFor="let user of users" >
-    <label>{{user.username}}</label>
-  </mat-list-item>
-</mat-list>
+<div class="user-list mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource">
+
+    <!-- ID Column -->
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+    </ng-container>
+
+    <!-- User Name Column -->
+    <ng-container matColumnDef="username">
+      <mat-header-cell *matHeaderCellDef> User Name </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.username}} </mat-cell>
+    </ng-container>
+
+    <!-- Color Column -->
+    <ng-container matColumnDef="admin">
+      <mat-header-cell *matHeaderCellDef> Admin </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.isAdmin}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

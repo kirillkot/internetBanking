@@ -1,5 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { of } from 'rxjs/observable/of';
 import { Location } from '@angular/common';
+import { Observable } from 'rxjs/Observable';
+import { DataSource } from '@angular/cdk/collections';
+import { Component, OnInit } from '@angular/core';
+
+import { MatTableDataSource } from '@angular/material';
 
 import { User } from './user.service';
 import { UserService } from './user.service';
@@ -11,24 +16,24 @@ import { UserService } from './user.service';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
-  users: User[]
+  displayedColumns = ['id', 'username', 'admin'];
+  dataSource: UsersDataSource;
 
   constructor(
-    private location: Location,
     private service: UserService,
-  ) { }
-
-  ngOnInit() {
-    this.getUsers()
+  ) {
+    this.dataSource = new UsersDataSource(service);
   }
 
-  getUsers(): void {
-    this.users = this.service.getUsers();
-    console.log(this.users)
-  }
+  ngOnInit() { }
+}
 
-  back(): void {
-    this.location.back();
+export class UsersDataSource extends DataSource<any> {
+  constructor(private service: UserService) {
+    super();
   }
-
+  connect(): Observable<User[]> {
+    return this.service.getUsers();
+  }
+  disconnect() {}
 }
