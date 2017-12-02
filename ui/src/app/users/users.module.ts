@@ -8,6 +8,7 @@ import { UsersRoutingModule } from './users-routing.module';
 import { UserService } from './user.service';
 import { UserFormComponent } from './user-form.component';
 import { UserListComponent } from './user-list.component';
+import { UserLoginComponent } from './user-login.component';
 
 @NgModule({
   imports: [
@@ -16,7 +17,11 @@ import { UserListComponent } from './user-list.component';
     MaterialModule,
     UsersRoutingModule
   ],
-  declarations: [UserFormComponent, UserListComponent],
+  declarations: [
+    UserFormComponent,
+    UserListComponent,
+    UserLoginComponent
+  ],
   providers: [UserService]
 })
 export class UsersModule { }
