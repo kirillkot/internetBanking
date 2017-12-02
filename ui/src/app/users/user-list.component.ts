@@ -16,7 +16,7 @@ import { UserService } from './user.service';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
-  displayedColumns = ['id', 'username', 'admin'];
+  displayedColumns = ['id', 'username', 'admin', 'actions'];
   dataSource: UsersDataSource;
 
   constructor(
@@ -26,6 +26,11 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit() { }
+
+  delete(id: number): boolean {
+    console.log(`Users List: delete ${id}`)
+    return this.service.delete(id)
+  }
 }
 
 export class UsersDataSource extends DataSource<any> {

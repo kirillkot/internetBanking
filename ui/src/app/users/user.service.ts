@@ -48,4 +48,18 @@ export class UserService {
     return this.http.get<User[]>('/api/users/');
   }
 
+  delete(id: number): boolean {
+    console.log(`Delete user: with ${id}`)
+    let ok = false;
+    this.http
+      .delete(`/api/users/${id}/`)
+      .subscribe(
+        data => {
+          console.log(`Delete user: success ${id}`)
+          ok = true;
+        },
+        this.errorHandler,
+      );
+    return ok;
+  }
 }
