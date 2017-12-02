@@ -19,10 +19,10 @@ import { CardsModule } from './cards/cards.module';
   ],
   imports: [
     UsersModule,
+    CardsModule
     BrowserModule,
     AppRoutingModule,
-    MaterialModule,
-    CardsModule
+    MaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]
