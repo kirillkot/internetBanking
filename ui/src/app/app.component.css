@@ -1,0 +1,12 @@
+mat-nav-list  {
+    background-color: #3f51b5;
+    overflow: hidden;
+}
+mat-list-item {
+    float: left;
+    display: block;
+}
+#admin-router {
+  margin: 10px;
+  border: 10px;
+}

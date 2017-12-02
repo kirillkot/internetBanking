@@ -1,5 +1,9 @@
-<h1 class="title">Internet Banking</h1>
-<nav>
-  <a routerLink="/users" routerLinkActive="active">Users</a>
-</nav>
-<router-outlet></router-outlet>
+<mat-nav-list class="admin-panel">
+  <mat-list-item float="left">
+     <button mat-raised-button routerLink="/users"
+            routerLinkActive="active">Users</button>
+  </mat-list-item>
+</mat-nav-list>
+<div id="admin-router">
+  <router-outlet></router-outlet>
+</div>
