@@ -1,8 +1,10 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 
-import { UserService } from './user.service';
+import { FormComponent } from '../abstract/form.component';
+
+import { UserForm, User, UserService } from './user.service';
 
 
 @Component({
@@ -10,32 +12,21 @@ import { UserService } from './user.service';
   templateUrl: './user-form.component.html',
   styleUrls: ['./user-form.component.css']
 })
-export class UserFormComponent implements OnInit {
-  user: FormGroup;
-
+export class UserFormComponent extends FormComponent<UserForm, User>{
   constructor(
-    private location: Location,
-    private service: UserService,
-    private formbuilder: FormBuilder,
-  ) { }
+    location: Location,
+    formbuilder: FormBuilder,
+    service: UserService,
+  ) {
+    super(location, formbuilder, service);
+  }
 
-  ngOnInit() {
-    this.user = this.formbuilder.group({
+  fields(): any {
+    return {
       username: ['', [Validators.required, Validators.minLength(4)]],
       isAdmin: [false, [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(4)]],
-    });
-    console.log(`User Form: init user: ${this.user}`)
-  }
-
-  create(): void {
-    console.log(`User Form: create: ${this.user}`)
-    this.service.create(this.user.value);
-    this.location.back();
-  }
-
-  back(): void {
-    this.location.back();
+    };
   }
 
 }

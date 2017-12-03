@@ -6,8 +6,8 @@ import { BasicDataSource } from './data.source';
 
 
 @Component({})
-export class ManageListComponent<Form, Model>{
-  dataSource: BasicDataSource<Model> = null;
+export abstract class ManageListComponent<Form, Model>{
+  public dataSource: BasicDataSource<Model> = null;
 
   constructor(
     protected service: BackendService<Form, Model>,

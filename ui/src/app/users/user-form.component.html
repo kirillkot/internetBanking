@@ -1,4 +1,4 @@
-<form novalidate class="user-form" [formGroup]="user">
+<form novalidate class="user-form" [formGroup]="group">
   <mat-form-field class="user-form-full-width">
     <input matInput placeholder="Your User Name" formControlName="username">
   </mat-form-field>
@@ -16,7 +16,7 @@
   <section class="user-form-full-width">
     <button mat-raised-button color="primary"
         (click)="create()"
-        [disabled]="user.invalid">Create</button>
+        [disabled]="group.invalid">Create</button>
     <button mat-raised-button (click)="back()">Back</button>
   </section>
 
