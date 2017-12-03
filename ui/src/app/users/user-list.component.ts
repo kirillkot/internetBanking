@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs/Observable';
-import { DataSource } from '@angular/cdk/collections';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+
+import { BasicDataSource } from '../abstract/data.source';
 
 import { User } from './user.service';
 import { UserService } from './user.service';
@@ -36,12 +37,4 @@ export class UserListComponent implements OnInit {
   }
 }
 
-export class UsersDataSource extends DataSource<any> {
-  constructor(private service: UserService) {
-    super();
-  }
-  connect(): Observable<User[]> {
-    return this.service.getObjects();
-  }
-  disconnect() {}
-}
+export class UsersDataSource extends BasicDataSource<User> { }

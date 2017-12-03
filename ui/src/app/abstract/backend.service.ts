@@ -4,9 +4,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpErrorResponse } from '@angular/common/http';
 
+import { IObjectsService } from './data.source';
+
 
 @Injectable()
-export class BackendService<Form, Model> {
+export class BackendService<Form, Model> implements IObjectsService<Model> {
   constructor(
     protected entry: string,
     protected http: HttpClient,
