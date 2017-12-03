@@ -1,9 +1,9 @@
 import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
-import { BasicDataSource } from '../abstract/data.source';
+import { ManageListComponent } from '../abstract/manage-list.component';
 
-import { User } from './user.service';
+import { UserForm, User } from './user.service';
 import { UserService } from './user.service';
 
 
@@ -12,29 +12,14 @@ import { UserService } from './user.service';
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css']
 })
-export class UserListComponent implements OnInit {
+export class UserListComponent extends ManageListComponent<UserForm, User> {
   displayedColumns = ['id', 'username', 'admin', 'actions'];
-  dataSource: UsersDataSource;
 
   constructor(
-    private service: UserService,
-    private detector: ChangeDetectorRef,
+    service: UserService,
+    detector: ChangeDetectorRef,
   ) {
-    this.dataSource = new UsersDataSource(service);
+    super(service, detector);
   }
 
-  ngOnInit() { }
-
-  refresh(): void {
-    this.dataSource = new UsersDataSource(this.service);
-    this.detector.detectChanges();
-  }
-
-  delete(id: number): void {
-    console.log(`Users List: delete ${id}`)
-    this.service.delete(id);
-    this.refresh();
-  }
 }
-
-export class UsersDataSource extends BasicDataSource<User> { }
