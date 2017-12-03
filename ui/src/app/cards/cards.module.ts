@@ -6,6 +6,7 @@ import { MaterialModule } from '../material/material.module';
 import { CardsRoutingModule } from './cards-routing.module';
 
 import { CardService } from './card.service';
+import { CardOfferService } from '../card-offers/card-offer.service';
 
 import { CardListComponent } from './card-list.component';
 import { CardOfferListComponent } from '../card-offers/card-offer-list.component';
@@ -22,6 +23,9 @@ import { CardOfferListComponent } from '../card-offers/card-offer-list.component
     CardListComponent,
     CardOfferListComponent,
   ],
-  providers: [CardService]
+  providers: [
+    CardService,
+    CardOfferService,
+  ]
 })
 export class CardsModule { }

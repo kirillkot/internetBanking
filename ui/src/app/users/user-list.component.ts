@@ -1,4 +1,3 @@
-import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 import { ManageListComponent } from '../abstract/manage-list.component';
