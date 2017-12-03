@@ -29,11 +29,10 @@ export class UserListComponent implements OnInit {
     this.detector.detectChanges();
   }
 
-  delete(id: number): boolean {
+  delete(id: number): void {
     console.log(`Users List: delete ${id}`)
-    let ok = this.service.delete(id);
+    this.service.delete(id);
     this.refresh();
-    return ok;
   }
 }
 
@@ -42,7 +41,7 @@ export class UsersDataSource extends DataSource<any> {
     super();
   }
   connect(): Observable<User[]> {
-    return this.service.getUsers();
+    return this.service.getObjects();
   }
   disconnect() {}
 }

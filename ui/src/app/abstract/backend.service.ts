@@ -8,8 +8,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Injectable()
 export class BackendService<Form, Model> {
   constructor(
-    public entry: string,
-    private http: HttpClient,
+    protected entry: string,
+    protected http: HttpClient,
   ) { }
 
   errorHandler(err: any) {
@@ -30,7 +30,7 @@ export class BackendService<Form, Model> {
     return result;
   }
 
-  getObject(id: number): Observable<Model> {
+  get(id: number): Observable<Model> {
     return this.http.get<Model>(`/api/${this.entry}/${id}`);
   }
 

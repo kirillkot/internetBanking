@@ -16,8 +16,8 @@ import { AbstractModule } from '../abstract/abstract.module';
     CommonModule,
     HttpClientModule,
     MaterialModule,
-    UsersRoutingModule,
-    AbstractModule
+    AbstractModule,
+    UsersRoutingModule
   ],
   declarations: [
     UserFormComponent,
