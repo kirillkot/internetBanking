@@ -9,13 +9,15 @@ import { UserService } from './user.service';
 import { UserFormComponent } from './user-form.component';
 import { UserListComponent } from './user-list.component';
 import { UserLoginComponent } from './user-login.component';
+import { AbstractModule } from '../abstract/abstract.module';
 
 @NgModule({
   imports: [
     CommonModule,
     HttpClientModule,
     MaterialModule,
-    UsersRoutingModule
+    UsersRoutingModule,
+    AbstractModule
   ],
   declarations: [
     UserFormComponent,

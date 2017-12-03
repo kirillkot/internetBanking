@@ -30,7 +30,7 @@ export class CardsDataSource extends DataSource<any> {
   constructor(private service: CardService) {
     super();
   }
-  connect(): Observable<[]> {
+  connect(): Observable<Card[]> {
     return this.service.getCards();
   }
   disconnect() {}
