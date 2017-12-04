@@ -16,7 +16,11 @@
   </mat-form-field>
 
   <mat-form-field class="card-offer-form-full-width">
-    <input matInput placeholder="Currency" formControlName="currency">
+    <mat-select placeholder="Card Type" formControlName="currency">
+      <mat-option *ngFor="let currency of currencies" [value]="currency">
+        {{ currency }}
+      </mat-option>
+    </mat-select>
   </mat-form-field>
 
   <mat-form-field class="card-offer-form-full-width">
