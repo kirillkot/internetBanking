@@ -23,6 +23,7 @@ export interface CardOffer {
 
 @Injectable()
 export class CardOfferService extends BackendService<CardOfferForm, CardOffer> {
+  cardTypes = ['Master Card', 'Visa', 'Visa-Electron', 'BelCard']
 
   constructor(
     http: HttpClient,

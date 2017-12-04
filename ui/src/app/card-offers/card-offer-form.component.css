@@ -1,0 +1,9 @@
+mat-form {
+  min-width: 150px;
+  max-width: 250px;
+  width: 100%;
+}
+
+mat-form-field {
+  width: 100%;
+}
