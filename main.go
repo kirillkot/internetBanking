@@ -21,8 +21,8 @@ var (
 func migrate(db *gorm.DB) {
 	if err := db.AutoMigrate(
 		&users.User{},
-		&payments.Account{},
 		&offers.Offer{},
+		&payments.Account{},
 	).Error; err != nil {
 		log.Fatalln("AutoMigrate: failed: err:", err)
 	}

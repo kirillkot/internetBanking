@@ -26,9 +26,9 @@ export class CardOfferFormComponent extends FormComponent<CardOfferForm, CardOff
 
   fields(): any {
     return {
-      username: ['', [Validators.required, Validators.minLength(4)]],
+      name: ['', [Validators.required, Validators.minLength(4)]],
       type: [this.cardTypes[0], [Validators.required, Validators.minLength(4)]],
-      cashback: ['', [Validators.required]],
+      cashback: [1, [Validators.required]],
       currency: [this.currencies[0], [Validators.required]],
       ttlMonth: [12, [Validators.required]],
     };

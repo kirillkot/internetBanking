@@ -10,12 +10,11 @@ import (
 type Offer struct {
 	common.Model
 
-	IDOffer   int
-	OrderName string
-	OrderType string
-	Cashback  int
-	Currency  int
-	TTL       int
+	Name     string `json:"name"`
+	Type     string `json:"type"`
+	Cashback int    `json:"cashback"`
+	Currency string `json:"currency"`
+	TTL      int    `json:"ttlMonth"`
 }
 
 // ViewModel ...
