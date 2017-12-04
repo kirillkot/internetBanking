@@ -1,14 +1,26 @@
 <form novalidate class="card-offer-form" [formGroup]="group">
   <mat-form-field class="card-offer-form-full-width">
-    <input matInput placeholder="Offer Name" formControlName="name">
+    <input matInput placeholder="Offer Name" formControlName="username">
   </mat-form-field>
 
   <mat-form-field class="card-offer-form-full-width">
     <mat-select placeholder="Card Type" formControlName="type">
-      <mat-option *ngFor="let type of cardTypes" [value]="type">
-        {{ type }}
+      <mat-option *ngFor="let cardType of cardTypes" [value]="cardType">
+        {{ cardType }}
       </mat-option>
     </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="card-offer-form-full-width">
+    <input matInput placeholder="Cashback" formControlName="cashback">
+  </mat-form-field>
+
+  <mat-form-field class="card-offer-form-full-width">
+    <input matInput placeholder="Currency" formControlName="currency">
+  </mat-form-field>
+
+  <mat-form-field class="card-offer-form-full-width">
+    <input matInput placeholder="TTL" formControlName="ttlMonth">
   </mat-form-field>
 
   <section class="card-offer-form-full-width">

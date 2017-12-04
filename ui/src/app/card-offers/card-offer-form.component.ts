@@ -13,6 +13,8 @@ import { CardOfferForm, CardOffer, CardOfferService } from './card-offer.service
   styleUrls: ['./card-offer-form.component.css']
 })
 export class CardOfferFormComponent extends FormComponent<CardOfferForm, CardOffer> {
+  cardTypes = ['Master Card', 'Visa', 'Visa Gold', 'Belkart'];
+
   constructor(
     location: Location,
     formbuilder: FormBuilder,
@@ -24,7 +26,7 @@ export class CardOfferFormComponent extends FormComponent<CardOfferForm, CardOff
   fields(): any {
     return {
       username: ['', [Validators.required, Validators.minLength(4)]],
-      type: ['', [Validators.required, Validators.minLength(4)]],
+      type: [this.cardTypes[0], [Validators.required, Validators.minLength(4)]],
       cashback: ['', [Validators.required]],
       currency: ['', [Validators.required]],
       ttlMonth: [12, [Validators.required]],
