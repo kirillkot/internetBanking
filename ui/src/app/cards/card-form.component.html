@@ -2,22 +2,26 @@
   <mat-step class="full">
     <ng-template matStepLabel>Choose card offer</ng-template>
 
-    <mat-card *ngFor="let offer of offers | async" class="offer-card">
-      <mat-card-title>{{offer.name}}</mat-card-title>
-      <mat-card-subtitle>{{offer.type}}</mat-card-subtitle>
-      <mat-card-content>
-        <h3 mat-line>Cashback: {{offer.cashback}} %</h3>
-        <title mat-line>Details</title>
-        <p>
-          {{offer.details}}
-        </p>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button
-            matStepperNext
-            (click)="setOffer(offer)">NEW</button>
-      </mat-card-actions>
-    </mat-card>
+    <mat-grid-list cols="2" rowHeight="2:1" class="full">
+      <mat-grid-tile *ngFor="let offer of offers | async">
+        <mat-card class="offer-card">
+          <mat-card-title>{{offer.name}}</mat-card-title>
+          <mat-card-subtitle>{{offer.type}}</mat-card-subtitle>
+          <mat-card-content>
+            <h3 mat-line>Cashback: {{offer.cashback}} %</h3>
+            <title mat-line>Details</title>
+            <p>
+              {{offer.details}}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary"
+                matStepperNext
+                (click)="setOffer(offer)">NEW</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
 
   </mat-step>
 
