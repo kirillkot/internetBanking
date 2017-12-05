@@ -9,8 +9,8 @@ import { CardService } from './card.service';
 import { CardOfferService } from '../card-offers/card-offer.service';
 
 import { CardListComponent } from './card-list.component';
-import { CardOfferListComponent } from '../card-offers/card-offer-list.component';
 import { CardOfferFormComponent } from '../card-offers/card-offer-form.component';
+import { CardOfferManagementComponent } from '../card-offers/card-offer-management.component';
 
 
 @NgModule({
@@ -22,8 +22,8 @@ import { CardOfferFormComponent } from '../card-offers/card-offer-form.component
   ],
   declarations: [
     CardListComponent,
-    CardOfferListComponent,
     CardOfferFormComponent,
+    CardOfferManagementComponent,
   ],
   providers: [
     CardService,

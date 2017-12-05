@@ -7,11 +7,11 @@ import { CardOfferService } from './card-offer.service';
 
 
 @Component({
-  selector: 'app-card-offer-list',
-  templateUrl: './card-offer-list.component.html',
-  styleUrls: ['./card-offer-list.component.css']
+  selector: 'app-card-offer-management',
+  templateUrl: './card-offer-management.component.html',
+  styleUrls: ['./card-offer-management.component.css']
 })
-export class CardOfferListComponent extends
+export class CardOfferManagementComponent extends
     ManageListComponent<CardOfferForm, CardOffer> {
   displayedColumns = ['id', 'name', 'type', 'cashback', 'currency', 'ttlMonth', 'actions'];
 
