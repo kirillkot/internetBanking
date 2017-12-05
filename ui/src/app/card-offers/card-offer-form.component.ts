@@ -28,6 +28,8 @@ export class CardOfferFormComponent extends FormComponent<CardOfferForm, CardOff
     return {
       name: ['', [Validators.required, Validators.minLength(4)]],
       type: [this.cardTypes[0], [Validators.required, Validators.minLength(4)]],
+      details: [''],
+
       cashback: [1, [Validators.required]],
       currency: [this.currencies[0], [Validators.required]],
       ttlMonth: [12, [Validators.required]],

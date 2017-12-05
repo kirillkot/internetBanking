@@ -10,11 +10,13 @@ import (
 type Offer struct {
 	common.Model
 
-	Name     string `json:"name"`
-	Type     string `json:"type"`
-	Cashback int    `json:"cashback"`
-	Currency string `json:"currency"`
-	TTL      int    `json:"ttlMonth"`
+	Name    string `valid:"ascii,length(4|128)" json:"name"`
+	Type    string `valid:"ascii,length(4|128),required" json:"type"`
+	Details string `valid:"ascii" json:"details"`
+
+	TTL      uint   `valid:"required" json:"ttlMonth"`
+	Cashback uint   `json:"cashback"`
+	Currency string `valid:"ascii,length(3|3)" json:"currency"`
 }
 
 // ViewModel ...

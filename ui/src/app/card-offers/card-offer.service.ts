@@ -7,6 +7,8 @@ import { BackendService } from '../abstract/backend.service';
 export interface CardOfferForm {
   name: string;
   type: string;
+  details: string;
+
   cashback: number;
   currency: string;
   ttlMonth: number;
@@ -14,8 +16,11 @@ export interface CardOfferForm {
 
 export interface CardOffer {
   id: number;
+
   name: string;
   type: string;
+  details: string;
+
   cashback: number;
   currency: string;
   ttlMonth: number;

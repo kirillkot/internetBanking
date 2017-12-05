@@ -27,6 +27,11 @@
     <input matInput placeholder="TTL" formControlName="ttlMonth">
   </mat-form-field>
 
+  <mat-form-field class="card-offer-form-full-width">
+    <textarea matInput placeholder="Some card details..." formControlName="details">
+    </textarea>
+  </mat-form-field>
+
   <section class="card-offer-form-full-width">
     <button mat-raised-button color="primary"
         (click)="create()"
