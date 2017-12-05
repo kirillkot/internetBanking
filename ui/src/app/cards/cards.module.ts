@@ -8,9 +8,10 @@ import { CardsRoutingModule } from './cards-routing.module';
 import { CardService } from './card.service';
 import { CardOfferService } from '../card-offers/card-offer.service';
 
-import { CardListComponent } from './card-list.component';
 import { CardOfferFormComponent } from '../card-offers/card-offer-form.component';
 import { CardOfferManagementComponent } from '../card-offers/card-offer-management.component';
+import { CardListComponent } from './card-list.component';
+import { CardFormComponent } from './card-form.component';
 
 
 @NgModule({
@@ -21,9 +22,10 @@ import { CardOfferManagementComponent } from '../card-offers/card-offer-manageme
     CardsRoutingModule
   ],
   declarations: [
-    CardListComponent,
     CardOfferFormComponent,
     CardOfferManagementComponent,
+    CardListComponent,
+    CardFormComponent
   ],
   providers: [
     CardService,
