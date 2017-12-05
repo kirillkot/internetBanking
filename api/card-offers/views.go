@@ -10,9 +10,9 @@ import (
 type Offer struct {
 	common.Model
 
-	Name    string `valid:"ascii,length(4|128)" json:"name"`
+	Name    string `valid:"length(4|128)" json:"name"`
 	Type    string `valid:"ascii,length(4|128),required" json:"type"`
-	Details string `valid:"ascii" json:"details"`
+	Details string `valid:"length(0|1024)" json:"details"`
 
 	TTL      uint   `valid:"required" json:"ttlMonth"`
 	Cashback uint   `json:"cashback"`

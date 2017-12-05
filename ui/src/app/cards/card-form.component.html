@@ -1,17 +1,23 @@
-<mat-horizontal-stepper linear="true">
-  <mat-step>
+<mat-horizontal-stepper linear="true" class="card-form full">
+  <mat-step class="full">
     <ng-template matStepLabel>Choose card offer</ng-template>
 
-    <mat-list>
-      <mat-list-item *ngFor="let offer of offers | async">
-        <p mat-line> Name {{offer.name}} </p>
-        <p mat-line> Type {{offer.type}} </p>
-        <p mat-line> Casback {{offer.casback}} % </p>
-        <button mat-raised-button color="primary"
+    <mat-card *ngFor="let offer of offers | async" class="offer-card">
+      <mat-card-title>{{offer.name}}</mat-card-title>
+      <mat-card-subtitle>{{offer.type}}</mat-card-subtitle>
+      <mat-card-content>
+        <h3 mat-line>Cashback: {{offer.cashback}} %</h3>
+        <title mat-line>Details</title>
+        <p>
+          {{offer.details}}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button
             matStepperNext
-            (click)="setOffer(offer)">Next</button>
-      </mat-list-item>
-    </mat-list>
+            (click)="setOffer(offer)">NEW</button>
+      </mat-card-actions>
+    </mat-card>
 
   </mat-step>
 
