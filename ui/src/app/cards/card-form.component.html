@@ -1,3 +1,46 @@
-<p>
-  card-form works!
-</p>
+<mat-horizontal-stepper linear="true">
+  <mat-step>
+    <ng-template matStepLabel>Choose card offer</ng-template>
+
+    <mat-list>
+      <mat-list-item *ngFor="let offer of offers | async">
+        <p mat-line> Name {{offer.name}} </p>
+        <p mat-line> Type {{offer.type}} </p>
+        <p mat-line> Casback {{offer.casback}} % </p>
+        <button mat-raised-button color="primary"
+            matStepperNext
+            (click)="setOffer(offer)">Next</button>
+      </mat-list-item>
+    </mat-list>
+
+  </mat-step>
+
+  <mat-step [stepControl]="group">
+    <ng-template matStepLabel>Choose currency</ng-template>
+
+    <form [formGroup]="group">
+      <mat-form-field>
+        <input matInput placeholder="Card Name" formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-select placeholder="Currency" formControlName="currency">
+          <mat-option *ngFor="let currency of currencies" [value]="currency">
+            {{ currency }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary"
+          matStepperNext
+          (click)="create()"
+          [disabled]="group.invalid">Next</button>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p mat-line>You card is ready!</p>
+  </mat-step>
+
+</mat-horizontal-stepper>

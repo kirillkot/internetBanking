@@ -7,7 +7,7 @@ import { BackendService } from '../abstract/backend.service';
 export interface CardForm {
   name: string;
   currency: string;
-  card_offer_id: number;
+  offer_id: number;
 }
 
 export interface Card {
