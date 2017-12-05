@@ -1,28 +1,33 @@
-import { Observable } from 'rxjs/Observable';
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { HttpErrorResponse } from '@angular/common/http';
 
+import { BackendService } from '../abstract/backend.service';
+
+
+export interface CardForm {
+  name: string;
+  currency: string;
+  card_offer_id: number;
+}
 
 export interface Card {
   name: string;
-  ttl: Date;
   type: string;
+
+  start_time: Date;
+  valid_until: Date;
   status: string;
+
   currency: string;
   balance: string;
 }
 
 @Injectable()
-export class CardService {
-
+export class CardService extends BackendService<CardForm, Card> {
   constructor(
-    private http: HttpClient,
-  ) { }
-
-  getCards(): Observable<Card[]> {
-    return this.http.get<Card[]>('/api/cards');
+    http: HttpClient,
+  ) {
+    super('cards', http);
   }
 
 }

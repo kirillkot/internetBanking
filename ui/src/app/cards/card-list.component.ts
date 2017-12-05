@@ -1,8 +1,8 @@
-import { Observable } from 'rxjs/Observable';
-import { DataSource } from '@angular/cdk/collections';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
-import { Card } from './card.service';
+import { ManageListComponent } from '../abstract/manage-list.component';
+
+import { CardForm, Card } from './card.service';
 import { CardService } from './card.service';
 
 
@@ -11,27 +11,14 @@ import { CardService } from './card.service';
   templateUrl: './card-list.component.html',
   styleUrls: ['./card-list.component.css']
 })
-export class CardListComponent implements OnInit {
+export class CardListComponent extends ManageListComponent<CardForm, Card> {
   displayedColumns = ['name', 'ttl', 'type', 'status', 'currency', 'balance'];
-  dataSource: CardsDataSource;
 
   constructor(
-    private service: CardService,
+    service: CardService,
+    detector: ChangeDetectorRef,
   ) {
-    this.dataSource = new CardsDataSource(service);
+    super(service, detector);
   }
 
-  ngOnInit() {
-  }
-
-}
-
-export class CardsDataSource extends DataSource<any> {
-  constructor(private service: CardService) {
-    super();
-  }
-  connect(): Observable<Card[]> {
-    return this.service.getCards();
-  }
-  disconnect() {}
 }

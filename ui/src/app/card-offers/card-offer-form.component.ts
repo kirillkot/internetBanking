@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
+import { CURRENCIES, CARD_TYPES } from '../const.module';
 import { FormComponent } from '../abstract/form.component';
 
 import { CardOfferForm, CardOffer, CardOfferService } from './card-offer.service';
@@ -13,8 +14,8 @@ import { CardOfferForm, CardOffer, CardOfferService } from './card-offer.service
   styleUrls: ['./card-offer-form.component.css']
 })
 export class CardOfferFormComponent extends FormComponent<CardOfferForm, CardOffer> {
-  cardTypes = ['Master Card', 'Visa', 'Visa Gold', 'Belkart'];
-  currencies = ['BYN', 'USD', 'USD'];
+  cardTypes = CARD_TYPES;
+  currencies = CURRENCIES;
 
   constructor(
     location: Location,
