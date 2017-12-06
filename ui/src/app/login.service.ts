@@ -28,7 +28,7 @@ export class LoginService {
 
   login(creds: AuthCreds): Observable<void> {
     return this.http
-      .get<LoginResponse>('/api/login', {
+      .get<LoginResponse>('/api/login/', {
         headers:new HttpHeaders().set('Authorization', this.service.buildAuthHeader(creds)),
       })
       .map(data => this.service.setCreds(creds, data.is_admin));

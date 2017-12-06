@@ -44,12 +44,15 @@ func main() {
 
 	router := mux.NewRouter()
 
-	users.NewView(db).RegisterRoutes(router)
 	payments.NewView(db).RegisterRoutes(router)
 	offers.NewView(db).RegisterRoutes(router)
 
+	usersview := users.NewView(db)
+	usersview.RegisterRoutes(router)
+
 	logger.Infof("Stating server...\n")
-	if err := http.ListenAndServe(":80", router); err != nil {
+	handler := usersview.AuthMiddleware(router)
+	if err := http.ListenAndServe(":8080", handler); err != nil {
 		logger.Fatalln("Listen and Serve: err:", err)
 	}
 }

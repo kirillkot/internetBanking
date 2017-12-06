@@ -5,7 +5,6 @@ import (
 	"internetBanking/api/common"
 	"net/http"
 
-	"github.com/asaskevich/govalidator"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
@@ -71,43 +70,25 @@ type LoginRequest struct {
 
 // LoginResponse ...
 type LoginResponse struct {
-	User  *User  `json:"user"`
-	Token string `json:"token"`
+	IsAdmin bool `json:"is_admin"`
 }
 
 // LoginHandler ...
 func (v *View) LoginHandler(w http.ResponseWriter, r *http.Request) {
-	request := &LoginRequest{}
-	if err := json.NewDecoder(r.Body).Decode(request); err != nil {
-		v.Failure(w, "login: decode err:"+err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	if _, err := govalidator.ValidateStruct(request); err != nil {
-		v.Failure(w, "login: validate: "+err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	user, where := &User{}, &User{UserName: request.UserName}
-	if err := v.DB().Find(user, where).Error; err != nil {
-		v.Failure(w, "login: get user: "+err.Error(), http.StatusForbidden)
-		return
-	}
-	if user.Password != request.Password {
-		v.Failure(w, "login: invalid password", http.StatusForbidden)
+	user, err := UserFromRequest(r)
+	if err != nil {
+		v.Failure(w, "Get user failed (are you use auth middle?): "+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
 	response := &LoginResponse{
-		User:  user,
-		Token: "temptoken",
+		IsAdmin: user.IsAdmin,
 	}
-
 	v.JSONResponse(w, response, http.StatusCreated)
 }
 
 // RegisterRoutes ...
 func (v *View) RegisterRoutes(router *mux.Router) {
 	v.ViewSet.RegisterRoutes(router)
-	router.HandleFunc("/users/login/", v.LoginHandler).Methods("POST")
+	router.HandleFunc("/login/", v.LoginHandler).Methods("GET", "POST")
 }
