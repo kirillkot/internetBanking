@@ -8,7 +8,6 @@ import { UsersRoutingModule } from './users-routing.module';
 import { UserService } from './user.service';
 import { UserFormComponent } from './user-form.component';
 import { UserListComponent } from './user-list.component';
-import { UserLoginComponent } from './user-login.component';
 import { AbstractModule } from '../abstract/abstract.module';
 
 @NgModule({
@@ -22,7 +21,6 @@ import { AbstractModule } from '../abstract/abstract.module';
   declarations: [
     UserFormComponent,
     UserListComponent,
-    UserLoginComponent
   ],
   providers: [UserService]
 })

@@ -1,16 +1,16 @@
-<form novalidate class="user-login-form" [formGroup]="user">
-  <mat-form-field class="user-login-form-full-width">
+<form novalidate class="login-form" [formGroup]="group">
+  <mat-form-field class="full">
     <input matInput placeholder="Your User Name" formControlName="username">
   </mat-form-field>
 
-  <mat-form-field class="user-login-form-full-width">
+  <mat-form-field class="full">
     <input matInput placeholder="Your Password" formControlName="password">
   </mat-form-field>
 
-  <section class="user-login-form-full-width">
+  <section class="full">
     <button mat-raised-button color="primary"
         (click)="login()"
-        [disabled]="user.invalid">Sign in</button>
+        [disabled]="group.invalid">Sign in</button>
   </section>
 
 </form>

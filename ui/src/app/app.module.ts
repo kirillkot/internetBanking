@@ -10,6 +10,7 @@ import { UsersModule } from './users/users.module';
 import { MaterialModule } from './material/material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CardsModule } from './cards/cards.module';
+import { LoginModule } from './login/login.module';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { CardsModule } from './cards/cards.module';
     PageNotFoundComponent
   ],
   imports: [
+    LoginModule,
     UsersModule,
     CardsModule,
     BrowserModule,
