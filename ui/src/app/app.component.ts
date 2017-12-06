@@ -1,4 +1,7 @@
+import { Router } from '@angular/router';
 import { Component } from '@angular/core';
+
+import { LoginService } from './login.service';
 
 
 class RouterLink {
@@ -21,4 +24,14 @@ export class AppComponent {
     new RouterLink('Cards', '/cards'),
     new RouterLink('Card Offers', '/card-offers/management'),
   ];
+
+  constructor(
+    private router: Router,
+    private service: LoginService,
+  ) { }
+
+  logout(): void {
+    this.service.logout();
+    this.router.navigate(['/login']);
+  }
 }
