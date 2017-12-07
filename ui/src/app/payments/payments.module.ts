@@ -10,6 +10,7 @@ import { PaymentTypeService } from './payment-type.service';
 
 import { AccountManagementComponent } from '../accounts/account-management.component';
 import { PaymentTypeManagementComponent } from './payment-type-management.component';
+import { PaymentTypeFormComponent } from './payment-type-form.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { PaymentTypeManagementComponent } from './payment-type-management.compon
   declarations: [
     AccountManagementComponent,
     PaymentTypeManagementComponent,
+    PaymentTypeFormComponent,
   ],
   providers: [
     AccountService,
