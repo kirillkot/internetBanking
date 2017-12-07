@@ -1,15 +1,27 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
+import { MaterialModule } from '../material/material.module';
 import { PaymentsRoutingModule } from './payments-routing.module';
-import { AccountsModule } from '../accounts/accounts.module';
+
+import { AccountService } from '../accounts/account.service';
+
+import { AccountManagementComponent } from '../accounts/account-management.component';
+
 
 @NgModule({
   imports: [
     CommonModule,
+    HttpClientModule,
+    MaterialModule,
     PaymentsRoutingModule,
-    AccountsModule
   ],
-  declarations: []
+  declarations: [
+    AccountManagementComponent,
+  ],
+  providers: [
+    AccountService,
+  ]
 })
 export class PaymentsModule { }

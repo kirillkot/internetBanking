@@ -1,3 +1,45 @@
-<p>
-  account-management works!
-</p>
+<div class="card-offer-management mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="detail">
+      <mat-header-cell *matHeaderCellDef> Detail </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.detail}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="currency">
+      <mat-header-cell *matHeaderCellDef> Currency </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.currency}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="balance">
+      <mat-header-cell *matHeaderCellDef> Balance </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.balance}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="add">
+      <mat-header-cell *matHeaderCellDef> Allow Add Funds </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.add_allow}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="move">
+      <mat-header-cell *matHeaderCellDef> Allow Move Funds </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.move_allow}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+         <button mat-raised-button color="warn"
+                (click)="delete(row.id)">Delete</button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>
