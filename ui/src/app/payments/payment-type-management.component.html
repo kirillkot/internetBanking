@@ -1,3 +1,48 @@
-<p>
-  payment-type-management works!
-</p>
+<div class="mat-elevation-z8">
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="id">
+      <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.type}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="commision">
+      <mat-header-cell *matHeaderCellDef> Commision </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.commision}} % </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="account">
+      <mat-header-cell *matHeaderCellDef> Account </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.account_id}} % </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="detail">
+      <mat-header-cell *matHeaderCellDef> Detail </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.detail}} % </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+         <button mat-raised-button color="warn"
+                (click)="delete(row.id)">Delete</button>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+  <button mat-raised-button
+        routerLink="form"
+        color="primary">Create New Payment Type</button>
+</div>
