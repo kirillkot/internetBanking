@@ -57,7 +57,7 @@ func main() {
 
 	logger.Infof("Stating server...\n")
 	handler := usersview.AuthMiddleware(router)
-	if err := http.ListenAndServe(":8080", handler); err != nil {
+	if err := http.ListenAndServe(":80", handler); err != nil {
 		logger.Fatalln("Listen and Serve: err:", err)
 	}
 }
