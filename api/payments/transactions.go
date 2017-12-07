@@ -10,7 +10,7 @@ import (
 
 // Transaction ...
 type Transaction struct {
-	gorm.Model
+	common.Model
 
 	TransactionID uint      `valid:"required" json:"account_id"`
 	Delta         int64     `valid:"required" json:"delta"`

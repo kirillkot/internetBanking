@@ -30,7 +30,7 @@ type CardForm struct {
 
 // CardModel ...
 type CardModel struct {
-	gorm.Model
+	common.Model
 
 	AccountID uint `json:"account_id"`
 	OfferID   uint `json:"offer_id"`
@@ -169,7 +169,7 @@ func (v *CardView) CreateHandler(w http.ResponseWriter, r *http.Request) {
 // GetCard ...
 func GetCard(db *gorm.DB, user *users.User, id uint) (*Card, error) {
 	model, where := &CardModel{}, &CardModel{
-		Model:  gorm.Model{ID: id},
+		Model:  common.Model{ID: id},
 		UserID: user.ID,
 	}
 	if err := db.Find(model, where).Error; err != nil {

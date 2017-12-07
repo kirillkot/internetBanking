@@ -12,14 +12,14 @@ import (
 
 // AccountLock ...
 type AccountLock struct {
-	gorm.Model
+	common.Model
 
 	AccountID uint `gorm:"index"`
 }
 
 // Account ...
 type Account struct {
-	gorm.Model
+	common.Model
 
 	Currency string `valid:"currency,required" json:"currency"`
 	Balance  int64  `valid:"required" json:"balance"`
