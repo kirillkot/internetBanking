@@ -2,6 +2,7 @@ package payments
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"internetBanking/api/common"
@@ -56,6 +57,39 @@ func (a *Account) LockDB(tx *gorm.DB) error {
 	lock, where := &AccountLock{}, &AccountLock{AccountID: a.ID}
 	return tx.Set("gorm:query_option", "FOR UPDATE").
 		Find(lock, where).Error
+}
+
+// CreateAccount ...
+func CreateAccount(tx *gorm.DB, account *Account) error {
+	if err := tx.Create(account).Error; err != nil {
+		return errors.New("create account: " + err.Error())
+	}
+
+	lock := &AccountLock{AccountID: account.ID}
+	if err := tx.Create(lock).Error; err != nil {
+		return errors.New("create lock: " + err.Error())
+	}
+
+	return nil
+}
+
+// GetAccountWithLock ...
+func GetAccountWithLock(db *gorm.DB, id uint) (*Account, error) {
+	tx := db.Begin()
+	if err := tx.Error; err != nil {
+		return nil, errors.New("begin: err: " + err.Error())
+	}
+	defer tx.Commit()
+
+	account := &Account{}
+	account.ID = id
+	if err := account.LockDB(tx); err != nil {
+		return nil, errors.New("lock: err: " + err.Error())
+	}
+	if err := tx.Find(account).Error; err != nil {
+		return nil, errors.New("find: err: " + err.Error())
+	}
+	return account, nil
 }
 
 // AccountViewModel ...

@@ -109,7 +109,7 @@ func CreateCard(db *gorm.DB, user *users.User, form *CardForm) (*Card, error) {
 		MoveAllow: true,
 		Detail:    fmt.Sprintf("Card Account (user %d offer %d)", user.ID, offer.ID),
 	}
-	if err := tx.Create(account).Error; err != nil {
+	if err := payments.CreateAccount(db, account); err != nil {
 		return nil, errors.New("create account: failed: " + err.Error())
 	}
 
@@ -168,24 +168,17 @@ func (v *CardView) CreateHandler(w http.ResponseWriter, r *http.Request) {
 
 // GetCard ...
 func GetCard(db *gorm.DB, user *users.User, id uint) (*Card, error) {
-	tx := db.Begin()
-	if tx.Error != nil {
-		return nil, errors.New("begin: " + tx.Error.Error())
+	model, where := &CardModel{}, &CardModel{
+		Model:  gorm.Model{ID: id},
+		UserID: user.ID,
 	}
-	defer tx.Rollback()
-
-	model, where := &CardModel{}, &CardModel{Model: gorm.Model{ID: id}, UserID: user.ID}
-	if err := tx.Find(model, where).Error; err != nil {
+	if err := db.Find(model, where).Error; err != nil {
 		return nil, errors.New("find model card: " + err.Error())
 	}
 
-	account := &payments.Account{Model: gorm.Model{ID: model.AccountID}}
-	if err := account.LockDB(tx); err != nil {
-		return nil, errors.New("account: db lock: " + err.Error())
-	}
-
-	if err := tx.Find(account).Error; err != nil {
-		return nil, errors.New("account: get: " + err.Error())
+	account, err := payments.GetAccountWithLock(db, model.AccountID)
+	if err != nil {
+		return nil, errors.New("get account with lock: " + err.Error())
 	}
 
 	return &Card{
@@ -218,9 +211,47 @@ func (v *CardView) RetrieveHandler(w http.ResponseWriter, r *http.Request) {
 	v.JSONResponse(w, card, http.StatusOK)
 }
 
+// GetCards ...
+func GetCards(db *gorm.DB, user *users.User) ([]Card, error) {
+	models, where := make([]CardModel, 0, 32), &CardModel{UserID: user.ID}
+	if err := db.Find(&models, where).Error; err != nil {
+		return nil, errors.New("get card models: " + err.Error())
+	}
+
+	cards := make([]Card, 0, len(models))
+	for i := range models {
+		model := &models[i]
+
+		account, err := payments.GetAccountWithLock(db, model.AccountID)
+		if err != nil {
+			return nil, errors.New("get account: " + err.Error())
+		}
+
+		cards = append(cards, Card{
+			CardModel: model,
+			Balance:   account.Balance,
+			Currency:  account.Currency,
+		})
+	}
+
+	return cards, nil
+}
+
 // ListHandler ...
 func (v *CardView) ListHandler(w http.ResponseWriter, r *http.Request) {
-	v.JSONResponse(w, []interface{}{}, http.StatusOK)
+	user, err := users.UserFromRequest(r)
+	if err != nil {
+		v.Failure(w, "get user: "+err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	cards, err := GetCards(v.DB(), user)
+	if err != nil {
+		v.Failure(w, "get cards: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	v.JSONResponse(w, cards, http.StatusOK)
 }
 
 // RegisterRoutes ...
