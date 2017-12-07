@@ -1,3 +1,35 @@
-<p>
-  payment-type-form works!
-</p>
+<form class="payment-type-form" [formGroup]="group">
+  <mat-form-field class="payment-type-form-full-width">
+    <input matInput placeholder="New Payment Name"
+        formControlName="name">
+  </mat-form-field>
+
+  <mat-form-field class="payment-type-form-full-width">
+    <input matInput placeholder="New Payment Type"
+        formControlName="type">
+  </mat-form-field>
+
+  <mat-form-field class="payment-type-form-full-width">
+    <input matInput type="number" placeholder="Commision (in %)"
+        formControlName="commision">
+  </mat-form-field>
+
+  <mat-form-field class="payment-type-form-full-width">
+    <input matInput type="number" placeholder="Account ID"
+        formControlName="account_id">
+  </mat-form-field>
+
+  <mat-form-field class="payment-type-form-full-width">
+    <textarea matInput placeholder="Payment Details"
+        formControlName="detail">
+    </textarea>
+  </mat-form-field>
+
+  <section class="payment-type-form-full-width">
+    <button mat-raised-button color="primary"
+        (click)="create()"
+        [disabled]="group.invalid">Create</button>
+    <button mat-raised-button (click)="back()">Back</button>
+  </section>
+
+</form>
