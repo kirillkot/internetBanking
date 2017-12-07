@@ -16,6 +16,7 @@ import { CardsModule } from './cards/cards.module';
 import { LoginService } from './login.service';
 import { AuthInterceptor } from './auth.interceptor';
 import { AuthCredsService } from './auth-creds.service';
+import { PaymentsModule } from './payments/payments.module';
 
 
 @NgModule({
@@ -27,9 +28,10 @@ import { AuthCredsService } from './auth-creds.service';
   imports: [
     UsersModule,
     CardsModule,
+    PaymentsModule,
     BrowserModule,
     AppRoutingModule,
-    MaterialModule
+    MaterialModule,
   ],
   providers: [
     AuthCredsService,

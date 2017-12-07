@@ -23,6 +23,7 @@ export class AppComponent {
     new RouterLink('Login', '/login'),
     new RouterLink('Cards', '/cards'),
     new RouterLink('Card Offers', '/card-offers/management'),
+    new RouterLink('Accounts', '/accounts/management'),
   ];
 
   constructor(
