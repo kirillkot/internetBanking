@@ -8,6 +8,7 @@ import { PaymentsRoutingModule } from './payments-routing.module';
 import { AccountService } from '../accounts/account.service';
 
 import { AccountManagementComponent } from '../accounts/account-management.component';
+import { PaymentTypeManagementComponent } from './payment-type-management.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { AccountManagementComponent } from '../accounts/account-management.compo
   ],
   declarations: [
     AccountManagementComponent,
+    PaymentTypeManagementComponent,
   ],
   providers: [
     AccountService,
