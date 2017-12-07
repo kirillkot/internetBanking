@@ -8,7 +8,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 
-	offers "internetBanking/api/card-offers"
+	"internetBanking/api/cards"
 	"internetBanking/api/common"
 	"internetBanking/api/payments"
 	"internetBanking/api/users"
@@ -21,8 +21,11 @@ var (
 func migrate(db *gorm.DB) {
 	if err := db.AutoMigrate(
 		&users.User{},
-		&offers.Offer{},
 		&payments.Account{},
+		&payments.AccountLock{},
+		&payments.Transaction{},
+		&cards.Offer{},
+		&cards.CardModel{},
 	).Error; err != nil {
 		log.Fatalln("AutoMigrate: failed: err:", err)
 	}
@@ -44,8 +47,10 @@ func main() {
 
 	router := mux.NewRouter()
 
-	payments.NewView(db).RegisterRoutes(router)
-	offers.NewView(db).RegisterRoutes(router)
+	payments.NewAccountView(db).RegisterRoutes(router)
+	payments.NewTransactionView(db).RegisterRoutes(router)
+	cards.NewOfferView(db).RegisterRoutes(router)
+	cards.NewCardView(db).RegisterRoutes(router)
 
 	usersview := users.NewView(db)
 	usersview.RegisterRoutes(router)

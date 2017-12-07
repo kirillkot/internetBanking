@@ -5,6 +5,7 @@ import "github.com/asaskevich/govalidator"
 var (
 	currencies = []string{
 		"BYN",
+		"RUB",
 		"USD",
 		"EUR",
 	}

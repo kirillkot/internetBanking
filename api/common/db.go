@@ -36,7 +36,7 @@ func NewDB() *gorm.DB {
 	}
 
 	db.LogMode(true)
-	db.SetLogger(gorm.Logger{logger})
+	db.SetLogger(gorm.Logger{LogWriter: logger})
 	db.DB().SetMaxOpenConns(8)
 	db.DB().SetMaxIdleConns(4)
 	return db

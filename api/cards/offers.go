@@ -1,4 +1,4 @@
-package offers
+package cards
 
 import (
 	"internetBanking/api/common"
@@ -19,38 +19,38 @@ type Offer struct {
 	Currency string `valid:"ascii,length(3|3)" json:"currency"`
 }
 
-// ViewModel ...
-type ViewModel struct{}
+// OfferViewModel ...
+type OfferViewModel struct{}
 
-// NewViewModel ...
-func NewViewModel() ViewModel {
-	return ViewModel{}
+// NewOfferViewModel ...
+func NewOfferViewModel() OfferViewModel {
+	return OfferViewModel{}
 }
 
 // Name return name for view
-func (ViewModel) Name() string {
+func (OfferViewModel) Name() string {
 	return "card-offers"
 }
 
 // New ...
-func (ViewModel) New() interface{} {
+func (OfferViewModel) New() interface{} {
 	return new(Offer)
 }
 
 // NewArray ...
-func (ViewModel) NewArray(len, cap int) interface{} {
+func (OfferViewModel) NewArray(len, cap int) interface{} {
 	array := make([]Offer, len, cap)
 	return &array
 }
 
-// View ...
-type View struct {
+// OfferView ...
+type OfferView struct {
 	common.ViewSet
 }
 
-// NewView ...
-func NewView(db *gorm.DB) *View {
-	return &View{
-		ViewSet: *common.NewViewSet(db, NewViewModel()),
+// NewOfferView ...
+func NewOfferView(db *gorm.DB) *OfferView {
+	return &OfferView{
+		ViewSet: *common.NewViewSet(db, NewOfferViewModel()),
 	}
 }
