@@ -24,6 +24,7 @@ func migrate(db *gorm.DB) {
 		&payments.Account{},
 		&payments.AccountLock{},
 		&payments.Transaction{},
+		&payments.PaymentType{},
 		&cards.Offer{},
 		&cards.CardModel{},
 	).Error; err != nil {
@@ -49,6 +50,7 @@ func main() {
 
 	payments.NewAccountView(db).RegisterRoutes(router)
 	payments.NewTransactionView(db).RegisterRoutes(router)
+	payments.NewPaymentTypeView(db).RegisterRoutes(router)
 	cards.NewOfferView(db).RegisterRoutes(router)
 	cards.NewCardView(db).RegisterRoutes(router)
 

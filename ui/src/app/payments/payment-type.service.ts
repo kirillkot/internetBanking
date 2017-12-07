@@ -32,7 +32,7 @@ export class PaymentTypeService extends
   constructor(
     http: HttpClient,
   ) {
-    super('payment-type', http);
+    super('payment-types', http);
   }
 
 }
