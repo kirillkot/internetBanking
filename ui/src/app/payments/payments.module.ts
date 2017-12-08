@@ -6,11 +6,11 @@ import { MaterialModule } from '../material/material.module';
 import { PaymentsRoutingModule } from './payments-routing.module';
 
 import { AccountService } from '../accounts/account.service';
-import { PaymentTypeService } from './payment-type.service';
+import { PaymentTypeService } from '../payment-types/payment-type.service';
 
 import { AccountManagementComponent } from '../accounts/account-management.component';
-import { PaymentTypeManagementComponent } from './payment-type-management.component';
-import { PaymentTypeFormComponent } from './payment-type-form.component';
+import { PaymentTypeManagementComponent } from '../payment-types/payment-type-management.component';
+import { PaymentTypeFormComponent } from '../payment-types/payment-type-form.component';
 
 
 @NgModule({

@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { AccountManagementComponent } from '../accounts/account-management.component';
-import { PaymentTypeManagementComponent } from './payment-type-management.component';
-import { PaymentTypeFormComponent } from './payment-type-form.component';
+import { PaymentTypeManagementComponent } from '../payment-types/payment-type-management.component';
+import { PaymentTypeFormComponent } from '../payment-types/payment-type-form.component';
 
 
 const routes: Routes = [
