@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"net/http"
+
+	"internetBanking/api/models"
 )
 
 const (
@@ -11,14 +13,14 @@ const (
 )
 
 // SetUserToRequest ...
-func SetUserToRequest(req *http.Request, user *User) *http.Request {
+func SetUserToRequest(req *http.Request, user *models.User) *http.Request {
 	ctx := context.WithValue(req.Context(), userkey, user)
 	return req.WithContext(ctx)
 }
 
 // UserFromRequest ...
-func UserFromRequest(req *http.Request) (*User, error) {
-	user, ok := req.Context().Value(userkey).(*User)
+func UserFromRequest(req *http.Request) (*models.User, error) {
+	user, ok := req.Context().Value(userkey).(*models.User)
 	if !ok {
 		return nil, errors.New("user is not set")
 	}
@@ -34,7 +36,7 @@ func (v *View) AuthMiddleware(h http.Handler) http.Handler {
 			return
 		}
 
-		user, where := &User{}, &User{UserName: username}
+		user, where := &models.User{}, &models.User{Name: username}
 		if err := v.DB().Find(user, where).Error; err != nil {
 			v.Failure(w, "auth middl: get user: "+err.Error(), http.StatusForbidden)
 			return

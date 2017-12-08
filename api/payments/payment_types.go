@@ -2,22 +2,10 @@ package payments
 
 import (
 	"internetBanking/api/common"
+	"internetBanking/api/models"
 
 	"github.com/jinzhu/gorm"
 )
-
-// PaymentType ...
-type PaymentType struct {
-	common.Model
-
-	Name string `valid:"length(4|128),required" json:"name"`
-
-	Type      string `valid:"length(0|128),required" json:"type"`
-	Commision uint   `json:"commision"`
-	AccountID uint   `json:"account_id"`
-
-	Detail string `valid:"length(0|1024)" json:"detail"`
-}
 
 // PaymentTypeViewModel ...
 type PaymentTypeViewModel struct{}
@@ -34,12 +22,12 @@ func (PaymentTypeViewModel) Name() string {
 
 // New ...
 func (PaymentTypeViewModel) New() interface{} {
-	return new(PaymentType)
+	return new(models.PaymentType)
 }
 
 // NewArray ...
 func (PaymentTypeViewModel) NewArray(len, cap int) interface{} {
-	array := make([]PaymentType, len, cap)
+	array := make([]models.PaymentType, len, cap)
 	return &array
 }
 

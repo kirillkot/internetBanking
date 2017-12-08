@@ -10,6 +10,7 @@ import (
 
 	"internetBanking/api/cards"
 	"internetBanking/api/common"
+	"internetBanking/api/models"
 	"internetBanking/api/payments"
 	"internetBanking/api/users"
 )
@@ -20,23 +21,23 @@ var (
 
 func migrate(db *gorm.DB) {
 	if err := db.AutoMigrate(
-		&users.User{},
-		&payments.Account{},
-		&payments.AccountLock{},
-		&payments.Transaction{},
-		&payments.PaymentType{},
-		&cards.Offer{},
-		&cards.CardModel{},
+		&models.User{},
+		&models.Account{},
+		&models.AccountLock{},
+		&models.Transaction{},
+		&models.PaymentType{},
+		&models.CardOffer{},
+		&models.CardModel{},
 	).Error; err != nil {
 		log.Fatalln("AutoMigrate: failed: err:", err)
 	}
 
-	admin := &users.User{
-		UserName: "admin",
+	admin := &models.User{
+		Name:     "admin",
 		IsAdmin:  true,
 		Password: "admin",
 	}
-	if err := db.FirstOrCreate(&users.User{}, admin).Error; err != nil {
+	if err := db.FirstOrCreate(&models.User{}, admin).Error; err != nil {
 		log.Fatalln("Create admin: failed:", err)
 	}
 }

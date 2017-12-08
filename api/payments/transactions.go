@@ -1,23 +1,11 @@
 package payments
 
 import (
-	"time"
-
 	"internetBanking/api/common"
+	"internetBanking/api/models"
 
 	"github.com/jinzhu/gorm"
 )
-
-// Transaction ...
-type Transaction struct {
-	common.Model
-
-	TransactionID uint      `valid:"required" json:"account_id"`
-	Delta         int64     `valid:"required" json:"delta"`
-	Time          time.Time `json:"time"`
-
-	Detail string `valid:"length(0|1024)" json:"detail"`
-}
 
 // TransactionViewModel ...
 type TransactionViewModel struct{}
@@ -34,12 +22,12 @@ func (TransactionViewModel) Name() string {
 
 // New ...
 func (TransactionViewModel) New() interface{} {
-	return new(Transaction)
+	return new(models.Transaction)
 }
 
 // NewArray ...
 func (TransactionViewModel) NewArray(len, cap int) interface{} {
-	array := make([]Transaction, len, cap)
+	array := make([]models.Transaction, len, cap)
 	return &array
 }
 
