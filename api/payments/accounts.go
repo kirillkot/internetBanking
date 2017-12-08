@@ -22,7 +22,7 @@ type Account struct {
 	common.Model
 
 	Currency string `valid:"currency,required" json:"currency"`
-	Balance  int64  `valid:"required" json:"balance"`
+	Balance  int64  `json:"balance"`
 
 	AddAllow  bool `json:"add_allow"`
 	MoveAllow bool `json:"move_allow"`
