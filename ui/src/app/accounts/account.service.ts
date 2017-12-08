@@ -5,6 +5,13 @@ import { BackendService } from '../abstract/backend.service';
 
 
 export interface AccountForm {
+  currency: string;
+  balance: number;
+
+  add_allow: boolean;
+  move_allow: boolean;
+
+  detail: string;
 }
 
 export interface Account {

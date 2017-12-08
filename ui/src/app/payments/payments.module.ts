@@ -8,6 +8,7 @@ import { PaymentsRoutingModule } from './payments-routing.module';
 import { AccountService } from '../accounts/account.service';
 import { PaymentTypeService } from '../payment-types/payment-type.service';
 
+import { AccountFormComponent } from '../accounts/account-form.component';
 import { AccountManagementComponent } from '../accounts/account-management.component';
 import { PaymentTypeManagementComponent } from '../payment-types/payment-type-management.component';
 import { PaymentTypeFormComponent } from '../payment-types/payment-type-form.component';
@@ -24,6 +25,7 @@ import { PaymentTypeFormComponent } from '../payment-types/payment-type-form.com
     AccountManagementComponent,
     PaymentTypeManagementComponent,
     PaymentTypeFormComponent,
+    AccountFormComponent,
   ],
   providers: [
     AccountService,

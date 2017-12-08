@@ -1,0 +1,40 @@
+<form novalidate [formGroup]="group">
+  <mat-form-field class="currency">
+    <mat-select placeholder="Currency" formControlName="currency">
+      <mat-option *ngFor="let currency of currencies" [value]="currency">
+        {{ currency }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <section class="full">
+    <mat-form-field class="number">
+      <input matInput type="number" placeholder="Balance" formControlName="balance">
+    </mat-form-field>
+  </section>
+
+  <section class="full">
+    <mat-checkbox formControllName="add_allow">
+      Allow Adding Funds
+    </mat-checkbox>
+  </section>
+
+  <section class="full">
+    <mat-checkbox formControllName="move_allow">
+      Allow Moving Funds
+    </mat-checkbox>
+  </section>
+
+  <mat-form-field>
+    <textarea matInput placeholder="Some account details..." formControlName="details">
+    </textarea>
+  </mat-form-field>
+
+  <section>
+    <button mat-raised-button color="primary"
+        (click)="create()"
+        [disabled]="group.invalid">Create</button>
+    <button mat-raised-button (click)="back()">Back</button>
+  </section>
+
+</form>
