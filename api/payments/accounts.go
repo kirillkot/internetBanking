@@ -1,71 +1,21 @@
 package payments
 
 import (
-	"encoding/json"
 	"errors"
-	"fmt"
 
 	"internetBanking/api/common"
+	"internetBanking/api/models"
 
 	"github.com/jinzhu/gorm"
 )
 
-// AccountLock ...
-type AccountLock struct {
-	common.Model
-
-	AccountID uint `gorm:"index"`
-}
-
-// Account ...
-type Account struct {
-	common.Model
-
-	Currency string `valid:"currency,required" json:"currency"`
-	Balance  int64  `json:"balance"`
-
-	AddAllow  bool `json:"add_allow"`
-	MoveAllow bool `json:"move_allow"`
-
-	Detail string `valid:"length(0|1024)" json:"detail"`
-}
-
-// IDtoIBAN ...
-func IDtoIBAN(id uint) string {
-	return fmt.Sprintf("BY00 00%020d", id)
-}
-
-// IBAN ...
-func (a *Account) IBAN() string {
-	return IDtoIBAN(a.ID)
-}
-
-// MarshalJSON ...
-func (a Account) MarshalJSON() ([]byte, error) {
-	type Alias Account
-	return json.Marshal(struct {
-		Alias
-		IBAN string `json:"iban,omitempty"`
-	}{
-		Alias: (Alias)(a),
-		IBAN:  a.IBAN(),
-	})
-}
-
-// LockDB ...
-func (a *Account) LockDB(tx *gorm.DB) error {
-	lock, where := &AccountLock{}, &AccountLock{AccountID: a.ID}
-	return tx.Set("gorm:query_option", "FOR UPDATE").
-		Find(lock, where).Error
-}
-
 // CreateAccount ...
-func CreateAccount(tx *gorm.DB, account *Account) error {
+func CreateAccount(tx *gorm.DB, account *models.Account) error {
 	if err := tx.Create(account).Error; err != nil {
 		return errors.New("create account: " + err.Error())
 	}
 
-	lock := &AccountLock{AccountID: account.ID}
+	lock := &models.AccountLock{AccountID: account.ID}
 	if err := tx.Create(lock).Error; err != nil {
 		return errors.New("create lock: " + err.Error())
 	}
@@ -74,14 +24,14 @@ func CreateAccount(tx *gorm.DB, account *Account) error {
 }
 
 // GetAccountWithLock ...
-func GetAccountWithLock(db *gorm.DB, id uint) (*Account, error) {
+func GetAccountWithLock(db *gorm.DB, id uint) (*models.Account, error) {
 	tx := db.Begin()
 	if err := tx.Error; err != nil {
 		return nil, errors.New("begin: err: " + err.Error())
 	}
 	defer tx.Commit()
 
-	account := &Account{}
+	account := &models.Account{}
 	account.ID = id
 	if err := account.LockDB(tx); err != nil {
 		return nil, errors.New("lock: err: " + err.Error())
@@ -107,12 +57,12 @@ func (AccountViewModel) Name() string {
 
 // New ...
 func (AccountViewModel) New() interface{} {
-	return new(Account)
+	return new(models.Account)
 }
 
 // NewArray ...
 func (AccountViewModel) NewArray(len, cap int) interface{} {
-	array := make([]Account, len, cap)
+	array := make([]models.Account, len, cap)
 	return &array
 }
 

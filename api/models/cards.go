@@ -1,9 +1,23 @@
 package models
 
 import (
-	"internetBanking/api/common"
 	"time"
+
+	"internetBanking/api/common"
 )
+
+// CardOffer ...
+type CardOffer struct {
+	common.Model
+
+	Name    string `valid:"length(4|128)" json:"name"`
+	Type    string `valid:"ascii,length(4|128),required" json:"type"`
+	Details string `valid:"length(0|1024)" json:"details"`
+
+	TTL      uint   `valid:"required" json:"ttlMonth"`
+	Cashback uint   `json:"cashback"`
+	Currency string `valid:"ascii,length(3|3)" json:"currency"`
+}
 
 // CardForm ...
 type CardForm struct {

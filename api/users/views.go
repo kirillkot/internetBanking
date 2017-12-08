@@ -1,34 +1,14 @@
 package users
 
 import (
-	"encoding/json"
-	"internetBanking/api/common"
 	"net/http"
+
+	"internetBanking/api/common"
+	"internetBanking/api/models"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
-
-// User ...
-type User struct {
-	common.Model
-
-	UserName  string `gorm:"unique" valid:"ascii,length(4|128),required" json:"username"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	CityName  string `json:"city_name"`
-	Adress    string `json:"adress"`
-	IsAdmin   bool   `json:"isAdmin"`
-
-	Password string `valid:"length(4|128)" json:"password,omitempty"`
-}
-
-// MarshalJSON ...
-func (u User) MarshalJSON() ([]byte, error) {
-	u.Password = ""
-	type Alias User
-	return json.Marshal((Alias)(u))
-}
 
 // ViewModel ...
 type ViewModel struct{}
@@ -45,12 +25,12 @@ func (ViewModel) Name() string {
 
 // New ...
 func (ViewModel) New() interface{} {
-	return new(User)
+	return new(models.User)
 }
 
 // NewArray ...
 func (ViewModel) NewArray(len, cap int) interface{} {
-	array := make([]User, len, cap)
+	array := make([]models.User, len, cap)
 	return &array
 }
 

@@ -59,19 +59,19 @@ func NewCardView(db *gorm.DB) *CardView {
 }
 
 // CreateCard ...
-func CreateCard(db *gorm.DB, user *users.User, form *models.CardForm) (*models.Card, error) {
+func CreateCard(db *gorm.DB, user *models.User, form *models.CardForm) (*models.Card, error) {
 	tx := db.Begin()
 	if tx.Error != nil {
 		return nil, errors.New("begin: " + tx.Error.Error())
 	}
 	defer tx.Rollback()
 
-	offer := &Offer{}
+	offer := &models.CardOffer{}
 	if err := tx.Where("id = ?", form.OfferID).Find(offer).Error; err != nil {
 		return nil, errors.New("get offer: " + err.Error())
 	}
 
-	account := &payments.Account{
+	account := &models.Account{
 		Currency:  form.Currency,
 		Balance:   0,
 		AddAllow:  true,
@@ -136,7 +136,7 @@ func (v *CardView) CreateHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetCard ...
-func GetCard(db *gorm.DB, user *users.User, id uint) (*models.Card, error) {
+func GetCard(db *gorm.DB, user *models.User, id uint) (*models.Card, error) {
 	model, where := &models.CardModel{}, &models.CardModel{
 		Model:  common.Model{ID: id},
 		UserID: user.ID,
@@ -181,7 +181,7 @@ func (v *CardView) RetrieveHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetCards ...
-func GetCards(db *gorm.DB, user *users.User) ([]models.Card, error) {
+func GetCards(db *gorm.DB, user *models.User) ([]models.Card, error) {
 	objects, where := make([]models.CardModel, 0, 32), &models.CardModel{UserID: user.ID}
 	if err := db.Find(&objects, where).Error; err != nil {
 		return nil, errors.New("get card models: " + err.Error())
