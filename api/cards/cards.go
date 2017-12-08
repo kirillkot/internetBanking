@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"internetBanking/api/common"
+	"internetBanking/api/models"
 	"internetBanking/api/payments"
 	"internetBanking/api/users"
 
@@ -20,38 +21,6 @@ import (
 const (
 	entry = "cards"
 )
-
-// CardForm ...
-type CardForm struct {
-	OfferID  uint   `valid:"required" json:"offer_id"`
-	Name     string `valid:"length(4|128),required" json:"name"`
-	Currency string `valid:"currency,required" json:"currency"`
-}
-
-// CardModel ...
-type CardModel struct {
-	common.Model
-
-	AccountID uint `json:"account_id"`
-	OfferID   uint `json:"offer_id"`
-	UserID    uint `json:"user_id"`
-
-	StartTime time.Time `json:"start_time"`
-	ValidTime time.Time `json:"valid_time"`
-
-	Name string `json:"name"`
-	Type string `json:"type"`
-
-	Status string `json:"string"`
-}
-
-// Card ...
-type Card struct {
-	*CardModel
-
-	Currency string `json:"currency"`
-	Balance  int64  `json:"balance"`
-}
 
 // CardViewModel ...
 type CardViewModel struct{}
@@ -68,12 +37,12 @@ func (CardViewModel) Name() string {
 
 // New ...
 func (CardViewModel) New() interface{} {
-	return new(CardModel)
+	return new(models.CardModel)
 }
 
 // NewArray ...
 func (CardViewModel) NewArray(len, cap int) interface{} {
-	array := make([]CardModel, len, cap)
+	array := make([]models.CardModel, len, cap)
 	return &array
 }
 
@@ -90,7 +59,7 @@ func NewCardView(db *gorm.DB) *CardView {
 }
 
 // CreateCard ...
-func CreateCard(db *gorm.DB, user *users.User, form *CardForm) (*Card, error) {
+func CreateCard(db *gorm.DB, user *users.User, form *models.CardForm) (*models.Card, error) {
 	tx := db.Begin()
 	if tx.Error != nil {
 		return nil, errors.New("begin: " + tx.Error.Error())
@@ -114,7 +83,7 @@ func CreateCard(db *gorm.DB, user *users.User, form *CardForm) (*Card, error) {
 	}
 
 	now := time.Now().UTC()
-	model := &CardModel{
+	model := &models.CardModel{
 		AccountID: account.ID,
 		OfferID:   offer.ID,
 		UserID:    user.ID,
@@ -131,7 +100,7 @@ func CreateCard(db *gorm.DB, user *users.User, form *CardForm) (*Card, error) {
 		return nil, errors.New("create card: failed: " + err.Error())
 	}
 
-	return &Card{
+	return &models.Card{
 		CardModel: model,
 		Currency:  account.Currency,
 		Balance:   account.Balance,
@@ -140,7 +109,7 @@ func CreateCard(db *gorm.DB, user *users.User, form *CardForm) (*Card, error) {
 
 // CreateHandler ...
 func (v *CardView) CreateHandler(w http.ResponseWriter, r *http.Request) {
-	form := &CardForm{}
+	form := &models.CardForm{}
 	if err := json.NewDecoder(r.Body).Decode(form); err != nil {
 		v.Failure(w, "create: decode: "+err.Error(), http.StatusBadRequest)
 		return
@@ -167,8 +136,8 @@ func (v *CardView) CreateHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetCard ...
-func GetCard(db *gorm.DB, user *users.User, id uint) (*Card, error) {
-	model, where := &CardModel{}, &CardModel{
+func GetCard(db *gorm.DB, user *users.User, id uint) (*models.Card, error) {
+	model, where := &models.CardModel{}, &models.CardModel{
 		Model:  common.Model{ID: id},
 		UserID: user.ID,
 	}
@@ -181,7 +150,7 @@ func GetCard(db *gorm.DB, user *users.User, id uint) (*Card, error) {
 		return nil, errors.New("get account with lock: " + err.Error())
 	}
 
-	return &Card{
+	return &models.Card{
 		CardModel: model,
 		Balance:   account.Balance,
 		Currency:  account.Currency,
@@ -212,23 +181,23 @@ func (v *CardView) RetrieveHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetCards ...
-func GetCards(db *gorm.DB, user *users.User) ([]Card, error) {
-	models, where := make([]CardModel, 0, 32), &CardModel{UserID: user.ID}
-	if err := db.Find(&models, where).Error; err != nil {
+func GetCards(db *gorm.DB, user *users.User) ([]models.Card, error) {
+	objects, where := make([]models.CardModel, 0, 32), &models.CardModel{UserID: user.ID}
+	if err := db.Find(&objects, where).Error; err != nil {
 		return nil, errors.New("get card models: " + err.Error())
 	}
 
-	cards := make([]Card, 0, len(models))
-	for i := range models {
-		model := &models[i]
+	cards := make([]models.Card, 0, len(objects))
+	for i := range objects {
+		object := &objects[i]
 
-		account, err := payments.GetAccountWithLock(db, model.AccountID)
+		account, err := payments.GetAccountWithLock(db, object.AccountID)
 		if err != nil {
 			return nil, errors.New("get account: " + err.Error())
 		}
 
-		cards = append(cards, Card{
-			CardModel: model,
+		cards = append(cards, models.Card{
+			CardModel: object,
 			Balance:   account.Balance,
 			Currency:  account.Currency,
 		})
