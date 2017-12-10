@@ -8,9 +8,9 @@ import (
 	"strconv"
 	"time"
 
-	"internetBanking/api/common"
 	"internetBanking/api/models"
 	"internetBanking/api/payments"
+	"internetBanking/api/web"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/gorilla/mux"
@@ -47,13 +47,13 @@ func (CardViewModel) NewArray(len, cap int) interface{} {
 
 // CardView ...
 type CardView struct {
-	common.ViewSet
+	web.ViewSet
 }
 
 // NewCardView ...
 func NewCardView(db *gorm.DB) *CardView {
 	return &CardView{
-		ViewSet: *common.NewViewSet(db, NewCardViewModel()),
+		ViewSet: *web.NewViewSetWithISimpleModel(db, NewCardViewModel()),
 	}
 }
 

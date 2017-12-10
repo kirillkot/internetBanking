@@ -3,8 +3,8 @@ package payments
 import (
 	"errors"
 
-	"internetBanking/api/common"
 	"internetBanking/api/models"
+	"internetBanking/api/web"
 
 	"github.com/jinzhu/gorm"
 )
@@ -68,12 +68,12 @@ func (AccountViewModel) NewArray(len, cap int) interface{} {
 
 // AccountView ...
 type AccountView struct {
-	common.ViewSet
+	web.ViewSet
 }
 
 // NewAccountView ...
 func NewAccountView(db *gorm.DB) *AccountView {
 	return &AccountView{
-		ViewSet: *common.NewViewSet(db, NewAccountViewModel()),
+		ViewSet: *web.NewViewSetWithISimpleModel(db, NewAccountViewModel()),
 	}
 }

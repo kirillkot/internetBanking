@@ -1,8 +1,8 @@
 package cards
 
 import (
-	"internetBanking/api/common"
 	"internetBanking/api/models"
+	"internetBanking/api/web"
 
 	"github.com/jinzhu/gorm"
 )
@@ -33,12 +33,12 @@ func (OfferViewModel) NewArray(len, cap int) interface{} {
 
 // OfferView ...
 type OfferView struct {
-	common.ViewSet
+	web.ViewSet
 }
 
 // NewOfferView ...
 func NewOfferView(db *gorm.DB) *OfferView {
 	return &OfferView{
-		ViewSet: *common.NewViewSet(db, NewOfferViewModel()),
+		ViewSet: *web.NewViewSetWithISimpleModel(db, NewOfferViewModel()),
 	}
 }

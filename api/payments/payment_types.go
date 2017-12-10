@@ -1,8 +1,8 @@
 package payments
 
 import (
-	"internetBanking/api/common"
 	"internetBanking/api/models"
+	"internetBanking/api/web"
 
 	"github.com/jinzhu/gorm"
 )
@@ -33,12 +33,12 @@ func (PaymentTypeViewModel) NewArray(len, cap int) interface{} {
 
 // PaymentTypeView ...
 type PaymentTypeView struct {
-	common.ViewSet
+	web.ViewSet
 }
 
 // NewPaymentTypeView ...
 func NewPaymentTypeView(db *gorm.DB) *PaymentTypeView {
 	return &PaymentTypeView{
-		ViewSet: *common.NewViewSet(db, NewPaymentTypeViewModel()),
+		ViewSet: *web.NewViewSetWithISimpleModel(db, NewPaymentTypeViewModel()),
 	}
 }
