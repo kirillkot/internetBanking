@@ -31,8 +31,6 @@ export abstract class FormComponent<Form, Model> implements OnInit {
   }
 
   apply(): void {
-      this.service.apply(this.group.value);
-      this.back();
   }
 
 }
