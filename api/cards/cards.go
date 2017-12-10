@@ -11,7 +11,6 @@ import (
 	"internetBanking/api/common"
 	"internetBanking/api/models"
 	"internetBanking/api/payments"
-	"internetBanking/api/users"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/gorilla/mux"
@@ -120,7 +119,7 @@ func (v *CardView) CreateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := users.UserFromRequest(r)
+	user, err := models.UserFromRequest(r)
 	if err != nil {
 		v.Failure(w, "create: get user: "+err.Error(), http.StatusUnauthorized)
 		return
@@ -138,7 +137,7 @@ func (v *CardView) CreateHandler(w http.ResponseWriter, r *http.Request) {
 // GetCard ...
 func GetCard(db *gorm.DB, user *models.User, id uint) (*models.Card, error) {
 	model, where := &models.CardModel{}, &models.CardModel{
-		Model:  common.Model{ID: id},
+		Model:  models.Model{ID: id},
 		UserID: user.ID,
 	}
 	if err := db.Find(model, where).Error; err != nil {
@@ -165,7 +164,7 @@ func (v *CardView) RetrieveHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := users.UserFromRequest(r)
+	user, err := models.UserFromRequest(r)
 	if err != nil {
 		v.Failure(w, "get user: "+err.Error(), http.StatusUnauthorized)
 		return
@@ -208,7 +207,7 @@ func GetCards(db *gorm.DB, user *models.User) ([]models.Card, error) {
 
 // ListHandler ...
 func (v *CardView) ListHandler(w http.ResponseWriter, r *http.Request) {
-	user, err := users.UserFromRequest(r)
+	user, err := models.UserFromRequest(r)
 	if err != nil {
 		v.Failure(w, "get user: "+err.Error(), http.StatusUnauthorized)
 		return

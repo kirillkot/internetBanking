@@ -3,7 +3,6 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"internetBanking/api/common"
 	"time"
 
 	"github.com/jinzhu/gorm"
@@ -11,14 +10,14 @@ import (
 
 // AccountLock ...
 type AccountLock struct {
-	common.Model
+	Model
 
 	AccountID uint `gorm:"index"`
 }
 
 // Account ...
 type Account struct {
-	common.Model
+	Model
 
 	Currency string `valid:"currency,required" json:"currency"`
 	Balance  int64  `json:"balance"`
@@ -60,7 +59,7 @@ func (a *Account) LockDB(tx *gorm.DB) error {
 
 // PaymentType ...
 type PaymentType struct {
-	common.Model
+	Model
 
 	Name string `valid:"length(4|128),required" json:"name"`
 
@@ -73,7 +72,7 @@ type PaymentType struct {
 
 // Transaction ...
 type Transaction struct {
-	common.Model
+	Model
 
 	TransactionID uint      `valid:"required" json:"account_id"`
 	Delta         int64     `valid:"required" json:"delta"`

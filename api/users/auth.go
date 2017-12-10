@@ -1,31 +1,10 @@
 package users
 
 import (
-	"context"
-	"errors"
 	"net/http"
 
 	"internetBanking/api/models"
 )
-
-const (
-	userkey = "user"
-)
-
-// SetUserToRequest ...
-func SetUserToRequest(req *http.Request, user *models.User) *http.Request {
-	ctx := context.WithValue(req.Context(), userkey, user)
-	return req.WithContext(ctx)
-}
-
-// UserFromRequest ...
-func UserFromRequest(req *http.Request) (*models.User, error) {
-	user, ok := req.Context().Value(userkey).(*models.User)
-	if !ok {
-		return nil, errors.New("user is not set")
-	}
-	return user, nil
-}
 
 // AuthMiddleware ...
 func (v *View) AuthMiddleware(h http.Handler) http.Handler {
@@ -46,7 +25,7 @@ func (v *View) AuthMiddleware(h http.Handler) http.Handler {
 			return
 		}
 
-		r = SetUserToRequest(r, user)
+		r = models.SetUserToRequest(r, user)
 
 		h.ServeHTTP(w, r)
 	})

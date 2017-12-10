@@ -10,14 +10,6 @@ const (
 	dbURL = "postgres://postgres:postgres@postgres/db?sslmode=disable"
 )
 
-// Model ...
-type Model struct {
-	ID        uint       `gorm:"primary_key" json:"id"`
-	CreatedAt time.Time  `json:"-"`
-	UpdatedAt time.Time  `json:"-"`
-	DeletedAt *time.Time `sql:"index" json:"-"`
-}
-
 // NewDB ...
 func NewDB() *gorm.DB {
 	logger := NewLogger("db")

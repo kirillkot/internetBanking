@@ -2,13 +2,11 @@ package models
 
 import (
 	"time"
-
-	"internetBanking/api/common"
 )
 
 // CardOffer ...
 type CardOffer struct {
-	common.Model
+	Model
 
 	Name    string `valid:"length(4|128)" json:"name"`
 	Type    string `valid:"ascii,length(4|128),required" json:"type"`
@@ -28,7 +26,7 @@ type CardForm struct {
 
 // CardModel ...
 type CardModel struct {
-	common.Model
+	Model
 
 	AccountID uint `json:"account_id"`
 	OfferID   uint `json:"offer_id"`

@@ -59,7 +59,7 @@ type LoginResponse struct {
 
 // LoginHandler ...
 func (v *View) LoginHandler(w http.ResponseWriter, r *http.Request) {
-	user, err := UserFromRequest(r)
+	user, err := models.UserFromRequest(r)
 	if err != nil {
 		v.Failure(w, "Get user failed (are you use auth middle?): "+err.Error(), http.StatusUnauthorized)
 		return
