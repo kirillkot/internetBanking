@@ -22,7 +22,8 @@
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let row">
-         <button mat-raised-button color="primary">Edit</button>
+         <button mat-raised-button color="primary"
+         routerLink="edit" *ngIf="!row.isAdmin">Edit</button>
          <button mat-raised-button color="warn"
                 (click)="delete(row.id)">Delete</button>
       </mat-cell>
