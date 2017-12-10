@@ -13,8 +13,12 @@ import (
 type User struct {
 	common.Model
 
-	UserName string `gorm:"unique" valid:"ascii,length(4|128),required" json:"username"`
-	IsAdmin  bool   `json:"isAdmin"`
+	UserName  string `gorm:"unique" valid:"ascii,length(4|128),required" json:"username"`
+	FirstName string `json:"first_name"`
+	LastName  string `json:"last_name"`
+	CityName  string `json:"city_name"`
+	Adress    string `json:"adress"`
+	IsAdmin   bool   `json:"isAdmin"`
 
 	Password string `valid:"length(4|128)" json:"password,omitempty"`
 }

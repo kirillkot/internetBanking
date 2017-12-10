@@ -13,6 +13,10 @@ export interface UserForm {
 export interface User {
   id: number;
   username: string;
+  first_name: string;
+  last_name: string;
+  city_name: string;
+  adress: string;
   isAdmin: boolean;
 }
 

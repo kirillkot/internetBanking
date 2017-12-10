@@ -24,6 +24,10 @@ export class UserFormComponent extends FormComponent<UserForm, User>{
   fields(): any {
     return {
       username: ['', [Validators.required, Validators.minLength(4)]],
+      first_name: ['', [Validators.required, Validators.minLength(2)]],
+      last_name: ['', [Validators.required, Validators.minLength(2)]],
+      city_name: ['', [Validators.required, Validators.minLength(2)]],
+      adress: ['', [Validators.required, Validators.minLength(2)]],
       isAdmin: [false, [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(4)]],
     };
