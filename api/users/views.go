@@ -3,8 +3,8 @@ package users
 import (
 	"net/http"
 
-	"internetBanking/api/common"
 	"internetBanking/api/models"
+	"internetBanking/api/web"
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -36,13 +36,13 @@ func (ViewModel) NewArray(len, cap int) interface{} {
 
 // View ...
 type View struct {
-	common.ViewSet
+	web.ViewSet
 }
 
 // NewView ...
 func NewView(db *gorm.DB) *View {
 	return &View{
-		ViewSet: *common.NewViewSet(db, NewViewModel()),
+		ViewSet: *web.NewViewSetWithISimpleModel(db, NewViewModel()),
 	}
 }
 

@@ -2,10 +2,11 @@ package web
 
 import (
 	"encoding/json"
-	"internetBanking/api/common"
-	"internetBanking/api/models"
 	"net/http"
 	"strconv"
+
+	"internetBanking/api/common"
+	"internetBanking/api/models"
 
 	"github.com/asaskevich/govalidator"
 	"github.com/gorilla/mux"
