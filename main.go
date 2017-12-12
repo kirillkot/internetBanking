@@ -27,7 +27,7 @@ func migrate(db *gorm.DB) {
 		&models.Transaction{},
 		&models.PaymentType{},
 		&models.CardOffer{},
-		&models.CardModel{},
+		&models.Card{},
 	).Error; err != nil {
 		log.Fatalln("AutoMigrate: failed: err:", err)
 	}

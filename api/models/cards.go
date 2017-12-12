@@ -1,6 +1,7 @@
 package models
 
 import (
+	"encoding/json"
 	"time"
 )
 
@@ -24,27 +25,46 @@ type CardForm struct {
 	Currency string `valid:"currency,required" json:"currency"`
 }
 
-// CardModel ...
-type CardModel struct {
+// Card ...
+type Card struct {
 	Model
+	CardForm
 
 	AccountID uint `json:"account_id"`
-	OfferID   uint `json:"offer_id"`
 	UserID    uint `json:"user_id"`
 
 	StartTime time.Time `json:"start_time"`
 	ValidTime time.Time `json:"valid_time"`
 
-	Name string `json:"name"`
-	Type string `json:"type"`
+	Type   string `json:"type"`
+	Status string `json:"status"`
 
-	Status string `json:"string"`
+	account *Account
 }
 
-// Card ...
-type Card struct {
-	*CardModel
+// SetAccount ...
+func (c *Card) SetAccount(account *Account) {
+	c.account = account
+}
 
-	Currency string `json:"currency"`
-	Balance  int64  `json:"balance"`
+// UnmarshalJSON ...
+func (c *Card) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &c.CardForm)
+}
+
+// MarshalJSON ...
+func (c Card) MarshalJSON() ([]byte, error) {
+	type Alias Card
+	if c.account == nil {
+		return json.Marshal((Alias)(c))
+	}
+	return json.Marshal(struct {
+		Alias
+		Currency string `json:"currency"`
+		Balance  int64  `json:"balance"`
+	}{
+		Alias:    (Alias)(c),
+		Currency: c.account.Currency,
+		Balance:  c.account.Balance,
+	})
 }

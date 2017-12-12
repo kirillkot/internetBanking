@@ -1,64 +1,59 @@
 package cards
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
-	"net/http"
-	"strconv"
 	"time"
 
 	"internetBanking/api/models"
 	"internetBanking/api/payments"
 	"internetBanking/api/web"
 
-	"github.com/asaskevich/govalidator"
-	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
 
-const (
-	entry = "cards"
-)
+// CardSimpleModel ...
+type CardSimpleModel struct {
+	web.BaseModel
+}
 
-// CardViewModel ...
-type CardViewModel struct{}
-
-// NewCardViewModel ...
-func NewCardViewModel() CardViewModel {
-	return CardViewModel{}
+// NewCardSimpleModel ...
+func NewCardSimpleModel() CardSimpleModel {
+	return CardSimpleModel{}
 }
 
 // Name ...
-func (CardViewModel) Name() string {
-	return entry
+func (CardSimpleModel) Name() string {
+	return "cards"
 }
 
 // New ...
-func (CardViewModel) New() interface{} {
-	return new(models.CardModel)
+func (CardSimpleModel) New() interface{} {
+	return new(models.Card)
 }
 
 // NewArray ...
-func (CardViewModel) NewArray(len, cap int) interface{} {
-	array := make([]models.CardModel, len, cap)
+func (CardSimpleModel) NewArray(len, cap int) interface{} {
+	array := make([]models.Card, len, cap)
 	return &array
 }
 
-// CardView ...
-type CardView struct {
-	web.ViewSet
+// CardViewModel ...
+type CardViewModel struct {
+	web.BaseModel
 }
 
-// NewCardView ...
-func NewCardView(db *gorm.DB) *CardView {
-	return &CardView{
-		ViewSet: *web.NewViewSetWithISimpleModel(db, NewCardViewModel()),
+// NewCardViewModel ...
+func NewCardViewModel() CardViewModel {
+	return CardViewModel{
+		BaseModel: web.NewBaseModel(NewCardSimpleModel()),
 	}
 }
 
-// CreateCard ...
-func CreateCard(db *gorm.DB, user *models.User, form *models.CardForm) (*models.Card, error) {
+// Create ...
+func (CardViewModel) Create(db *gorm.DB, user *models.User, object interface{}) (interface{}, error) {
+	card := object.(*models.Card)
+
 	tx := db.Begin()
 	if tx.Error != nil {
 		return nil, errors.New("begin: " + tx.Error.Error())
@@ -66,12 +61,12 @@ func CreateCard(db *gorm.DB, user *models.User, form *models.CardForm) (*models.
 	defer tx.Rollback()
 
 	offer := &models.CardOffer{}
-	if err := tx.Where("id = ?", form.OfferID).Find(offer).Error; err != nil {
+	if err := tx.Where("id = ?", card.OfferID).Find(offer).Error; err != nil {
 		return nil, errors.New("get offer: " + err.Error())
 	}
 
 	account := &models.Account{
-		Currency:  form.Currency,
+		Currency:  card.Currency,
 		Balance:   0,
 		AddAllow:  true,
 		MoveAllow: true,
@@ -82,151 +77,73 @@ func CreateCard(db *gorm.DB, user *models.User, form *models.CardForm) (*models.
 	}
 
 	now := time.Now().UTC()
-	model := &models.CardModel{
+	*card = models.Card{
+		CardForm: card.CardForm,
+
 		AccountID: account.ID,
-		OfferID:   offer.ID,
 		UserID:    user.ID,
 
 		StartTime: now,
 		ValidTime: now.Add(time.Duration(offer.TTL) * 30 * 24 * time.Hour),
 
-		Name: form.Name,
-		Type: offer.Type,
-
+		Type:   offer.Type,
 		Status: "active",
 	}
-	if err := tx.Create(model).Error; err != nil {
+	card.SetAccount(account)
+	if err := tx.Create(card).Error; err != nil {
 		return nil, errors.New("create card: failed: " + err.Error())
 	}
 
-	return &models.Card{
-		CardModel: model,
-		Currency:  account.Currency,
-		Balance:   account.Balance,
-	}, tx.Commit().Error
+	return card, tx.Commit().Error
 }
 
-// CreateHandler ...
-func (v *CardView) CreateHandler(w http.ResponseWriter, r *http.Request) {
-	form := &models.CardForm{}
-	if err := json.NewDecoder(r.Body).Decode(form); err != nil {
-		v.Failure(w, "create: decode: "+err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	if _, err := govalidator.ValidateStruct(form); err != nil {
-		v.Failure(w, "create: validate: "+err.Error(), http.StatusBadRequest)
-		return
-	}
-
-	user, err := models.UserFromRequest(r)
-	if err != nil {
-		v.Failure(w, "create: get user: "+err.Error(), http.StatusUnauthorized)
-		return
-	}
-
-	card, err := CreateCard(v.DB(), user, form)
-	if err != nil {
-		v.Failure(w, "create: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	v.JSONResponse(w, card, http.StatusCreated)
-}
-
-// GetCard ...
-func GetCard(db *gorm.DB, user *models.User, id uint) (*models.Card, error) {
-	model, where := &models.CardModel{}, &models.CardModel{
+// Get ...
+func (CardViewModel) Get(db *gorm.DB, user *models.User, id uint) (interface{}, error) {
+	card, where := &models.Card{}, &models.Card{
 		Model:  models.Model{ID: id},
 		UserID: user.ID,
 	}
-	if err := db.Find(model, where).Error; err != nil {
-		return nil, errors.New("find model card: " + err.Error())
+	if err := db.Find(card, where).Error; err != nil {
+		return nil, errors.New("find card: " + err.Error())
 	}
 
-	account, err := payments.GetAccountWithLock(db, model.AccountID)
+	account, err := payments.GetAccountWithLock(db, card.AccountID)
 	if err != nil {
 		return nil, errors.New("get account with lock: " + err.Error())
 	}
-
-	return &models.Card{
-		CardModel: model,
-		Balance:   account.Balance,
-		Currency:  account.Currency,
-	}, nil
+	card.SetAccount(account)
+	return card, nil
 }
 
-// RetrieveHandler ...
-func (v *CardView) RetrieveHandler(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.ParseUint(mux.Vars(r)["id"], 10, 32)
-	if err != nil {
-		v.Failure(w, "parse id: "+err.Error(), http.StatusBadRequest)
-		return
+// GetObjects ...
+func (CardViewModel) GetObjects(db *gorm.DB, user *models.User) (interface{}, error) {
+	cards, where := make([]models.Card, 0, 32), &models.Card{
+		UserID: user.ID,
+	}
+	if err := db.Find(&cards, where).Error; err != nil {
+		return nil, errors.New("get cards: " + err.Error())
 	}
 
-	user, err := models.UserFromRequest(r)
-	if err != nil {
-		v.Failure(w, "get user: "+err.Error(), http.StatusUnauthorized)
-		return
-	}
+	for i := range cards {
+		card := &cards[i]
 
-	card, err := GetCard(v.DB(), user, uint(id))
-	if err != nil {
-		v.Failure(w, "get card: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	v.JSONResponse(w, card, http.StatusOK)
-}
-
-// GetCards ...
-func GetCards(db *gorm.DB, user *models.User) ([]models.Card, error) {
-	objects, where := make([]models.CardModel, 0, 32), &models.CardModel{UserID: user.ID}
-	if err := db.Find(&objects, where).Error; err != nil {
-		return nil, errors.New("get card models: " + err.Error())
-	}
-
-	cards := make([]models.Card, 0, len(objects))
-	for i := range objects {
-		object := &objects[i]
-
-		account, err := payments.GetAccountWithLock(db, object.AccountID)
+		account, err := payments.GetAccountWithLock(db, card.AccountID)
 		if err != nil {
 			return nil, errors.New("get account: " + err.Error())
 		}
-
-		cards = append(cards, models.Card{
-			CardModel: object,
-			Balance:   account.Balance,
-			Currency:  account.Currency,
-		})
+		card.SetAccount(account)
 	}
-
 	return cards, nil
 }
 
-// ListHandler ...
-func (v *CardView) ListHandler(w http.ResponseWriter, r *http.Request) {
-	user, err := models.UserFromRequest(r)
-	if err != nil {
-		v.Failure(w, "get user: "+err.Error(), http.StatusUnauthorized)
-		return
-	}
-
-	cards, err := GetCards(v.DB(), user)
-	if err != nil {
-		v.Failure(w, "get cards: "+err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	v.JSONResponse(w, cards, http.StatusOK)
+// CardView ...
+type CardView struct {
+	web.ViewSet
 }
 
-// RegisterRoutes ...
-func (v *CardView) RegisterRoutes(router *mux.Router) {
-	prefix := "/" + entry
-	router.HandleFunc(prefix+"/", v.ListHandler).Methods("GET")
-	router.HandleFunc(prefix+"/", v.CreateHandler).Methods("POST")
-	router.HandleFunc(prefix+"/{id:[0-9]+}/", v.RetrieveHandler).Methods("GET")
-	router.HandleFunc(prefix+"/{id:[0-9]+}/", v.DeleteHandler).Methods("DELETE")
+// NewCardView ...
+func NewCardView(db *gorm.DB) *CardView {
+	return &CardView{
+		ViewSet: *web.NewViewSet(db, NewCardViewModel()),
+	}
 }
