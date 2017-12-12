@@ -8,6 +8,7 @@ import { PaymentsRoutingModule } from './payments-routing.module';
 import { AccountService } from '../accounts/account.service';
 import { PaymentTypeService } from '../payment-types/payment-type.service';
 import { PaymentService } from './payment.service';
+import { TransactionService } from '../transactions/transaction.service';
 
 import { AccountManagementComponent } from '../accounts/account-management.component';
 import { AccountFormComponent } from '../accounts/account-form.component';
@@ -16,7 +17,6 @@ import { PaymentTypeFormComponent } from '../payment-types/payment-type-form.com
 import { PaymentManagementComponent } from './payment-management.component';
 import { PaymentFormComponent } from './payment-form.component';
 import { TransactionManagementComponent } from '../transactions/transaction-management.component';
-import { TransactionService } from '../transactions/transaction.service';
 
 
 @NgModule({
