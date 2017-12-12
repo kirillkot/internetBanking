@@ -1,16 +1,7 @@
-.payment-type-form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
-}
-
-.payment-type-form section {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding-top: 5px;
-  padding-bottom: 5px;
-}
-
-.payment-type-form-full-width {
-  width: 100%;
+.account-card {
+  max-width: 700px;
+  max-height: 700px;
+  border: 10px;
+  border-color: rgba(0, 0, 0, 0.87);
+  margin: 10px;
 }

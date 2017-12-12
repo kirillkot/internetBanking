@@ -1,9 +1,11 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
 import { FormComponent } from '../abstract/form.component';
 
+import { Account, AccountService } from '../accounts/account.service';
 import { PaymentTypeForm, PaymentType } from './payment-type.service';
 import { PaymentTypeService } from './payment-type.service';
 
@@ -14,11 +16,14 @@ import { PaymentTypeService } from './payment-type.service';
   styleUrls: ['./payment-type-form.component.css']
 })
 export class PaymentTypeFormComponent extends
-    FormComponent<PaymentTypeForm, PaymentType> {
+    FormComponent<PaymentTypeForm, PaymentType> implements OnInit {
+  accounts: Observable<Account[]>;
+
   constructor(
     location: Location,
     formbuilder: FormBuilder,
     service: PaymentTypeService,
+    private accountservice: AccountService,
   ) {
     super(location, formbuilder, service);
   }
@@ -31,6 +36,15 @@ export class PaymentTypeFormComponent extends
       account_id: [0, []],
       detail: ['', []],
     };
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.accounts = this.accountservice.getObjects();
+  }
+
+  setAccount(account: Account): void {
+    this.group.patchValue({account_id: account.id});
   }
 
 }

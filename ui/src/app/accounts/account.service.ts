@@ -16,6 +16,7 @@ export interface AccountForm {
 
 export interface Account {
   id: number;
+  iban: string;
 
   currency: string;
   balance: number;

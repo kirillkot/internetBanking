@@ -1,4 +1,5 @@
-<form class="payment-type-form" [formGroup]="group">
+<!--
+ <form class="payment-type-form" [formGroup]="group">
   <mat-form-field class="payment-type-form-full-width">
     <input matInput placeholder="New Payment Name"
         formControlName="name">
@@ -31,5 +32,74 @@
         [disabled]="group.invalid">Create</button>
     <button mat-raised-button (click)="back()">Back</button>
   </section>
-
 </form>
+ -->
+
+<mat-horizontal-stepper linear="true" class="payment-type-form full">
+  <mat-step class="full">
+    <ng-template matStepLabel>Choose payment account</ng-template>
+
+    <mat-grid-list cols="2" rowHeight="2:1" class="full">
+      <mat-grid-tile *ngFor="let account of accounts | async">
+        <mat-card class="account-card">
+          <mat-card-title>{{account.iban}}</mat-card-title>
+          <mat-card-subtitle>{{account.id}}</mat-card-subtitle>
+          <mat-card-content>
+            <h3 mat-line>Currency: {{account.currency}} </h3>
+            <p>Allow Add: {{account.add_allow}} </p>
+            <p>Allow Move: {{account.move_allow}} </p>
+            <title mat-line>Details</title>
+            <p>
+              {{account.detail}}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary"
+                matStepperNext
+                (click)="setAccount(account)">CHOOSE</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+  </mat-step>
+
+  <mat-step [stepControl]="group">
+    <ng-template matStepLabel>Create Payment</ng-template>
+
+    <form [formGroup]="group">
+      <mat-form-field class="payment-type-form-full-width">
+        <input matInput placeholder="New Payment Name"
+            formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field class="payment-type-form-full-width">
+        <input matInput placeholder="New Payment Type"
+            formControlName="type">
+      </mat-form-field>
+
+      <mat-form-field class="payment-type-form-full-width">
+        <input matInput type="number" placeholder="Commision (in %)"
+            formControlName="commision">
+      </mat-form-field>
+
+      <mat-form-field class="payment-type-form-full-width">
+        <textarea matInput placeholder="Payment Details"
+            formControlName="detail">
+        </textarea>
+      </mat-form-field>
+
+      <section class="payment-type-form-full-width">
+        <button mat-raised-button color="primary"
+            (click)="create()"
+            [disabled]="group.invalid">Create</button>
+      </section>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p mat-line>You payment type is ready!</p>
+  </mat-step>
+
+</mat-horizontal-stepper>
