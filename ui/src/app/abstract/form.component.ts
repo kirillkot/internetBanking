@@ -22,8 +22,11 @@ export abstract class FormComponent<Form, Model> implements OnInit {
   }
 
   create(): void {
-    this.service.create(this.group.value);
-    this.back();
+    this.service
+      .create(this.group.value)
+      .subscribe(
+        data => this.back(),
+      );
   }
 
   back(): void {

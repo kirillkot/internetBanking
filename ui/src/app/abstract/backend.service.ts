@@ -20,18 +20,13 @@ export class BackendService<Form, Model> implements IObjectsService<Model> {
     console.log(`${this.entry} service: error: ${err}`);
   }
 
-  create(object: Form): Model {
-    let result: Model = null;
-    this.http
+  create(object: Form): Observable<Model> {
+    return this.http
       .post<Model>(`/api/${this.entry}/`, object)
-      .subscribe(
-        data => {
-          console.log(`create ${this.entry}: success ${data}`);
-          result = data;
-        },
+      .do(
+        data => console.log(`create ${this.entry}: success ${data}`),
         this.errorHandler,
       );
-    return result;
   }
 
   get(id: number): Observable<Model> {
