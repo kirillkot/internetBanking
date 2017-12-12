@@ -15,6 +15,8 @@ import { PaymentTypeManagementComponent } from '../payment-types/payment-type-ma
 import { PaymentTypeFormComponent } from '../payment-types/payment-type-form.component';
 import { PaymentManagementComponent } from './payment-management.component';
 import { PaymentFormComponent } from './payment-form.component';
+import { TransactionManagementComponent } from '../transactions/transaction-management.component';
+import { TransactionService } from '../transactions/transaction.service';
 
 
 @NgModule({
@@ -31,11 +33,13 @@ import { PaymentFormComponent } from './payment-form.component';
     PaymentTypeFormComponent,
     PaymentManagementComponent,
     PaymentFormComponent,
+    TransactionManagementComponent,
   ],
   providers: [
     AccountService,
     PaymentTypeService,
     PaymentService,
+    TransactionService,
   ]
 })
 export class PaymentsModule { }
