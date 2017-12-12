@@ -41,6 +41,9 @@ func migrate(db *gorm.DB) {
 	if err := db.FirstOrCreate(&models.User{}, admin).Error; err != nil {
 		log.Fatalln("Create admin: failed:", err)
 	}
+	if err := db.FirstOrCreate(models.BankAccount, models.BankAccount).Error; err != nil {
+		log.Fatalln("Create bank account:", err)
+	}
 }
 
 func main() {

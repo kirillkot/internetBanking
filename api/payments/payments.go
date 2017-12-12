@@ -3,9 +3,10 @@ package payments
 import (
 	"errors"
 	"fmt"
+	"time"
+
 	"internetBanking/api/models"
 	"internetBanking/api/web"
-	"time"
 
 	"github.com/jinzhu/gorm"
 )
@@ -62,7 +63,6 @@ func moveFunds(tx *gorm.DB, fromID, toID uint, amount int64, currency string) er
 	}
 
 	// TODO: add currency
-	// TODO: add Transactions
 	if from.Balance < amount {
 		return errors.New("account: no funds")
 	}
@@ -111,10 +111,16 @@ func (PaymentViewModel) Create(db *gorm.DB, user *models.User, object interface{
 		return nil, err
 	}
 
+	commision := form.Amount * int64(paymentType.Commision) / models.CommisionKoef
+	if err := moveFunds(tx, form.FromAccountID, models.BankAccount.ID,
+		commision, form.Currency); err != nil {
+		return nil, err
+	}
+
 	*payment = models.Payment{
 		PaymentForm: payment.PaymentForm,
 		Type:        paymentType.Name,
-		Commision:   0, // TODO: add commision
+		Commision:   commision,
 
 		UserID: user.ID,
 		From:   models.IDtoIBAN(form.FromAccountID),

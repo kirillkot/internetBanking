@@ -8,6 +8,16 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
+var (
+	// BankAccount ...
+	BankAccount = &Account{
+		AddAllow:  true,
+		MoveAllow: false,
+		Currency:  "BYN",
+		Detail:    "account for bank commisions",
+	}
+)
+
 // AccountLock ...
 type AccountLock struct {
 	Model
@@ -56,6 +66,10 @@ func (a *Account) LockDB(tx *gorm.DB) error {
 	return tx.Set("gorm:query_option", "FOR UPDATE").
 		Find(lock, where).Error
 }
+
+const (
+	CommisionKoef = 100
+)
 
 // PaymentType ...
 type PaymentType struct {
