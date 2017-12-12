@@ -103,9 +103,9 @@ func (p *Payment) UnmarshalJSON(data []byte) error {
 type Transaction struct {
 	Model
 
-	TransactionID uint      `valid:"required" json:"account_id"`
-	Delta         int64     `valid:"required" json:"delta"`
-	Time          time.Time `json:"time"`
+	AccountID uint      `valid:"required" json:"account_id"`
+	Delta     int64     `valid:"required" json:"delta"`
+	Time      time.Time `json:"time"`
 
 	Detail string `valid:"length(0|1024)" json:"detail"`
 }

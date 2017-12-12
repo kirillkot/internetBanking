@@ -2,8 +2,10 @@ package payments
 
 import (
 	"errors"
+	"fmt"
 	"internetBanking/api/models"
 	"internetBanking/api/web"
+	"time"
 
 	"github.com/jinzhu/gorm"
 )
@@ -69,6 +71,21 @@ func moveFunds(tx *gorm.DB, fromID, toID uint, amount int64, currency string) er
 
 	if err := tx.Save(from).Save(to).Error; err != nil {
 		return errors.New("save: " + err.Error())
+	}
+
+	now := time.Now().UTC()
+	if err := tx.Save(&models.Transaction{
+		AccountID: from.ID,
+		Delta:     -amount,
+		Time:      now,
+		Detail:    fmt.Sprintf("Move from %s to %s", from.IBAN(), to.IBAN()),
+	}).Save(&models.Transaction{
+		AccountID: to.ID,
+		Delta:     amount,
+		Time:      now,
+		Detail:    fmt.Sprintf("Move to %s to %s", from.IBAN(), to.IBAN()),
+	}).Error; err != nil {
+		return errors.New("save transactions: " + err.Error())
 	}
 	return nil
 }
