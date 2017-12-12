@@ -25,6 +25,7 @@ export class AppComponent {
     new RouterLink('Card Offers', '/card-offers/management'),
     new RouterLink('Accounts', '/accounts/management'),
     new RouterLink('Payment Types', '/payment-types/management'),
+    new RouterLink('Payments', '/payments/management'),
   ];
 
   constructor(
