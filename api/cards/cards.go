@@ -72,7 +72,7 @@ func (CardViewModel) Create(db *gorm.DB, user *models.User, object interface{}) 
 		MoveAllow: true,
 		Detail:    fmt.Sprintf("Card Account (user %d offer %d)", user.ID, offer.ID),
 	}
-	if err := payments.CreateAccount(db, account); err != nil {
+	if err := payments.CreateAccount(tx, account); err != nil {
 		return nil, errors.New("create account: failed: " + err.Error())
 	}
 

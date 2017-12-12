@@ -45,8 +45,8 @@ export class CardFormComponent extends FormComponent<CardForm, Card> implements 
     this.group.patchValue({offer_id: offer.id, name: offer.name});
   }
 
-  create() {
-    this.service.create(this.group.value);
+  create(): void {
+    this.service.create(this.group.value).subscribe();
   }
 
 }
