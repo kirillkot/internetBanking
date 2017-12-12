@@ -78,12 +78,12 @@ func moveFunds(tx *gorm.DB, fromID, toID uint, amount int64, currency string) er
 		AccountID: from.ID,
 		Delta:     -amount,
 		Time:      now,
-		Detail:    fmt.Sprintf("Move from %s to %s", from.IBAN(), to.IBAN()),
+		Detail:    fmt.Sprintf("Move to %s (%s)", to.IBAN(), to.Detail),
 	}).Save(&models.Transaction{
 		AccountID: to.ID,
 		Delta:     amount,
 		Time:      now,
-		Detail:    fmt.Sprintf("Move to %s to %s", from.IBAN(), to.IBAN()),
+		Detail:    fmt.Sprintf("Move from %s (%s)", from.IBAN(), from.Detail),
 	}).Error; err != nil {
 		return errors.New("save transactions: " + err.Error())
 	}
