@@ -7,6 +7,7 @@ import { PaymentsRoutingModule } from './payments-routing.module';
 
 import { AccountService } from '../accounts/account.service';
 import { PaymentTypeService } from '../payment-types/payment-type.service';
+import { PaymentService } from './payment.service';
 
 import { AccountManagementComponent } from '../accounts/account-management.component';
 import { AccountFormComponent } from '../accounts/account-form.component';
@@ -32,6 +33,7 @@ import { PaymentManagementComponent } from './payment-management.component';
   providers: [
     AccountService,
     PaymentTypeService,
+    PaymentService,
   ]
 })
 export class PaymentsModule { }
