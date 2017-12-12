@@ -6,6 +6,7 @@ import { AccountFormComponent } from '../accounts/account-form.component';
 import { PaymentTypeManagementComponent } from '../payment-types/payment-type-management.component';
 import { PaymentTypeFormComponent } from '../payment-types/payment-type-form.component';
 import { PaymentManagementComponent } from './payment-management.component';
+import { PaymentFormComponent } from './payment-form.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'payment-types/management', component: PaymentTypeManagementComponent },
   { path: 'payment-types/management/form', component: PaymentTypeFormComponent },
   { path: 'payments/management', component: PaymentManagementComponent },
+  { path: 'payments/management/form', component: PaymentFormComponent },
 ];
 
 @NgModule({
