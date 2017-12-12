@@ -37,28 +37,28 @@
     <ng-template matStepLabel>Create Payment</ng-template>
 
     <form [formGroup]="group">
-      <mat-form-field class="payment-type-form-full-width">
+      <mat-form-field>
         <input matInput placeholder="New Payment Name"
             formControlName="name">
       </mat-form-field>
 
-      <mat-form-field class="payment-type-form-full-width">
+      <mat-form-field>
         <input matInput placeholder="New Payment Type"
             formControlName="type">
       </mat-form-field>
 
-      <mat-form-field class="payment-type-form-full-width">
+      <mat-form-field>
         <input matInput type="number" placeholder="Commision (in %)"
             formControlName="commision">
       </mat-form-field>
 
-      <mat-form-field class="payment-type-form-full-width">
+      <mat-form-field>
         <textarea matInput placeholder="Payment Details"
             formControlName="detail">
         </textarea>
       </mat-form-field>
 
-      <section class="payment-type-form-full-width">
+      <section>
         <button mat-raised-button color="primary"
             (click)="create()"
             [disabled]="group.invalid">Create</button>
@@ -68,7 +68,7 @@
 
   <mat-step>
     <ng-template matStepLabel>Done</ng-template>
-    <p mat-line>You payment type is ready!</p>
+    <p mat-line>Your payment type is ready!</p>
   </mat-step>
 
 </mat-horizontal-stepper>

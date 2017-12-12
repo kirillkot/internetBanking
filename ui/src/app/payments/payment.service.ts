@@ -4,6 +4,11 @@ import { HttpClient } from '@angular/common/http';
 import { BackendService } from '../abstract/backend.service';
 
 export interface PaymentForm {
+  payment_type_id: number;
+  name: string;
+  from_account_id: number;
+  currency: string;
+  amount: number;
 }
 
 export interface Payment {

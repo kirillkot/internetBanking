@@ -1,3 +1,56 @@
-<p>
-  payment-form works!
-</p>
+<mat-horizontal-stepper linear="true" class="payment-form full">
+  <mat-step class="full">
+    <ng-template matStepLabel>Choose payment type</ng-template>
+
+    <mat-grid-list cols="2" rowHeight="2:1" class="full">
+      <mat-grid-tile *ngFor="let type of payment_types | async">
+        <mat-card class="payment-type-card full">
+          <mat-card-title>{{type.name}}</mat-card-title>
+          <mat-card-subtitle>{{type.type}}</mat-card-subtitle>
+          <mat-card-content>
+            <p mat-line>Commision: {{type.commision}} </p>
+            <title mat-line>Details</title>
+            <p>
+              {{type.detail}}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary"
+                matStepperNext
+                (click)="setPaymentType(type)">CHOOSE</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+  </mat-step>
+
+  <mat-step [stepControl]="group">
+    <ng-template matStepLabel>Create Payment</ng-template>
+
+    <form [formGroup]="group">
+      <mat-form-field>
+        <input matInput placeholder="New Payment Name"
+            formControlName="name">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Amount"
+            type="number"
+            formControlName="amount">
+      </mat-form-field>
+
+      <section>
+        <button mat-raised-button color="primary"
+            (click)="create()"
+            [disabled]="group.invalid">Create</button>
+      </section>
+    </form>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p mat-line>Your payment is ready!</p>
+  </mat-step>
+
+</mat-horizontal-stepper>
