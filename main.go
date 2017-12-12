@@ -25,9 +25,10 @@ func migrate(db *gorm.DB) {
 		&models.Account{},
 		&models.AccountLock{},
 		&models.Transaction{},
-		&models.PaymentType{},
 		&models.CardOffer{},
 		&models.Card{},
+		&models.PaymentType{},
+		&models.Payment{},
 	).Error; err != nil {
 		log.Fatalln("AutoMigrate: failed: err:", err)
 	}
@@ -52,6 +53,7 @@ func main() {
 	payments.NewAccountView(db).RegisterRoutes(router)
 	payments.NewTransactionView(db).RegisterRoutes(router)
 	payments.NewPaymentTypeView(db).RegisterRoutes(router)
+	payments.NewPaymentView(db).RegisterRoutes(router)
 	cards.NewOfferView(db).RegisterRoutes(router)
 	cards.NewCardView(db).RegisterRoutes(router)
 

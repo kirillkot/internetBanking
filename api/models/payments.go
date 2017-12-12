@@ -70,6 +70,35 @@ type PaymentType struct {
 	Detail string `valid:"length(0|1024)" json:"detail"`
 }
 
+// PaymentForm ...
+type PaymentForm struct {
+	TypeID uint   `valid:"required" json:"payment_type_id"`
+	Name   string `valid:"length(4|128),required" json:"name"`
+
+	FromAccountID uint `valid:"required" json:"from_account_id"`
+
+	Currency string `valid:"currency,required" json:"currency"`
+	Amount   int64  `valid:"required" json:"amount"`
+}
+
+// Payment ...
+type Payment struct {
+	Model
+	PaymentForm
+
+	Type      string `json:"type"`
+	Commision int64  `json:"commision"`
+
+	UserID uint   `json:"-"`
+	From   string `json:"from"`
+	To     string `json:"to"`
+}
+
+// UnmarshalJSON ...
+func (p *Payment) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &p.PaymentForm)
+}
+
 // Transaction ...
 type Transaction struct {
 	Model
