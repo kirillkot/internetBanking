@@ -11,6 +11,10 @@ export interface CardForm {
 }
 
 export interface Card {
+  id: number;
+  account_id: number;
+  offer_id: number;
+
   name: string;
   type: string;
 

@@ -25,6 +25,29 @@
 
   </mat-step>
 
+  <mat-step class="full">
+    <ng-template matStepLabel>Choose card</ng-template>
+
+    <mat-grid-list cols="2" rowHeight="2:1" class="full">
+      <mat-grid-tile *ngFor="let card of cards | async">
+        <mat-card class="card-card full">
+          <mat-card-title>{{card.name}}</mat-card-title>
+          <mat-card-subtitle>{{card.type}}</mat-card-subtitle>
+          <mat-card-content>
+            <p mat-line>Status: {{card.status}} </p>
+            <p mat-line>Balance: {{card.balance}} {{card.currency}} </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary"
+                matStepperNext
+                (click)="setCard(card)">CHOOSE</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-grid-tile>
+    </mat-grid-list>
+
+  </mat-step>
+
   <mat-step [stepControl]="group">
     <ng-template matStepLabel>Create Payment</ng-template>
 
