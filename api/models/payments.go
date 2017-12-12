@@ -12,7 +12,7 @@ import (
 type AccountLock struct {
 	Model
 
-	AccountID uint `gorm:"index"`
+	AccountID uint `gorm:"index,unique"`
 }
 
 // Account ...

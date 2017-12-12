@@ -180,7 +180,7 @@ func (v *ViewSet) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 	object, err := v.model.Delete(v.DB(), user, uint(id))
 	switch err {
 	case nil:
-		v.JSONResponse(w, object, http.StatusNoContent)
+		v.JSONResponse(w, object, http.StatusOK)
 	case gorm.ErrRecordNotFound:
 		v.Failure(w, "delete: object not found: "+strconv.FormatUint(id, 10), http.StatusNotFound)
 	default:

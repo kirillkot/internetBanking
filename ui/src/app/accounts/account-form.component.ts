@@ -31,8 +31,8 @@ export class AccountFormComponent extends FormComponent<AccountForm, Account> {
 
       add_allow: [true, [Validators.required]],
       move_allow: [true, [Validators.required]],
- 
-      details: [''],
+
+      detail: [''],
     };
   }
 
