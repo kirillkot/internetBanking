@@ -1,4 +1,6 @@
+import 'rxjs/add/operator/do';
 import { Observable } from 'rxjs/Observable';
+
 
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -40,14 +42,12 @@ export class BackendService<Form, Model> implements IObjectsService<Model> {
     return this.http.get< Array<Model> >(`/api/${this.entry}/`);
   }
 
-  delete(id: number): void {
+  delete(id: number): Observable<Model> {
     console.log(`delete ${this.entry}: with ${id}`);
-    this.http
+    return this.http
       .delete<Model>(`/api/${this.entry}/${id}/`)
-      .subscribe(
-        data => {
-          console.log(`Delete user: success ${id}`)
-        },
+      .do(
+        data => console.log(`Delete user: success ${id}`),
         this.errorHandler,
       );
   }

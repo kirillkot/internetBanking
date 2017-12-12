@@ -22,7 +22,9 @@ export abstract class ManageListComponent<Form, Model>{
   }
 
   delete(id: number): void {
-    this.service.delete(id);
-    this.refresh();
+    this.service.delete(id)
+      .subscribe(
+        data => this.refresh(),
+      );
   }
 }
