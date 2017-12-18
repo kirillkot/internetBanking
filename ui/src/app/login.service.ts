@@ -44,7 +44,7 @@ export class LoginService {
 
   logout(): void {
     this.is_admin = false;
-    document.cookie = '';
+    document.cookie = 'auth=; path=/;';
   }
 
 }
