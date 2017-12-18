@@ -26,6 +26,7 @@ export class CurrencyFormComponent extends
   fields(): any {
     return {
       name: ['', [Validators.required]],
+      koef: [1, [Validators.required]],
       sale: [null, [Validators.required]],
       purchase: [null, [Validators.required]],
     }

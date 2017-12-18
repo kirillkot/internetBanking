@@ -6,6 +6,7 @@ import { BackendService } from '../abstract/backend.service';
 
 export interface CurrencyForm {
   name: string;
+  koef: number;
   sale: number;
   purchase: number;
 }
@@ -14,6 +15,7 @@ export interface Currency {
   id: number;
 
   name: string;
+  koef: number;
   sale: number;
   purchase: number;
 }

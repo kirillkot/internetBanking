@@ -10,6 +10,7 @@ import (
 
 	"internetBanking/api/cards"
 	"internetBanking/api/common"
+	"internetBanking/api/currencies"
 	"internetBanking/api/models"
 	"internetBanking/api/payments"
 	"internetBanking/api/users"
@@ -22,6 +23,7 @@ var (
 func migrate(db *gorm.DB) {
 	if err := db.AutoMigrate(
 		&models.User{},
+		&models.Currency{},
 		&models.Account{},
 		&models.AccountLock{},
 		&models.Transaction{},
@@ -56,6 +58,7 @@ func main() {
 	usersview := users.NewView(db)
 	usersview.RegisterRoutes(router, usersview.AuthMiddleware)
 
+	currencies.NewView(db).RegisterRoutes(router, usersview.AuthMiddleware)
 	payments.NewAccountView(db).RegisterRoutes(router, usersview.AuthMiddleware)
 	payments.NewTransactionView(db).RegisterRoutes(router, usersview.AuthMiddleware)
 	payments.NewPaymentTypeView(db).RegisterRoutes(router, usersview.AuthMiddleware)

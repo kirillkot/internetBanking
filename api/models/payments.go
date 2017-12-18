@@ -68,6 +68,7 @@ func (a *Account) LockDB(tx *gorm.DB) error {
 }
 
 const (
+	// CommisionKoef ...
 	CommisionKoef = 100
 )
 

@@ -4,11 +4,21 @@
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput type="number" placeholder="Sale (BYN)" formControlName="sale">
+    <input matInput type="number"
+        min="1"
+        placeholder="Koef (dep BYN)" formControlName="koef">
   </mat-form-field>
 
   <mat-form-field>
-    <input matInput type="number" placeholder="Purchase (BYN)" formControlName="purchase">
+    <input matInput type="number"
+        min="1"
+        placeholder="Sale (BYN)" formControlName="sale">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput type="number"
+        min="1"
+        placeholder="Purchase (BYN)" formControlName="purchase">
   </mat-form-field>
 
   <section >
