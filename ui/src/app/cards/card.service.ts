@@ -34,4 +34,8 @@ export class CardService extends BackendService<CardForm, Card> {
     super('cards', http);
   }
 
+  block(id: number) {
+    return this.http.put<Card>(`/api/cards/${id}/state`, {});
+  }
+
 }

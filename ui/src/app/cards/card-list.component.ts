@@ -12,13 +12,27 @@ import { CardService } from './card.service';
   styleUrls: ['./card-list.component.css']
 })
 export class CardListComponent extends ManageListComponent<CardForm, Card> {
-  displayedColumns = ['name', 'ttl', 'type', 'status', 'currency', 'balance'];
+  displayedColumns = ['name', 'ttl', 'type', 'status',
+      'currency', 'balance', 'actions'];
 
   constructor(
-    service: CardService,
     detector: ChangeDetectorRef,
+    private cardservice: CardService,
   ) {
-    super(service, detector);
+    super(cardservice, detector);
   }
 
+  nextState(card: Card): string {
+    if ( card.status === "active" ) {
+      return "Block";
+    }
+    return "Activate";
+  }
+
+  block(card: Card) {
+    return this.cardservice.block(card.id)
+      .subscribe(
+        (data) => this.refresh(),
+      );
+  }
 }
