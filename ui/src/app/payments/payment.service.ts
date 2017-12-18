@@ -14,6 +14,8 @@ export interface PaymentForm {
 
 export interface Payment {
   id: number;
+  payment_type_id: number;
+  from_account_id: number;
 
   name: string;
   type: string;

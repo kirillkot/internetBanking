@@ -14,7 +14,7 @@ import { PaymentService } from './payment.service';
 export class PaymentManagementComponent extends
     ManageListComponent<PaymentForm, Payment> {
   displayedColumns = ['id', 'name', 'type', 'currency',
-    'amount','commision', 'from', 'to'];
+    'amount','commision', 'from', 'to', 'actions'];
 
   constructor(
     service: PaymentService,
@@ -23,4 +23,10 @@ export class PaymentManagementComponent extends
     super(service, detector);
   }
 
+  repeat(payment: Payment) {
+    return this.service.create(payment)
+      .subscribe(
+        (data) => this.refresh(),
+      );
+  }
 }
