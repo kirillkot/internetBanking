@@ -13,7 +13,7 @@ import { CurrencyService } from './currency.service';
 })
 export class CurrenciesManagementComponent extends
     ManageListComponent<CurrencyForm, Currency> {
-  displayedColumns = ['id', 'name', 'sale', 'purchase'];
+  displayedColumns = ['id', 'name', 'sale', 'purchase', 'actions'];
 
   constructor(
     service: CurrencyService,
