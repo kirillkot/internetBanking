@@ -18,6 +18,7 @@ import { PaymentManagementComponent } from './payment-management.component';
 import { PaymentFormComponent } from './payment-form.component';
 import { TransactionManagementComponent } from '../transactions/transaction-management.component';
 import { AccountDetailsComponent } from '../accounts/account-details.component';
+import { CurrenciesModule } from '../currencies/currencies.module';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { AccountDetailsComponent } from '../accounts/account-details.component';
     CommonModule,
     HttpClientModule,
     MaterialModule,
+    CurrenciesModule,
     PaymentsRoutingModule,
   ],
   declarations: [
