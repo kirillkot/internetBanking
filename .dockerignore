@@ -5,6 +5,7 @@
 static/
 conf/
 ui/
+.db/
 
 docker-compose.yml
 Dockerfile
