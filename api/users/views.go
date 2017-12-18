@@ -1,6 +1,8 @@
 package users
 
 import (
+	"encoding/json"
+	"errors"
 	"net/http"
 
 	"internetBanking/api/models"
@@ -46,33 +48,58 @@ func NewView(db *gorm.DB) *View {
 	}
 }
 
-// LoginRequest ...
-type LoginRequest struct {
+// LoginCreds ...
+type LoginCreds struct {
 	UserName string `valid:"required" json:"username"`
 	Password string `valid:"required" json:"password"`
 }
 
-// LoginResponse ...
-type LoginResponse struct {
-	IsAdmin bool `json:"is_admin"`
+func checkLoginCreds(db *gorm.DB, creds *LoginCreds) (*models.User, error) {
+	user := &models.User{}
+	if err := db.Where("name = ?", creds.UserName).Find(user).Error; err != nil {
+		return nil, errors.New("get user: " + err.Error())
+	}
+
+	if user.Password != creds.Password {
+		return nil, errors.New("invalid password")
+	}
+
+	return user, nil
 }
 
 // LoginHandler ...
 func (v *View) LoginHandler(w http.ResponseWriter, r *http.Request) {
+	creds := &LoginCreds{}
+	if err := json.NewDecoder(r.Body).Decode(creds); err != nil {
+		v.Failure(w, "parse creds err: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	user, err := checkLoginCreds(v.DB(), creds)
+	if err != nil {
+		v.Failure(w, "check creds: "+err.Error(), http.StatusForbidden)
+		return
+	}
+
+	setAuthCookie(w, user)
+	v.JSONResponse(w, user, http.StatusCreated)
+}
+
+// MeHandler ...
+func (v *View) MeHandler(w http.ResponseWriter, r *http.Request) {
 	user, err := models.UserFromRequest(r)
 	if err != nil {
 		v.Failure(w, "Get user failed (are you use auth middle?): "+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
-	response := &LoginResponse{
-		IsAdmin: user.IsAdmin,
-	}
-	v.JSONResponse(w, response, http.StatusCreated)
+	v.JSONResponse(w, user, http.StatusOK)
 }
 
 // RegisterRoutes ...
-func (v *View) RegisterRoutes(router *mux.Router) {
-	v.ViewSet.RegisterRoutes(router)
+func (v *View) RegisterRoutes(router *mux.Router, middls ...web.Middleware) {
+	v.ViewSet.RegisterRoutes(router, middls...)
+	router.HandleFunc("/me/", web.ApplyMiddl(v.MeHandler, middls...)).Methods("GET")
+
 	router.HandleFunc("/login/", v.LoginHandler).Methods("GET", "POST")
 }

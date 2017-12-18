@@ -188,12 +188,23 @@ func (v *ViewSet) DeleteHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Middleware ...
+type Middleware func(http.HandlerFunc) http.HandlerFunc
+
+// ApplyMiddl ...
+func ApplyMiddl(f http.HandlerFunc, middls ...Middleware) http.HandlerFunc {
+	for _, middl := range middls {
+		f = middl(f)
+	}
+	return f
+}
+
 // RegisterRoutes ...
-func (v *ViewSet) RegisterRoutes(router *mux.Router) {
+func (v *ViewSet) RegisterRoutes(router *mux.Router, middls ...Middleware) {
 	prefix := "/" + v.model.Name()
-	router.HandleFunc(prefix+"/", v.ListHandler).Methods("GET")
-	router.HandleFunc(prefix+"/", v.CreateHandler).Methods("POST")
-	router.HandleFunc(prefix+"/{id:[0-9]+}/", v.RetrieveHandler).Methods("GET")
-	router.HandleFunc(prefix+"/{id:[0-9]+}/", v.UpdateHandler).Methods("PUT")
-	router.HandleFunc(prefix+"/{id:[0-9]+}/", v.DeleteHandler).Methods("DELETE")
+	router.HandleFunc(prefix+"/", ApplyMiddl(v.ListHandler, middls...)).Methods("GET")
+	router.HandleFunc(prefix+"/", ApplyMiddl(v.CreateHandler, middls...)).Methods("POST")
+	router.HandleFunc(prefix+"/{id:[0-9]+}/", ApplyMiddl(v.RetrieveHandler, middls...)).Methods("GET")
+	router.HandleFunc(prefix+"/{id:[0-9]+}/", ApplyMiddl(v.UpdateHandler, middls...)).Methods("PUT")
+	router.HandleFunc(prefix+"/{id:[0-9]+}/", ApplyMiddl(v.DeleteHandler, middls...)).Methods("DELETE")
 }

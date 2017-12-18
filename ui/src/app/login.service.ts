@@ -8,8 +8,11 @@ import { Subscription } from 'rxjs/Subscription';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { AuthCreds, AuthCredsService } from './auth-creds.service';
 
+export interface LoginCreds {
+  username: string;
+  password: string;
+}
 
 interface LoginResponse {
   is_admin: boolean;
@@ -17,25 +20,31 @@ interface LoginResponse {
 
 @Injectable()
 export class LoginService {
+  private is_admin: boolean = false;
+
   constructor(
     private http: HttpClient,
-    private service: AuthCredsService,
   ) { }
 
   private errorHanlder(err: any): void {
     console.log(`Login Service: login: failed: ${err}`);
   }
 
-  login(creds: AuthCreds): Observable<void> {
+  login(creds: LoginCreds): Observable<void> {
     return this.http
-      .get<LoginResponse>('/api/login/', {
-        headers:new HttpHeaders().set('Authorization', this.service.buildAuthHeader(creds)),
-      })
-      .map(data => this.service.setCreds(creds, data.is_admin));
+      .post<LoginResponse>('/api/login/', creds)
+      .map(data => {
+        this.is_admin = data.is_admin;
+      });
+  }
+
+  isAdmin(): boolean {
+    return this.is_admin;
   }
 
   logout(): void {
-    this.service.setCreds(null, false);
+    this.is_admin = false;
+    document.cookie = '';
   }
 
 }

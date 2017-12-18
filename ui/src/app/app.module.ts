@@ -15,7 +15,6 @@ import { CardsModule } from './cards/cards.module';
 
 import { LoginService } from './login.service';
 import { AuthInterceptor } from './auth.interceptor';
-import { AuthCredsService } from './auth-creds.service';
 import { PaymentsModule } from './payments/payments.module';
 
 
@@ -34,7 +33,6 @@ import { PaymentsModule } from './payments/payments.module';
     MaterialModule,
   ],
   providers: [
-    AuthCredsService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

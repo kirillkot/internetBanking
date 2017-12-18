@@ -53,19 +53,18 @@ func main() {
 
 	router := mux.NewRouter()
 
-	payments.NewAccountView(db).RegisterRoutes(router)
-	payments.NewTransactionView(db).RegisterRoutes(router)
-	payments.NewPaymentTypeView(db).RegisterRoutes(router)
-	payments.NewPaymentView(db).RegisterRoutes(router)
-	cards.NewOfferView(db).RegisterRoutes(router)
-	cards.NewCardView(db).RegisterRoutes(router)
-
 	usersview := users.NewView(db)
-	usersview.RegisterRoutes(router)
+	usersview.RegisterRoutes(router, usersview.AuthMiddleware)
+
+	payments.NewAccountView(db).RegisterRoutes(router, usersview.AuthMiddleware)
+	payments.NewTransactionView(db).RegisterRoutes(router, usersview.AuthMiddleware)
+	payments.NewPaymentTypeView(db).RegisterRoutes(router, usersview.AuthMiddleware)
+	payments.NewPaymentView(db).RegisterRoutes(router, usersview.AuthMiddleware)
+	cards.NewOfferView(db).RegisterRoutes(router, usersview.AuthMiddleware)
+	cards.NewCardView(db).RegisterRoutes(router, usersview.AuthMiddleware)
 
 	logger.Infof("Stating server...\n")
-	handler := usersview.AuthMiddleware(router)
-	if err := http.ListenAndServe(":80", handler); err != nil {
+	if err := http.ListenAndServe(":80", router); err != nil {
 		logger.Fatalln("Listen and Serve: err:", err)
 	}
 }
