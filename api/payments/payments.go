@@ -132,6 +132,20 @@ func (PaymentViewModel) Create(db *gorm.DB, user *models.User, object interface{
 	return payment, tx.Commit().Error
 }
 
+// GetObjects ...
+func (PaymentViewModel) GetObjects(db *gorm.DB, user *models.User) (interface{}, error) {
+	query := db
+	if !user.IsAdmin {
+		query = query.Where("user_id = ?", user.ID)
+	}
+
+	objects := make([]models.Payment, 0, 32)
+	if err := query.Find(&objects).Error; err != nil {
+		return nil, err
+	}
+	return objects, nil
+}
+
 // Delete ...
 func (PaymentViewModel) Delete(db *gorm.DB, user *models.User, id uint) (object interface{}, err error) {
 	return nil, errors.New("not implemented")

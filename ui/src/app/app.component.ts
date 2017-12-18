@@ -11,6 +11,20 @@ class RouterLink {
   ) {}
 }
 
+const AuthorizedLinks = [
+    new RouterLink('Cards', '/cards'),
+    new RouterLink('Payments', '/payments/management'),
+]
+
+const AdminLinks = AuthorizedLinks.concat([
+    new RouterLink('Users', '/users'),
+    new RouterLink('Accounts', '/accounts/management'),
+    new RouterLink('Card Offers', '/card-offers/management'),
+    new RouterLink('Payment Types', '/payment-types/management'),
+    new RouterLink('Transactions', '/transactions/management'),
+    new RouterLink('Currencies', '/currencies/management'),
+])
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -18,22 +32,18 @@ class RouterLink {
 })
 export class AppComponent {
   title = 'app';
-  routes = [
-    new RouterLink('Users', '/users'),
-    new RouterLink('Login', '/login'),
-    new RouterLink('Cards', '/cards'),
-    new RouterLink('Card Offers', '/card-offers/management'),
-    new RouterLink('Accounts', '/accounts/management'),
-    new RouterLink('Payment Types', '/payment-types/management'),
-    new RouterLink('Payments', '/payments/management'),
-    new RouterLink('Transactions', '/transactions/management'),
-    new RouterLink('Currencies', '/currencies/management'),
-  ];
 
   constructor(
     private router: Router,
     private service: LoginService,
   ) { }
+
+  getRoutes(): RouterLink[] {
+    if ( this.service.isAdmin() ) {
+      return AdminLinks;
+    }
+    return AuthorizedLinks;
+  }
 
   logout(): void {
     this.service.logout();

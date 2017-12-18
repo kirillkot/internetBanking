@@ -15,7 +15,7 @@ export interface LoginCreds {
 }
 
 interface LoginResponse {
-  is_admin: boolean;
+  isAdmin: boolean;
 }
 
 @Injectable()
@@ -34,7 +34,7 @@ export class LoginService {
     return this.http
       .post<LoginResponse>('/api/login/', creds)
       .map(data => {
-        this.is_admin = data.is_admin;
+        this.is_admin = data.isAdmin;
       });
   }
 

@@ -1,5 +1,5 @@
 <mat-nav-list class="admin-panel">
-  <mat-list-item *ngFor="let route of routes">
+  <mat-list-item *ngFor="let route of this.getRoutes()">
      <button mat-raised-button routerLink="{{route.link}}"
             routerLinkActive="active"> {{route.name}} </button>
   </mat-list-item>
