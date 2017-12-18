@@ -1,4 +1,5 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { ManageListComponent } from '../abstract/manage-list.component';
 
@@ -18,8 +19,13 @@ export class AccountManagementComponent extends
   constructor(
     service: AccountService,
     detector: ChangeDetectorRef,
+    private router: Router,
   ) {
     super(service, detector);
+  }
+
+  gotoAccountDetails(account: Account): void {
+    this.router.navigate(['accounts/management/details', { id: account.id }]);
   }
 
 }

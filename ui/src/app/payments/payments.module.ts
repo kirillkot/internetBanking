@@ -30,12 +30,12 @@ import { AccountDetailsComponent } from '../accounts/account-details.component';
   declarations: [
     AccountManagementComponent,
     AccountFormComponent,
+    AccountDetailsComponent,
     PaymentTypeManagementComponent,
     PaymentTypeFormComponent,
     PaymentManagementComponent,
     PaymentFormComponent,
     TransactionManagementComponent,
-    AccountDetailsComponent,
   ],
   providers: [
     AccountService,

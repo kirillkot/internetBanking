@@ -27,12 +27,22 @@ export interface Account {
   detail: string;
 }
 
+export interface AddFundsRequest {
+  id: number;
+  amount: number;
+}
+
 @Injectable()
 export class AccountService extends BackendService<AccountForm, Account> {
   constructor(
     http: HttpClient,
   ) {
     super('accounts', http);
+  }
+
+  addFunds(req: AddFundsRequest) {
+    return this.http.post(`/accounts/${req.id}/add`,
+      {amount: req.amount});
   }
 
 }

@@ -1,3 +1,14 @@
-<p>
-  account-details works!
-</p>
+<form novalidate [formGroup]="group">
+
+  <mat-form-field>
+    <input matInput type="number" placeholder="Amount" formControlName="amount">
+  </mat-form-field>
+
+  <section>
+    <button mat-raised-button color="primary"
+        (click)="addFunds()"
+        [disabled]="group.invalid">Add Funds</button>
+    <button mat-raised-button (click)="back()">Back</button>
+  </section>
+
+</form>
