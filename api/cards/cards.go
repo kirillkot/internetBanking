@@ -3,12 +3,15 @@ package cards
 import (
 	"errors"
 	"fmt"
+	"net/http"
+	"strconv"
 	"time"
 
 	"internetBanking/api/models"
 	"internetBanking/api/payments"
 	"internetBanking/api/web"
 
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
 
@@ -146,4 +149,72 @@ func NewCardView(db *gorm.DB) *CardView {
 	return &CardView{
 		ViewSet: *web.NewViewSet(db, NewCardViewModel()),
 	}
+}
+
+func invertCardStatus(status string) string {
+	switch status {
+	case "active":
+		status = "blocked"
+	case "blocked":
+		status = "active"
+	}
+	return status
+}
+
+// changeCardStatus ...
+func changeCardStatus(db *gorm.DB, user *models.User, id uint) (*models.Card, error) {
+	card, where := &models.Card{}, &models.Card{
+		Model:  models.Model{ID: id},
+		UserID: user.ID,
+	}
+	if err := db.Find(card, where).Error; err != nil {
+		return nil, errors.New("find card: " + err.Error())
+	}
+
+	account, err := payments.GetAccountWithLock(db, card.AccountID)
+	if err != nil {
+		return nil, errors.New("get account with lock: " + err.Error())
+	}
+	card.SetAccount(account)
+
+	account.MoveAllow = !account.MoveAllow
+	account.AddAllow = !account.AddAllow
+	card.Status = invertCardStatus(card.Status)
+	if err := db.Save(account).Save(card).Error; err != nil {
+		return nil, errors.New("update status: err: " + err.Error())
+	}
+
+	return card, nil
+}
+
+// StateHandler ...
+func (v *CardView) StateHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.ParseUint(mux.Vars(r)["id"], 10, 32)
+	if err != nil {
+		v.Failure(w, "parse id: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	user, err := models.UserFromRequest(r)
+	if err != nil {
+		v.Failure(w, "get: user: "+err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	object, err := changeCardStatus(v.DB(), user, uint(id))
+	switch err {
+	case nil:
+		v.JSONResponse(w, object, http.StatusOK)
+	case gorm.ErrRecordNotFound:
+		v.Failure(w, "get: object not found: "+strconv.FormatUint(id, 10), http.StatusNotFound)
+	default:
+		v.Failure(w, "get: model: "+err.Error(), http.StatusInternalServerError)
+	}
+}
+
+// RegisterRoutes ...
+func (v *CardView) RegisterRoutes(router *mux.Router, middls ...web.Middleware) {
+	v.ViewSet.RegisterRoutes(router, middls...)
+
+	router.HandleFunc("/cards/{id:[0-9]+}/state/", web.ApplyMiddl(v.StateHandler, middls...)).Methods("PUT")
 }
