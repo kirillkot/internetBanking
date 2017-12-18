@@ -1,11 +1,15 @@
 package payments
 
 import (
+	"encoding/json"
 	"errors"
+	"net/http"
+	"strconv"
 
 	"internetBanking/api/models"
 	"internetBanking/api/web"
 
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
 
@@ -146,4 +150,64 @@ func NewAccountView(db *gorm.DB) *AccountView {
 	return &AccountView{
 		ViewSet: *web.NewViewSet(db, NewAccountViewModel()),
 	}
+}
+
+func addFunds(db *gorm.DB, id uint, amount int64) (*models.Account, error) {
+	tx := db.Begin()
+	if err := tx.Error; err != nil {
+		return nil, errors.New("begin: err: " + err.Error())
+	}
+	defer tx.Rollback()
+
+	account := &models.Account{}
+	account.ID = id
+	if err := account.LockDB(tx); err != nil {
+		return nil, errors.New("lock: err: " + err.Error())
+	}
+	if err := tx.Find(account).Error; err != nil {
+		return nil, errors.New("find: err: " + err.Error())
+	}
+
+	if account.Balance+amount < 0 {
+		return nil, errors.New("no funds")
+	}
+
+	account.Balance += amount
+	if err := tx.Save(account).Error; err != nil {
+		return nil, errors.New("save: err: " + err.Error())
+	}
+
+	return account, tx.Commit().Error
+}
+
+// AddFundsHandler ...
+func (v *AccountView) AddFundsHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.ParseUint(mux.Vars(r)["id"], 10, 32)
+	if err != nil {
+		v.Failure(w, "add: parse id: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	body := &struct {
+		Amount int64 `json:"amount"`
+	}{}
+	if err = json.NewDecoder(r.Body).Decode(body); err != nil {
+		v.Failure(w, "add: decode body: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	account, err := addFunds(v.DB(), uint(id), body.Amount)
+	if err != nil {
+		v.Failure(w, "add: add funds: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	v.JSONResponse(w, account, http.StatusCreated)
+}
+
+// RegisterRoutes ...
+func (v *AccountView) RegisterRoutes(router *mux.Router, middls ...web.Middleware) {
+	v.ViewSet.RegisterRoutes(router, middls...)
+
+	router.HandleFunc("/accounts/{id:[0-9]+}/add/", web.ApplyMiddl(v.AddFundsHandler, middls...)).Methods("POST")
 }

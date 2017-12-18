@@ -41,7 +41,7 @@ export class AccountService extends BackendService<AccountForm, Account> {
   }
 
   addFunds(req: AddFundsRequest) {
-    return this.http.post(`/accounts/${req.id}/add`,
+    return this.http.post(`/api/accounts/${req.id}/add/`,
       {amount: req.amount});
   }
 
