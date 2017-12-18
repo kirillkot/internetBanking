@@ -1,5 +1,8 @@
 all: banking
 
+update: banking
+	docker-compose restart backend
+
 .PHONE: banking
 banking: vendor
 	docker build -t banking .
