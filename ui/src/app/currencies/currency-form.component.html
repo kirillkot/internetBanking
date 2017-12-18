@@ -1,3 +1,21 @@
-<p>
-  currency-form works!
-</p>
+<form novalidate class="full" [formGroup]="group">
+  <mat-form-field>
+    <input matInput placeholder="Currency Name" formControlName="name">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput type="number" placeholder="Sale (BYN)" formControlName="sale">
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput type="number" placeholder="Purchase (BYN)" formControlName="purchase">
+  </mat-form-field>
+
+  <section >
+    <button mat-raised-button color="primary"
+        (click)="create()"
+        [disabled]="group.invalid">Create</button>
+    <button mat-raised-button (click)="back()">Back</button>
+  </section>
+
+</form>
