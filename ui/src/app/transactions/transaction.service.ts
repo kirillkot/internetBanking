@@ -26,4 +26,8 @@ export class TransactionService extends
     super('transactions', http);
   }
 
+  getObjectsByCard(card: number) {
+    return this.http.get< Transaction[] >(`/api/card/${card}/transactions`);
+  }
+
 }
