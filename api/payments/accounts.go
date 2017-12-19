@@ -205,9 +205,65 @@ func (v *AccountView) AddFundsHandler(w http.ResponseWriter, r *http.Request) {
 	v.JSONResponse(w, account, http.StatusCreated)
 }
 
+// CardTransactionsResponse ...
+type CardTransactionsResponse struct {
+	Total     int64 `json:"total"`
+	TotalAdd  int64 `json:"total_add"`
+	TotalMove int64 `json:"total_move"`
+
+	Transactions []models.Transaction `json:"transactions"`
+}
+
+func accountTransactions(db *gorm.DB, account uint) ([]models.Transaction, error) {
+	transactions := make([]models.Transaction, 0, 32)
+
+	query := db.Where("account_id = ?", account).Order("time DESC").Limit(128)
+	if err := query.Find(&transactions).Error; err != nil {
+		return nil, err
+	}
+	return transactions, nil
+}
+
+// TransactionsHandler ...
+func (v *AccountView) TransactionsHandler(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.ParseUint(mux.Vars(r)["id"], 10, 32)
+	if err != nil {
+		v.Failure(w, "parse id: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	transactions, err := accountTransactions(v.DB(), uint(id))
+	if err != nil {
+		v.Failure(w, "get: transactions: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	var total, add, move int64
+	for i := range transactions {
+		delta := transactions[i].Delta
+
+		total += delta
+		if delta >= 0 {
+			add += delta
+		} else {
+			move += delta
+		}
+	}
+	model := CardTransactionsResponse{
+		Total:        total,
+		TotalAdd:     add,
+		TotalMove:    move,
+		Transactions: transactions,
+	}
+	v.JSONResponse(w, model, http.StatusOK)
+}
+
 // RegisterRoutes ...
 func (v *AccountView) RegisterRoutes(router *mux.Router, middls ...web.Middleware) {
 	v.ViewSet.RegisterRoutes(router, middls...)
 
-	router.HandleFunc("/accounts/{id:[0-9]+}/add/", web.ApplyMiddl(v.AddFundsHandler, middls...)).Methods("POST")
+	router.HandleFunc("/accounts/{id:[0-9]+}/add/",
+		web.ApplyMiddl(v.AddFundsHandler, middls...)).Methods("POST")
+	router.HandleFunc("/accounts/{id:[0-9]+}/transactions/",
+		web.ApplyMiddl(v.TransactionsHandler, middls...)).Methods("GET")
 }

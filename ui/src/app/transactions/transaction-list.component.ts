@@ -14,10 +14,10 @@ import { TransactionService } from './transaction.service';
   styleUrls: ['./transaction-list.component.css']
 })
 export class TransactionListComponent implements OnInit {
-  public dataSource: SimpleDataSource<Transaction> = null;
   public displayedColumns = ['delta', 'time', 'detail'];
+  public dataSource: SimpleDataSource<Transaction> = null;
 
-  private card: number = null;
+  private account: number = null;
 
   constructor(
     private location: Location,
@@ -27,17 +27,17 @@ export class TransactionListComponent implements OnInit {
   ) { }
 
   refresh(): void {
-    this.service.getObjectsByCard(this.card)
+    this.service.getAccountStat(this.account)
       .subscribe(
         (data) => {
-          this.dataSource = new SimpleDataSource(data);
+          this.dataSource = new SimpleDataSource(data.transactions);
           this.detector.detectChanges();
         },
       );
   }
 
   ngOnInit() {
-    this.card = +this.route.snapshot.paramMap.get('card');
+    this.account = +this.route.snapshot.paramMap.get('account');
     this.refresh();
   }
 

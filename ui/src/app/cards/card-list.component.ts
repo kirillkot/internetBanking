@@ -39,6 +39,6 @@ export class CardListComponent extends ManageListComponent<CardForm, Card> {
   }
 
   transactions(card: Card): void {
-    this.router.navigate(['transactions/', { card: card.id }]);
+    this.router.navigate(['transactions/', { account: card.account_id }]);
   }
 }

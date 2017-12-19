@@ -16,6 +16,14 @@ export interface Transaction {
   detail: string;
 }
 
+export interface AccountStatResponse {
+  transactions: Transaction[];
+
+  total: number;
+  total_add: number;
+  total_move: number;
+}
+
 @Injectable()
 export class TransactionService extends
     BackendService<TransactionForm, Transaction> {
@@ -26,8 +34,8 @@ export class TransactionService extends
     super('transactions', http);
   }
 
-  getObjectsByCard(card: number) {
-    return this.http.get< Transaction[] >(`/api/card/${card}/transactions`);
+  getAccountStat(account: number) {
+    return this.http.get< AccountStatResponse >(`/api/accounts/${account}/transactions/`);
   }
 
 }
