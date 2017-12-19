@@ -8,6 +8,7 @@ import { PaymentTypeManagementComponent } from '../payment-types/payment-type-ma
 import { PaymentTypeFormComponent } from '../payment-types/payment-type-form.component';
 import { PaymentManagementComponent } from './payment-management.component';
 import { PaymentFormComponent } from './payment-form.component';
+import { TransactionListComponent } from '../transactions/transaction-list.component';
 import { TransactionManagementComponent } from '../transactions/transaction-management.component';
 
 
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'payment-types/management/form', component: PaymentTypeFormComponent },
   { path: 'payments/management', component: PaymentManagementComponent },
   { path: 'payments/management/form', component: PaymentFormComponent },
+  { path: 'transactions', component: TransactionListComponent },
   { path: 'transactions/management', component: TransactionManagementComponent },
 ];
 

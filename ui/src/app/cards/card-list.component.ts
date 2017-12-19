@@ -1,4 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { ManageListComponent } from '../abstract/manage-list.component';
 
@@ -17,6 +18,7 @@ export class CardListComponent extends ManageListComponent<CardForm, Card> {
 
   constructor(
     detector: ChangeDetectorRef,
+    private router: Router,
     private cardservice: CardService,
   ) {
     super(cardservice, detector);
@@ -34,5 +36,9 @@ export class CardListComponent extends ManageListComponent<CardForm, Card> {
       .subscribe(
         (data) => this.refresh(),
       );
+  }
+
+  transactions(card: Card): void {
+    this.router.navigate(['transactions/', { card: card.id }]);
   }
 }

@@ -35,6 +35,8 @@
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let row">
          <button mat-raised-button color="primary"
+                (click)="transactions(row)">Transactions</button>
+         <button mat-raised-button color="primary"
                 (click)="block(row)">{{ nextState(row) }}</button>
       </mat-cell>
     </ng-container>

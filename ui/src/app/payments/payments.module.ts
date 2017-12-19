@@ -19,6 +19,7 @@ import { PaymentFormComponent } from './payment-form.component';
 import { TransactionManagementComponent } from '../transactions/transaction-management.component';
 import { AccountDetailsComponent } from '../accounts/account-details.component';
 import { CurrenciesModule } from '../currencies/currencies.module';
+import { TransactionListComponent } from '../transactions/transaction-list.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { CurrenciesModule } from '../currencies/currencies.module';
     PaymentManagementComponent,
     PaymentFormComponent,
     TransactionManagementComponent,
+    TransactionListComponent,
   ],
   providers: [
     AccountService,
