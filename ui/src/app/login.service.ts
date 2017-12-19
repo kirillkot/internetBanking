@@ -14,7 +14,13 @@ export interface LoginCreds {
   password: string;
 }
 
-interface LoginResponse {
+export interface TwoFactorCreds {
+  username: string;
+  password: string;
+  twofactor: string;
+}
+
+interface TwoFactorResponse {
   isAdmin: boolean;
 }
 
@@ -30,11 +36,18 @@ export class LoginService {
     console.log(`Login Service: login: failed: ${err}`);
   }
 
-  login(creds: LoginCreds): Observable<void> {
+  login(creds: LoginCreds): Observable<boolean> {
     return this.http
-      .post<LoginResponse>('/api/login/', creds)
+      .post('/api/login/', creds)
+      .map(data => true);
+  }
+
+  twofactor(creds: TwoFactorCreds): Observable<boolean> {
+    return this.http
+      .post<TwoFactorResponse>('/api/two-factor/', creds)
       .map(data => {
         this.is_admin = data.isAdmin;
+        return true;
       });
   }
 

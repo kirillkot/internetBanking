@@ -1,4 +1,4 @@
-<form novalidate class="login-form" [formGroup]="group">
+<!-- <form novalidate class="login-form" [formGroup]="group">
   <mat-form-field class="full">
     <input matInput placeholder="Your User Name" formControlName="username">
   </mat-form-field>
@@ -13,4 +13,53 @@
         [disabled]="group.invalid">Sign in</button>
   </section>
 
-</form>
+</form> -->
+
+<mat-horizontal-stepper #steper linear="true"
+    class="card-form full">
+  <mat-step class="full" [stepControl]="loginGroup">
+    <ng-template matStepLabel>Login</ng-template>
+
+    <form class="login-form" [formGroup]="loginGroup">
+      <mat-form-field>
+        <input matInput placeholder="Your User Name"
+            formControlName="username">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Your Password"
+          type="password" formControlName="password">
+      </mat-form-field>
+
+      <section>
+        <button mat-raised-button color="primary"
+            (click)="login(steper)"
+            [disabled]="loginGroup.invalid">Login</button>
+      </section>
+    </form>
+
+  </mat-step>
+
+  <mat-step class="full">
+    <ng-template matStepLabel>Two Factor</ng-template>
+
+    <form class="login-form" [formGroup]="twofactorGroup">
+      <mat-form-field>
+        <input matInput placeholder="Two Factor Code"
+          formControlName="twofactor">
+      </mat-form-field>
+
+      <section>
+        <button mat-raised-button color="primary"
+            (click)="twofactor()"
+            [disabled]="twofactorGroup.invalid">Sign In</button>
+        <button mat-raised-button color="primary"
+            matStepperPrevious>Back</button>
+      </section>
+    </form>
+  </mat-step>
+
+  <mat-step class="full">
+    <ng-template matStepLabel>Welcome</ng-template>
+  </mat-step>
+</mat-horizontal-stepper>

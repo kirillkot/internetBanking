@@ -75,6 +75,28 @@ func (v *View) LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if _, err := checkLoginCreds(v.DB(), creds); err != nil {
+		v.Failure(w, "check creds: "+err.Error(), http.StatusForbidden)
+		return
+	}
+
+	v.JSONResponse(w, struct{}{}, http.StatusCreated)
+}
+
+// TwoFactorCreds ...
+type TwoFactorCreds struct {
+	LoginCreds
+	TwoFactor string `json:"twofactor"`
+}
+
+// TwoFactorHandler ...
+func (v *View) TwoFactorHandler(w http.ResponseWriter, r *http.Request) {
+	creds := &LoginCreds{}
+	if err := json.NewDecoder(r.Body).Decode(creds); err != nil {
+		v.Failure(w, "parse creds err: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
 	user, err := checkLoginCreds(v.DB(), creds)
 	if err != nil {
 		v.Failure(w, "check creds: "+err.Error(), http.StatusForbidden)
@@ -102,4 +124,5 @@ func (v *View) RegisterRoutes(router *mux.Router, middls ...web.Middleware) {
 	router.HandleFunc("/me/", web.ApplyMiddl(v.MeHandler, middls...)).Methods("GET")
 
 	router.HandleFunc("/login/", v.LoginHandler).Methods("GET", "POST")
+	router.HandleFunc("/two-factor/", v.TwoFactorHandler).Methods("GET", "POST")
 }
