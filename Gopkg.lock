@@ -37,6 +37,35 @@
   revision = "8c6ee72f3e6bcb1542298dd5f76cb74af9742cec"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/sec51/convert"
+  packages = [".","bigendian","smallendian"]
+  revision = "8ed1f399b5e0a9a9620c74cfd5aec3682d8328ab"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/sec51/cryptoengine"
+  packages = ["."]
+  revision = "11617a465c082a1e82359b3c059f018f8dcbfc93"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/sec51/gf256"
+  packages = ["."]
+  revision = "2454accbeb9e6b0e2e53b01e1d641c7157251ed4"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/sec51/qrcode"
+  packages = [".","coding"]
+  revision = "b7779abbcaf1ec4de65f586a85fe24db31d45e7c"
+
+[[projects]]
+  name = "github.com/sec51/twofactor"
+  packages = ["."]
+  revision = "d22311dbf16eee1f70cf1342345cf36e976a70b7"
+
+[[projects]]
   name = "github.com/sirupsen/logrus"
   packages = ["."]
   revision = "f006c2ac4710855cf0f916dd6b77acf6b048dc6e"
@@ -45,7 +74,7 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = ["ssh/terminal"]
+  packages = ["curve25519","hkdf","nacl/box","nacl/secretbox","poly1305","salsa20/salsa","ssh/terminal"]
   revision = "9f005a07e0d31d45e6656d241bb5c0f2efd4bc94"
 
 [[projects]]
@@ -57,6 +86,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "449458be4296eddb3b65ae1ded0a6468379800fbd92e67a4c90347077cc118b3"
+  inputs-digest = "d8f8f8c335355504ed3b61672f7749d75e95aec4fb95be280162cca127e69668"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -36,3 +36,7 @@
 [[constraint]]
   name = "github.com/asaskevich/govalidator"
   version = "8.0.0"
+
+[[constraint]]
+  name = "github.com/sec51/twofactor"
+  revision = "d22311dbf16eee1f70cf1342345cf36e976a70b7"
