@@ -2,7 +2,6 @@ package currencies
 
 import (
 	"encoding/json"
-	"errors"
 	"internetBanking/api/models"
 	"internetBanking/api/web"
 	"net/http"
@@ -54,21 +53,6 @@ type ConvertRequest struct {
 	ToCurrency   string        `json:"to"`
 }
 
-func convert(db *gorm.DB, amount models.Amount, from, to string) (models.Amount, error) {
-	cfrom := &models.Currency{}
-	if err := db.Where("name = ?", from).Find(cfrom).Error; err != nil {
-		return 0, errors.New("currencies: " + err.Error())
-	}
-
-	cto := &models.Currency{}
-	if err := db.Where("name = ?", to).Find(cto).Error; err != nil {
-		return 0, errors.New("find to currency: err: " + err.Error())
-	}
-
-	result := amount * cfrom.Sale / cto.Purchase
-	return result, nil
-}
-
 // ConvertHandler ...
 func (v *View) ConvertHandler(w http.ResponseWriter, r *http.Request) {
 	request := &ConvertRequest{}
@@ -77,7 +61,7 @@ func (v *View) ConvertHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := convert(v.DB(), request.Amount, request.FromCurrency, request.ToCurrency)
+	result, err := models.Convert(v.DB(), request.Amount, request.FromCurrency, request.ToCurrency)
 	if err != nil {
 		v.Failure(w, "convert: err:"+err.Error(), http.StatusInternalServerError)
 		return

@@ -1,7 +1,10 @@
 package models
 
 import (
+	"errors"
+
 	"github.com/asaskevich/govalidator"
+	"github.com/jinzhu/gorm"
 	"github.com/shopspring/decimal"
 )
 
@@ -36,6 +39,21 @@ type Currency struct {
 	Koef     int64  `valid:"required" json:"koef"`
 	Sale     Amount `valid:"required" json:"sale"`
 	Purchase Amount `valid:"required" json:"purchase"`
+}
+
+func Convert(tx *gorm.DB, amount Amount, from, to string) (Amount, error) {
+	cfrom := &Currency{}
+	if err := tx.Where("name = ?", from).Find(cfrom).Error; err != nil {
+		return 0, errors.New("currencies: " + err.Error())
+	}
+
+	cto := &Currency{}
+	if err := tx.Where("name = ?", to).Find(cto).Error; err != nil {
+		return 0, errors.New("find to currency: err: " + err.Error())
+	}
+
+	result := amount * cfrom.Sale / cto.Purchase
+	return result, nil
 }
 
 const (

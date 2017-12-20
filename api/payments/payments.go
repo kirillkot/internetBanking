@@ -62,12 +62,16 @@ func moveFunds(tx *gorm.DB, fromID, toID uint, amount models.Amount, currency st
 		return errors.New("accounts: " + err.Error())
 	}
 
-	// TODO: add currency
 	if from.Balance < amount {
 		return errors.New("account: no funds")
 	}
 	from.Balance -= amount
-	to.Balance += amount
+
+	converted, err := models.Convert(tx, amount, from.Currency, to.Currency)
+	if err != nil {
+		return errors.New("convert: " + err.Error())
+	}
+	to.Balance += converted
 
 	if err := tx.Save(from).Save(to).Error; err != nil {
 		return errors.New("save: " + err.Error())
@@ -81,7 +85,7 @@ func moveFunds(tx *gorm.DB, fromID, toID uint, amount models.Amount, currency st
 		Detail:    fmt.Sprintf("Move to %s (%s)", to.IBAN(), to.Detail),
 	}).Save(&models.Transaction{
 		AccountID: to.ID,
-		Delta:     amount,
+		Delta:     converted,
 		Time:      now,
 		Detail:    fmt.Sprintf("Move from %s (%s)", from.IBAN(), from.Detail),
 	}).Error; err != nil {
