@@ -19,6 +19,14 @@
       <mat-cell *matCellDef="let row"> {{row.isAdmin}} </mat-cell>
     </ng-container>
 
+    <ng-container matColumnDef="qr">
+      <mat-header-cell *matHeaderCellDef> QR </mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <button mat-button color='primary'
+            (click)=showQR(row)> Show QR </button>
+      </mat-cell>
+    </ng-container>
+
     <ng-container matColumnDef="actions">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell *matCellDef="let row">

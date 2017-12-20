@@ -7,6 +7,7 @@ import { MaterialModule } from '../material/material.module';
 import { UsersRoutingModule } from './users-routing.module';
 import { UserService } from './user.service';
 import { UserFormComponent } from './user-form.component';
+import { UserQRComponent } from './user-list.component';
 import { UserListComponent } from './user-list.component';
 import { UserEditComponent } from './user-edit.component';
 import { AbstractModule } from '../abstract/abstract.module';
@@ -19,8 +20,12 @@ import { AbstractModule } from '../abstract/abstract.module';
     AbstractModule,
     UsersRoutingModule
   ],
+  entryComponents: [
+    UserQRComponent,
+  ],
   declarations: [
     UserFormComponent,
+    UserQRComponent,
     UserListComponent,
     UserEditComponent,
   ],

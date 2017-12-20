@@ -18,6 +18,7 @@ export interface User {
   city_name: string;
   adress: string;
   isAdmin: boolean;
+  qr: string;
 }
 
 @Injectable()

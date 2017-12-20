@@ -16,6 +16,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { MatNativeDateModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -38,6 +39,7 @@ const modules = [
   MatStepperModule,
   MatCardModule,
   MatGridListModule,
+  MatDialogModule,
 
   MatNativeDateModule,
   BrowserAnimationsModule
