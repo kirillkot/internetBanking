@@ -7,8 +7,8 @@ import { BackendService } from '../abstract/backend.service';
 export interface CurrencyForm {
   name: string;
   koef: number;
-  sale: number;
-  purchase: number;
+  sale: string;
+  purchase: string;
 }
 
 export interface Currency {
@@ -16,8 +16,8 @@ export interface Currency {
 
   name: string;
   koef: number;
-  sale: number;
-  purchase: number;
+  sale: string;
+  purchase: string;
 }
 
 @Injectable()

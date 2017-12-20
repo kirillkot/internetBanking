@@ -40,3 +40,7 @@
 [[constraint]]
   name = "github.com/sec51/twofactor"
   revision = "d22311dbf16eee1f70cf1342345cf36e976a70b7"
+
+[[constraint]]
+  name = "github.com/shopspring/decimal"
+  revision = "9ca7f51822d222ae4e246f070f9aad863599bd1a"

@@ -8,7 +8,7 @@ export interface PaymentTypeForm {
   name: string;
 
   type: string;
-  commision: number;
+  commision: string;
   account_id: number;
 
   detail: string;
@@ -20,7 +20,7 @@ export interface PaymentType {
   name: string;
 
   type: string;
-  commision: number;
+  commision: string;
   account_id: number;
 
   detail: string;

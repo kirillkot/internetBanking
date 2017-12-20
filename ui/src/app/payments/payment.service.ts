@@ -9,7 +9,7 @@ export interface PaymentForm {
   name: string;
   from_account_id: number;
   currency: string;
-  amount: number;
+  amount: string;
 }
 
 export interface Payment {
@@ -21,8 +21,8 @@ export interface Payment {
   type: string;
 
   currency: string;
-  amount: number;
-  commision: number;
+  amount: string;
+  commision: string;
 
   from: string;
   to: string;

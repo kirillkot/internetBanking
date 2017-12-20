@@ -152,7 +152,7 @@ func NewAccountView(db *gorm.DB) *AccountView {
 	}
 }
 
-func addFunds(db *gorm.DB, id uint, amount int64) (*models.Account, error) {
+func addFunds(db *gorm.DB, id uint, amount models.Amount) (*models.Account, error) {
 	tx := db.Begin()
 	if err := tx.Error; err != nil {
 		return nil, errors.New("begin: err: " + err.Error())
@@ -168,7 +168,7 @@ func addFunds(db *gorm.DB, id uint, amount int64) (*models.Account, error) {
 		return nil, errors.New("find: err: " + err.Error())
 	}
 
-	if account.Balance+amount < 0 {
+	if (account.Balance + amount) < 0 {
 		return nil, errors.New("no funds")
 	}
 
@@ -189,7 +189,7 @@ func (v *AccountView) AddFundsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	body := &struct {
-		Amount int64 `json:"amount"`
+		Amount models.Amount `json:"amount"`
 	}{}
 	if err = json.NewDecoder(r.Body).Decode(body); err != nil {
 		v.Failure(w, "add: decode body: "+err.Error(), http.StatusBadRequest)
@@ -207,9 +207,9 @@ func (v *AccountView) AddFundsHandler(w http.ResponseWriter, r *http.Request) {
 
 // CardTransactionsResponse ...
 type CardTransactionsResponse struct {
-	Total     int64 `json:"total"`
-	TotalAdd  int64 `json:"total_add"`
-	TotalMove int64 `json:"total_move"`
+	Total     models.Amount `json:"total"`
+	TotalAdd  models.Amount `json:"total_add"`
+	TotalMove models.Amount `json:"total_move"`
 
 	Transactions []models.Transaction `json:"transactions"`
 }
@@ -238,7 +238,7 @@ func (v *AccountView) TransactionsHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	var total, add, move int64
+	var total, add, move models.Amount
 	for i := range transactions {
 		delta := transactions[i].Delta
 

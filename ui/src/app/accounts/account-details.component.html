@@ -1,7 +1,9 @@
 <form novalidate [formGroup]="group">
 
   <mat-form-field>
-    <input matInput type="number" placeholder="Amount" formControlName="amount">
+    <input matInput placeholder="Amount"
+        pattern="[0-9]+([.][0-9]{0,4})?"
+        formControlName="amount">
   </mat-form-field>
 
   <section>

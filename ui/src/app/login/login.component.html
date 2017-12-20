@@ -1,20 +1,3 @@
-<!-- <form novalidate class="login-form" [formGroup]="group">
-  <mat-form-field class="full">
-    <input matInput placeholder="Your User Name" formControlName="username">
-  </mat-form-field>
-
-  <mat-form-field class="full">
-    <input matInput type="password" placeholder="Your Password" formControlName="password">
-  </mat-form-field>
-
-  <section class="full">
-    <button mat-raised-button color="primary"
-        (click)="login()"
-        [disabled]="group.invalid">Sign in</button>
-  </section>
-
-</form> -->
-
 <mat-horizontal-stepper #steper linear="true"
     class="card-form full">
   <mat-step class="full" [stepControl]="loginGroup">

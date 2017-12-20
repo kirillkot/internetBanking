@@ -11,7 +11,7 @@ export interface Transaction {
   id: number;
   account_id: number;
 
-  delta: number;
+  delta: string;
   time: Date;
   detail: string;
 }
@@ -19,9 +19,9 @@ export interface Transaction {
 export interface AccountStatResponse {
   transactions: Transaction[];
 
-  total: number;
-  total_add: number;
-  total_move: number;
+  total: string;
+  total_add: string;
+  total_move: string;
 }
 
 @Injectable()

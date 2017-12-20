@@ -14,7 +14,7 @@ type CardOffer struct {
 	Details string `valid:"length(0|1024)" json:"details"`
 
 	TTL      uint   `valid:"required" json:"ttlMonth"`
-	Cashback uint   `json:"cashback"`
+	Cashback Amount `json:"cashback"`
 	Currency string `valid:"ascii,length(3|3)" json:"currency"`
 }
 
@@ -61,10 +61,10 @@ func (c Card) MarshalJSON() ([]byte, error) {
 	return json.Marshal(struct {
 		Alias
 		Currency string `json:"currency"`
-		Balance  int64  `json:"balance"`
+		Balance  Amount `json:"balance"`
 	}{
 		Alias:    (Alias)(c),
 		Currency: c.account.Currency,
-		Balance:  c.account.Balance,
+		Balance:  Amount(c.account.Balance),
 	})
 }

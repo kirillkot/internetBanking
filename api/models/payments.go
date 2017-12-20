@@ -30,7 +30,7 @@ type Account struct {
 	Model
 
 	Currency string `valid:"currency,required" json:"currency"`
-	Balance  int64  `json:"balance"`
+	Balance  Amount `json:"balance"`
 
 	AddAllow  bool `json:"add_allow"`
 	MoveAllow bool `json:"move_allow"`
@@ -69,7 +69,7 @@ func (a *Account) LockDB(tx *gorm.DB) error {
 
 const (
 	// CommisionKoef ...
-	CommisionKoef = 100
+	CommisionKoef = Amount(100)
 )
 
 // PaymentType ...
@@ -79,7 +79,7 @@ type PaymentType struct {
 	Name string `valid:"length(4|128),required" json:"name"`
 
 	Type      string `valid:"length(0|128),required" json:"type"`
-	Commision uint   `json:"commision"`
+	Commision Amount `json:"commision"`
 	AccountID uint   `json:"account_id"`
 
 	Detail string `valid:"length(0|1024)" json:"detail"`
@@ -93,7 +93,7 @@ type PaymentForm struct {
 	FromAccountID uint `valid:"required" json:"from_account_id"`
 
 	Currency string `valid:"currency,required" json:"currency"`
-	Amount   int64  `valid:"required" json:"amount"`
+	Amount   Amount `valid:"required" json:"amount"`
 }
 
 // Payment ...
@@ -102,7 +102,7 @@ type Payment struct {
 	PaymentForm
 
 	Type      string `json:"type"`
-	Commision int64  `json:"commision"`
+	Commision Amount `json:"commision"`
 
 	UserID uint   `json:"-"`
 	From   string `json:"from"`
@@ -119,7 +119,7 @@ type Transaction struct {
 	Model
 
 	AccountID uint      `valid:"required" json:"account_id"`
-	Delta     int64     `valid:"required" json:"delta"`
+	Delta     Amount    `valid:"required" json:"delta"`
 	Time      time.Time `json:"time"`
 
 	Detail string `valid:"length(0|1024)" json:"detail"`

@@ -6,7 +6,7 @@ import { BackendService } from '../abstract/backend.service';
 
 export interface AccountForm {
   currency: string;
-  balance: number;
+  balance: string;
 
   add_allow: boolean;
   move_allow: boolean;
@@ -19,7 +19,7 @@ export interface Account {
   iban: string;
 
   currency: string;
-  balance: number;
+  balance: string;
 
   add_allow: boolean;
   move_allow: boolean;

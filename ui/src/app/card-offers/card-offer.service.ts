@@ -9,7 +9,7 @@ export interface CardOfferForm {
   type: string;
   details: string;
 
-  cashback: number;
+  cashback: string;
   currency: string;
   ttlMonth: number;
 }
@@ -21,7 +21,7 @@ export interface CardOffer {
   type: string;
   details: string;
 
-  cashback: number;
+  cashback: string;
   currency: string;
   ttlMonth: number;
 }

@@ -12,7 +12,8 @@
   </mat-form-field>
 
   <mat-form-field class="card-offer-form-full-width">
-    <input matInput type="number" placeholder="Cashback(%)" formControlName="cashback">
+    <input matInput pattern="[0-9]+([.][0-9]{0,4})?"
+        placeholder="Cashback(%)" formControlName="cashback">
   </mat-form-field>
 
   <mat-form-field class="card-offer-form-full-width">

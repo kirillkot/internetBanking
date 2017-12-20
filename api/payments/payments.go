@@ -49,7 +49,7 @@ func NewPaymentViewModel() PaymentViewModel {
 	}
 }
 
-func moveFunds(tx *gorm.DB, fromID, toID uint, amount int64, currency string) error {
+func moveFunds(tx *gorm.DB, fromID, toID uint, amount models.Amount, currency string) error {
 	locks := make([]models.AccountLock, 0, 2)
 	query := tx.Set("gorm:query_option", "FOR UPDATE").
 		Where("account_id in (?)", []uint{fromID, toID})
@@ -111,7 +111,7 @@ func (PaymentViewModel) Create(db *gorm.DB, user *models.User, object interface{
 		return nil, err
 	}
 
-	commision := form.Amount * int64(paymentType.Commision) / models.CommisionKoef
+	commision := (form.Amount * paymentType.Commision) / models.CommisionKoef
 	if err := moveFunds(tx, form.FromAccountID, models.BankAccount.ID,
 		commision, form.Currency); err != nil {
 		return nil, err
