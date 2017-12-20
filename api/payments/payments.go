@@ -112,9 +112,11 @@ func (PaymentViewModel) Create(db *gorm.DB, user *models.User, object interface{
 	}
 
 	commision := (form.Amount * paymentType.Commision) / models.CommisionKoef
-	if err := moveFunds(tx, form.FromAccountID, models.BankAccount.ID,
-		commision, form.Currency); err != nil {
-		return nil, err
+	if commision != 0 {
+		if err := moveFunds(tx, form.FromAccountID, models.BankAccount.ID,
+			commision, form.Currency); err != nil {
+			return nil, err
+		}
 	}
 
 	*payment = models.Payment{

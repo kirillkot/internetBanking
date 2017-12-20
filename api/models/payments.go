@@ -67,9 +67,9 @@ func (a *Account) LockDB(tx *gorm.DB) error {
 		Find(lock, where).Error
 }
 
-const (
+var (
 	// CommisionKoef ...
-	CommisionKoef = Amount(100)
+	CommisionKoef = Amount(100 * powInt64(10, precision))
 )
 
 // PaymentType ...
