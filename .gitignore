@@ -18,3 +18,4 @@ vendor/
 static/
 internetBanking
 .db/
+keys/

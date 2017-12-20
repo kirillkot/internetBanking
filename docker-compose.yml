@@ -16,6 +16,7 @@ backend:
     - "postgres"
   volumes:
     - ".:/go/src/internetBanking:ro"
+    - "./db/keys/:/go/bin/keys/"
 
 frontend:
   image: "teracy/angular-cli"

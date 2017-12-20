@@ -12,28 +12,49 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-// ViewModel ...
-type ViewModel struct{}
+// SimpleModel ...
+type SimpleModel struct{}
 
-// NewViewModel ...
-func NewViewModel() ViewModel {
-	return ViewModel{}
+// NewSimpleModel ...
+func NewSimpleModel() SimpleModel {
+	return SimpleModel{}
 }
 
 // Name ...
-func (ViewModel) Name() string {
+func (SimpleModel) Name() string {
 	return "users"
 }
 
 // New ...
-func (ViewModel) New() interface{} {
+func (SimpleModel) New() interface{} {
 	return new(models.User)
 }
 
 // NewArray ...
-func (ViewModel) NewArray(len, cap int) interface{} {
+func (SimpleModel) NewArray(len, cap int) interface{} {
 	array := make([]models.User, len, cap)
 	return &array
+}
+
+// ViewModel ...
+type ViewModel struct {
+	web.BaseModel
+}
+
+// NewViewModel ...
+func NewViewModel() ViewModel {
+	return ViewModel{
+		BaseModel: web.NewBaseModel(NewSimpleModel()),
+	}
+}
+
+// Create ...
+func (m ViewModel) Create(db *gorm.DB, current *models.User, object interface{}) (interface{}, error) {
+	user := object.(*models.User)
+	if err := user.GenerateTwoFactor(); err != nil {
+		return nil, err
+	}
+	return m.BaseModel.Create(db, current, user)
 }
 
 // View ...
@@ -44,7 +65,7 @@ type View struct {
 // NewView ...
 func NewView(db *gorm.DB) *View {
 	return &View{
-		ViewSet: *web.NewViewSetWithISimpleModel(db, NewViewModel()),
+		ViewSet: *web.NewViewSet(db, NewViewModel()),
 	}
 }
 
