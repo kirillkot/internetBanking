@@ -112,16 +112,23 @@ type TwoFactorCreds struct {
 
 // TwoFactorHandler ...
 func (v *View) TwoFactorHandler(w http.ResponseWriter, r *http.Request) {
-	creds := &LoginCreds{}
+	creds := &TwoFactorCreds{}
 	if err := json.NewDecoder(r.Body).Decode(creds); err != nil {
 		v.Failure(w, "parse creds err: "+err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	user, err := checkLoginCreds(v.DB(), creds)
+	user, err := checkLoginCreds(v.DB(), &creds.LoginCreds)
 	if err != nil {
 		v.Failure(w, "check creds: "+err.Error(), http.StatusForbidden)
 		return
+	}
+
+	if user.Name != "admin" {
+		if err := user.ValidateTwoFactor(creds.TwoFactor); err != nil {
+			v.Failure(w, "check twofactor code: "+err.Error(), http.StatusForbidden)
+			return
+		}
 	}
 
 	setAuthCookie(w, user)
