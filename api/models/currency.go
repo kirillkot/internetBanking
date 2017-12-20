@@ -12,6 +12,14 @@ var (
 		"USD",
 		"EUR",
 	}
+
+	// DefaultCurrency ...
+	DefaultCurrency = &Currency{
+		Name:     "BYN",
+		Koef:     1,
+		Sale:     Amount(powInt64(10, precision)),
+		Purchase: Amount(powInt64(10, precision)),
+	}
 )
 
 func init() {
@@ -24,7 +32,7 @@ func init() {
 type Currency struct {
 	Model
 
-	Name     string `valid:"length(2|8)" json:"name"`
+	Name     string `gorm:"unique_index" valid:"length(2|8)" json:"name"`
 	Koef     int64  `valid:"required" json:"koef"`
 	Sale     Amount `valid:"required" json:"sale"`
 	Purchase Amount `valid:"required" json:"purchase"`

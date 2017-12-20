@@ -7,15 +7,12 @@ import { HttpClient } from '@angular/common/http';
 
 export interface ConvertRequest {
   amount: string;
-  from: number;
-  to: number;
+  from: string;
+  to: string;
 }
 
 export interface ConvertResponse {
-  amount: string;
-  amount_currency: string;
   result: string;
-  result_currency: string;
 }
 
 @Injectable()

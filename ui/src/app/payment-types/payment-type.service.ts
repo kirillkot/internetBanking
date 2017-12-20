@@ -10,20 +10,13 @@ export interface PaymentTypeForm {
   type: string;
   commision: string;
   account_id: number;
+  currency: string;
 
   detail: string;
 }
 
-export interface PaymentType {
+export interface PaymentType extends PaymentTypeForm {
   id: number;
-
-  name: string;
-
-  type: string;
-  commision: string;
-  account_id: number;
-
-  detail: string;
 }
 
 @Injectable()

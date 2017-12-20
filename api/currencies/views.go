@@ -1,9 +1,13 @@
 package currencies
 
 import (
+	"encoding/json"
+	"errors"
 	"internetBanking/api/models"
 	"internetBanking/api/web"
+	"net/http"
 
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 )
 
@@ -41,4 +45,51 @@ func NewView(db *gorm.DB) *View {
 	return &View{
 		ViewSet: *web.NewViewSetWithISimpleModel(db, NewViewModel()),
 	}
+}
+
+// ConvertRequest ...
+type ConvertRequest struct {
+	Amount       models.Amount `json:"amount"`
+	FromCurrency string        `json:"from"`
+	ToCurrency   string        `json:"to"`
+}
+
+func convert(db *gorm.DB, amount models.Amount, from, to string) (models.Amount, error) {
+	cfrom := &models.Currency{}
+	if err := db.Where("name = ?", from).Find(cfrom).Error; err != nil {
+		return 0, errors.New("currencies: " + err.Error())
+	}
+
+	cto := &models.Currency{}
+	if err := db.Where("name = ?", to).Find(cto).Error; err != nil {
+		return 0, errors.New("find to currency: err: " + err.Error())
+	}
+
+	result := amount * cfrom.Sale / cto.Purchase
+	return result, nil
+}
+
+// ConvertHandler ...
+func (v *View) ConvertHandler(w http.ResponseWriter, r *http.Request) {
+	request := &ConvertRequest{}
+	if err := json.NewDecoder(r.Body).Decode(request); err != nil {
+		v.Failure(w, "convert: decode: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	result, err := convert(v.DB(), request.Amount, request.FromCurrency, request.ToCurrency)
+	if err != nil {
+		v.Failure(w, "convert: err:"+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	model := &struct {
+		Result models.Amount `json:"result"`
+	}{Result: result}
+	v.JSONResponse(w, model, http.StatusCreated)
+}
+
+// RegisterRoutes ...
+func (v *View) RegisterRoutes(router *mux.Router, middls ...web.Middleware) {
+	v.ViewSet.RegisterRoutes(router, middls...)
+	router.HandleFunc("/currencies/convert/", v.ConvertHandler).Methods("GET", "POST")
 }

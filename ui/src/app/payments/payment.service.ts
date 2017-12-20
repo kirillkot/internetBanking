@@ -6,6 +6,7 @@ import { BackendService } from '../abstract/backend.service';
 
 export interface PaymentForm {
   payment_type_id: number;
+  payment_type_currency: string;
   name: string;
   from_account_id: number;
   currency: string;
@@ -15,6 +16,7 @@ export interface PaymentForm {
 export interface Payment {
   id: number;
   payment_type_id: number;
+  payment_type_currency: string;
   from_account_id: number;
 
   name: string;

@@ -81,6 +81,7 @@ type PaymentType struct {
 	Type      string `valid:"length(0|128),required" json:"type"`
 	Commision Amount `json:"commision"`
 	AccountID uint   `json:"account_id"`
+	Currency  string `json:"currency"`
 
 	Detail string `valid:"length(0|1024)" json:"detail"`
 }

@@ -34,6 +34,7 @@ export class PaymentTypeFormComponent extends
       type: ['', [Validators.required, Validators.minLength(2)]],
       commision: [0, [Validators.required]],
       account_id: [0, []],
+      currency: [null, [Validators.required]],
       detail: ['', []],
     };
   }
@@ -44,7 +45,10 @@ export class PaymentTypeFormComponent extends
   }
 
   setAccount(account: Account): void {
-    this.group.patchValue({account_id: account.id});
+    this.group.patchValue({
+      account_id: account.id,
+      currency: account.currency,
+    });
   }
 
 }

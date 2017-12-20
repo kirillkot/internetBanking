@@ -37,6 +37,7 @@ export class PaymentFormComponent extends
   fields(): any {
     return {
       payment_type_id: [null, [Validators.required]],
+      payment_type_currency: [null, [Validators.required]],
       name: [null, [Validators.required]],
       from_account_id: [null, [Validators.required]],
       currency: [null, [Validators.required]],
@@ -54,6 +55,7 @@ export class PaymentFormComponent extends
   setPaymentType(type: PaymentType): void {
     this.group.patchValue({
       payment_type_id: type.id,
+      payment_type_currency: type.currency,
       name: type.name,
       to_account_id: type.account_id,
     });
@@ -90,9 +92,9 @@ export class PaymentFormComponent extends
   <h1 mat-dialog-title> Converter Dialog </h1>
   <div mat-dialog-content>
     <p>Do you want convert?</p>
-    <p>{{ amount }} {{  amount_currency}}</p>
-    <p>To</p>
-    <p *ngIf="result"> {{ result }} {{ result_currency }}</p>
+    <p>{{ data.amount }} {{ data.currency }}</p>
+    <p>To {{ data.payment_type_currency }}</p>
+    <p *ngIf="result"> {{ result }} {{ data.payment_type_currency}}</p>
   </div>
   <div mat-dialog-actions>
     <button mat-button [mat-dialog-close]="true" tabindex="2">Ok</button>
@@ -101,32 +103,21 @@ export class PaymentFormComponent extends
 `,
 })
 export class PaymentConverterComponent implements OnInit {
-  public amount: string;
-  public amount_currency: string;
   public result: string;
-  public result_currency: string;
 
   constructor(
     public dialogRef: MatDialogRef<PaymentConverterComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: PaymentForm,
+    @Inject(MAT_DIALOG_DATA) public data: PaymentForm,
     private service: ConverterService,
-  ) {
-    this.amount = data.amount;
-    this.amount_currency = data.currency;
-  }
+  ) { }
 
   ngOnInit(): void {
     this.service.convert({
       amount: this.data.amount,
-      from: this.data.from_account_id,
-      to: this.data.payment_type_id,
+      from: this.data.currency,
+      to: this.data.payment_type_currency,
     }).subscribe(
-      (data) => {
-        this.amount = data.amount;
-        this.amount_currency = data.amount_currency;
-        this.result = data.result;
-        this.result_currency = data.result_currency;
-      },
+      (data) => this.result = data.result,
     );
   }
 }

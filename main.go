@@ -46,6 +46,9 @@ func migrate(db *gorm.DB) {
 	if err := db.FirstOrCreate(models.BankAccount, models.BankAccount).Error; err != nil {
 		log.Fatalln("Create bank account:", err)
 	}
+	if err := db.FirstOrCreate(models.DefaultCurrency, models.DefaultCurrency).Error; err != nil {
+		log.Fatalln("Create default currency:", err)
+	}
 }
 
 func main() {
