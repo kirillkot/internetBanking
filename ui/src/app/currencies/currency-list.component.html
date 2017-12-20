@@ -1,0 +1,22 @@
+<div class="mat-elevation-z8 full">
+  <mat-table #table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef> Currency Name </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="sale">
+      <mat-header-cell *matHeaderCellDef> Sale (BYN) </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.sale}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="purchase">
+      <mat-header-cell *matHeaderCellDef> Purchase (BYN) </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.purchase}} </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
+</div>

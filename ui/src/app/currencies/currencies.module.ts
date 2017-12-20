@@ -7,6 +7,7 @@ import { CurrenciesRoutingModule } from './currencies-routing.module';
 import { CurrenciesManagementComponent } from './currencies-management.component';
 import { CurrencyService } from './currency.service';
 import { CurrencyFormComponent } from './currency-form.component';
+import { CurrencyListComponent } from './currency-list.component';
 
 @NgModule({
   imports: [
@@ -15,7 +16,7 @@ import { CurrencyFormComponent } from './currency-form.component';
     MaterialModule,
     CurrenciesRoutingModule
   ],
-  declarations: [CurrenciesManagementComponent, CurrencyFormComponent],
+  declarations: [CurrenciesManagementComponent, CurrencyFormComponent, CurrencyListComponent],
   providers: [CurrencyService]
 })
 export class CurrenciesModule { }
