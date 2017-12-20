@@ -16,6 +16,7 @@ import { PaymentTypeManagementComponent } from '../payment-types/payment-type-ma
 import { PaymentTypeFormComponent } from '../payment-types/payment-type-form.component';
 import { PaymentManagementComponent } from './payment-management.component';
 import { PaymentFormComponent } from './payment-form.component';
+import { PaymentConverterComponent } from './payment-form.component';
 import { TransactionManagementComponent } from '../transactions/transaction-management.component';
 import { AccountDetailsComponent } from '../accounts/account-details.component';
 import { CurrenciesModule } from '../currencies/currencies.module';
@@ -30,6 +31,9 @@ import { TransactionListComponent } from '../transactions/transaction-list.compo
     CurrenciesModule,
     PaymentsRoutingModule,
   ],
+  entryComponents: [
+    PaymentConverterComponent,
+  ],
   declarations: [
     AccountManagementComponent,
     AccountFormComponent,
@@ -38,6 +42,7 @@ import { TransactionListComponent } from '../transactions/transaction-list.compo
     PaymentTypeFormComponent,
     PaymentManagementComponent,
     PaymentFormComponent,
+    PaymentConverterComponent,
     TransactionManagementComponent,
     TransactionListComponent,
   ],

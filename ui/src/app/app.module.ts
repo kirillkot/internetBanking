@@ -17,6 +17,7 @@ import { ConverterModule } from './converter/converter.module';
 import { LoginService } from './login.service';
 import { AuthInterceptor } from './auth.interceptor';
 import { PaymentsModule } from './payments/payments.module';
+import { ConverterService } from './converter.service';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { PaymentsModule } from './payments/payments.module';
       useClass: AuthInterceptor,
       multi: true,
     },
-    LoginService
+    LoginService,
+    ConverterService
   ],
   bootstrap: [AppComponent]
 })
