@@ -14,7 +14,12 @@ import { ConverterService } from './converter.service';
     styleUrls: ['./converter-list.component.css' ]
 })
 export class ConverterListComponent extends ManageListComponent<ConverterForm, Converter> {
-    currencies = CURRENCIES;
+    currencies: { id: number, name: string }[] = [
+        { "id": 0, "name": "BYN" },
+        { "id": 1, "name": "USD" },
+        { "id": 2, "name": "RUB" },
+        { "id": 3, "name": "EUR" }
+    ];
 
     str: number;
     valueTo: number;
