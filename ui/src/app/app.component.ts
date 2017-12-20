@@ -14,7 +14,7 @@ class RouterLink {
 const AuthorizedLinks = [
     new RouterLink('Cards', '/cards'),
     new RouterLink('Payments', '/payments/management'),
-    new RouterLink('Currencies', '/currencies'),
+    new RouterLink('Converter', '/converter'),
 ]
 
 const AdminLinks = AuthorizedLinks.concat([

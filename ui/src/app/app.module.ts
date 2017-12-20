@@ -12,6 +12,7 @@ import { UsersModule } from './users/users.module';
 import { MaterialModule } from './material/material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CardsModule } from './cards/cards.module';
+import { ConverterModule } from './converter/converter.module';
 
 import { LoginService } from './login.service';
 import { AuthInterceptor } from './auth.interceptor';
@@ -27,6 +28,7 @@ import { PaymentsModule } from './payments/payments.module';
   imports: [
     UsersModule,
     CardsModule,
+    ConverterModule,
     PaymentsModule,
     BrowserModule,
     AppRoutingModule,
