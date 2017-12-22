@@ -23,12 +23,8 @@ const (
 type User struct {
 	Model
 
-	Name      string `gorm:"unique" valid:"ascii,length(4|128),required" json:"username"`
-	FirstName string `json:"first_name"`
-	LastName  string `json:"last_name"`
-	CityName  string `json:"city_name"`
-	Adress    string `json:"adress"`
-	IsAdmin   bool   `json:"isAdmin"`
+	Name    string `gorm:"unique" valid:"ascii,length(4|128),required" json:"username"`
+	IsAdmin bool   `json:"isAdmin"`
 
 	Password  string `valid:"length(4|128)" json:"password,omitempty"`
 	TwoFactor []byte `valid:"-" json:"-"`

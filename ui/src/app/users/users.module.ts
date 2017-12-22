@@ -9,7 +9,6 @@ import { UserService } from './user.service';
 import { UserFormComponent } from './user-form.component';
 import { UserQRComponent } from './user-list.component';
 import { UserListComponent } from './user-list.component';
-import { UserEditComponent } from './user-edit.component';
 import { AbstractModule } from '../abstract/abstract.module';
 
 @NgModule({
@@ -27,7 +26,6 @@ import { AbstractModule } from '../abstract/abstract.module';
     UserFormComponent,
     UserQRComponent,
     UserListComponent,
-    UserEditComponent,
   ],
   providers: [UserService]
 })
